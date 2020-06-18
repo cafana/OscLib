@@ -1,6 +1,8 @@
 # Extremely crude stop-gap makefile
 
-CFLAGS := -I.. `root-config --libs --cflags` -I${EIGEN_INC} -I${BOOST_INC} -I${GSL_INC} -L${GSL_LIB} -lgsl -lgslcblas -g -O3
+CFLAGS := -I.. $(shell root-config --cflags) -I${EIGEN_INC} -I${BOOST_INC} -I${GSL_INC} -g -O3
+
+LDFLAGS := $(shell root-config --libs) -L${GSL_LIB} -lgsl -lgslcblas
 
 # Uncomment to enable (broken) stan build
 #CFLAGS += -DOSCLIB_STAN -I${STAN_MATH_INC}
@@ -13,7 +15,7 @@ OBJS := $(patsubst %.cxx,%.o,$(SRCS))
 	g++ $< ${CFLAGS} -c -fpic
 
 all: ${OBJS}
-	g++ -shared -o libOscLib.so *.o ${CFLAGS}
+	g++ -shared -o libOscLib.so *.o ${LDFLAGS}
 	+make -C test
 
 clean:
