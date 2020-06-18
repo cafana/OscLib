@@ -18,10 +18,12 @@
 #include <iostream>
 #include <fenv.h>
 
+#ifdef OSCLIB_STAN
 #ifndef DARWINBUILD
 #include "Utilities/StanVar.h"
 #endif
 #include "Utilities/StanUtils.h"
+#endif
 
 int main()
 {
@@ -47,12 +49,16 @@ int main()
   osc::OscCalcPMNS osc3;
   osc::OscCalcPMNSOpt osc4;
   osc::OscCalcPMNS_CPT osc5;
+
+  std::vector<osc::IOscCalcAdjustable*> oscs {&osc1, &osc2, &osc3, &osc4, &osc5};
+#ifdef OSCLIB_STAN
   osc::_OscCalcPMNS<stan::math::var> osc6;
   osc::_OscCalcPMNSOpt<stan::math::var> osc7;
   osc::_OscCalcDMP<stan::math::var> osc8;
-
-  std::vector<osc::IOscCalcAdjustable*> oscs {&osc1, &osc2, &osc3, &osc4, &osc5};
   std::vector<osc::_IOscCalcAdjustable<stan::math::var>*> oscStan {&osc6, &osc7, &osc8};
+#else
+  std::vector<void*> oscStan;
+#endif
   std::vector<TString> names {"Approx", "General", "PMNS", "PMNSOpt", "PMNS_CPT", "PMNS_Stan", "PMNSOpt_Stan", "PMNSOpt_DMP_Stan"};
   std::vector<int> colors {kBlue, kRed, kGreen+2, kMagenta, kBlack, kCyan, kOrange, kViolet+1};
 
@@ -84,6 +90,7 @@ int main()
           osc5.SetdCPBar(delta);
       }
     }
+#ifdef OSCLIB_STAN
     for(auto osc : oscStan){
       osc->SetL(L);
       osc->SetRho(rho);
@@ -95,6 +102,7 @@ int main()
       osc->SetdCP(delta);
 
     }
+#endif
 
     auto numCalcs = oscs.size() + oscStan.size();
 
@@ -121,11 +129,13 @@ int main()
               Ps.push_back(oscs[n]->P(anti*from, anti*to, E));
               gs[n]->SetPoint(gs[n]->GetN(), E, Ps[n]);
             }
+#ifdef OSCLIB_STAN
             for(auto osc : oscStan){
               Ps.push_back(util::GetValAs<double>(osc->P(anti * from, anti * to, E)));
               gs[n]->SetPoint(gs[n]->GetN(), E, Ps[n]);
               ++n;
             }
+#endif
             for(std::size_t i = 0; i < Ps.size(); ++i){
               for(std::size_t j = i+1; j < Ps.size(); ++j){
                 if(fabs(Ps[i]-Ps[j]) > .01 && E > 0.25){

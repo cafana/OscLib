@@ -1,3 +1,9 @@
 *.o
 *.so
 *~
+*.root
+# binaries
+test/testEarthModel
+test/testOsc
+test/testOscRndm
+test/testSterile

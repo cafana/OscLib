@@ -32,6 +32,11 @@ int main(int argc, char* argv[])
   
   double dm221(0.0000759), dm232(0.00239);
 
+  if(argc != 5){
+    std::cout << "Usage: testSterile dm243 th14 th23 th34" << std::endl;
+    return 1;
+  }
+
   double dm243 = std::atof( argv[1] );
   double th14  = std::atof( argv[2] );
   double th24  = std::atof( argv[3] );
@@ -151,8 +156,8 @@ int main(int argc, char* argv[])
       iPoint += 1;
     }
 
-  TFile* file = new TFile("oscSterile.root", "recreate");
-  file->cd();
+  TFile file("oscSterile.root", "recreate");
+  file.cd();
 
   g4FlvBeamNueDisND->Write("4FlvBeamNueDisND");
   g4FlvNueAppND->Write("4FlvNueAppND");
@@ -179,6 +184,8 @@ int main(int argc, char* argv[])
   gNCDisFD->Write("NCDisFD");
 
   gNue2NusND->Write("Nue2NusND");
+
+  std::cout << "See output file oscSterile.root" << std::endl;
 
   return 0;
 }
