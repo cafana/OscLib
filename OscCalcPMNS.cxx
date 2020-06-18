@@ -66,7 +66,9 @@ namespace osc
 //---------------------------------------------------------------------------
 template class osc::_OscCalcPMNS<double>;
 
+#ifdef OSCLIB_STAN
 #ifndef DARWINBUILD
 #include "Utilities/StanVar.h"
   template class osc::_OscCalcPMNS<stan::math::var>;
+#endif
 #endif

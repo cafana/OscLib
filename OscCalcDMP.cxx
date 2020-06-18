@@ -3,8 +3,10 @@
 
 #include "PMNS_DMP.h"
 
+#ifdef OSCLIB_STAN
 #ifndef DARWINBUILD
-#include "Utilities/Stan.h"
+#include "OscLib/Stan.h"
+#endif
 #endif
 
 namespace osc
@@ -105,7 +107,10 @@ namespace osc
   template<typename T>
   T _OscCalcDMP<T>::P(int flavBefore, int flavAfter, double E)
   {
-    if (!std::is_same<T, stan::math::var>::value &&
+    if (
+#ifdef OSCLIB_STAN
+!std::is_same<T, stan::math::var>::value &&
+#endif
         fCache.energies.size() != (size_t) fCache.probabilities.cols() &&
         fCache.energies.size() != 0)
     { // does a cache exist
@@ -171,8 +176,10 @@ namespace osc
 //---------------------------------------------------------------------------
   template class osc::_OscCalcDMP<double>;
 
+#ifdef OSCLIB_STAN
 #ifndef DARWINBUILD
   template class osc::_OscCalcDMP<stan::math::var>;
-
 #endif
+#endif
+
 }

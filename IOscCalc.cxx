@@ -3,12 +3,24 @@
 // into the std namespace that need sto be there
 // BEFORE the Eigen headers are seen (due to the '#pragma once').
 // IOscCalc.h  #includes Eigen/Eigen, so /shrug
+#ifdef OSCLIB_STAN
 #ifndef DARWINBUILD
 #include "stan/math/rev/core/std_isnan.hpp"
 #endif
+#endif
+
 #include "OscLib/IOscCalc.h"
 
+#ifdef OSCLIB_STAN
 #include "Utilities/StanUtils.h"
+#else
+// Otherwise turn this stan piece into a no-op
+namespace{
+  namespace util{
+    template<class T> T GetValAs(T x){return x;}
+  }
+}
+#endif
 
 #include <Eigen/Dense>
 namespace osc
@@ -65,6 +77,7 @@ namespace osc
   template class _IOscCalcAdjustable<double>;
   template class _IOscCalc<double>;
 #ifndef DARWINBUILD
+#ifdef OSCLIB_STAN
   template class _IOscCalcAdjustable<stan::math::var>;
   template class _IOscCalc<stan::math::var>;
   template void CopyParams(const osc::_IOscCalcAdjustable<double> * inCalc,
@@ -73,6 +86,7 @@ namespace osc
                            osc::_IOscCalcAdjustable<double> * outCalc);
   template void CopyParams(const osc::_IOscCalcAdjustable<stan::math::var> * inCalc,
                            osc::_IOscCalcAdjustable<stan::math::var> * outCalc);
+#endif
 #endif
 
   template void CopyParams(const osc::_IOscCalcAdjustable<double> * inCalc,

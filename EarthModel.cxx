@@ -5,7 +5,7 @@
 /// \version $Id: EarthModel.cxx,v 1.2 2012-07-01 22:21:59 gsdavies Exp $
 ///
 #include "OscLib/EarthModel.h"
-#include "Utilities/MathUtil.h"
+
 #include <cstdlib>
 #include <iostream>
 #include <cmath>
@@ -14,6 +14,13 @@ using namespace osc;
 
 static const int kPREM   = 0;
 static const int kSTACEY = 1;
+
+namespace{
+  namespace util{
+    template<class T> T sqr(T x){return x*x;}
+    template<class T> T pythag(T x, T y){return sqrt(sqr(x)+sqr(y));}
+  }
+}
 
 EarthModel::EarthModel(const char* which, double tol) 
 {
