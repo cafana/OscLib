@@ -3,10 +3,10 @@
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
-// \file   OscCalcPMNS.h                                          //
+// \file   OscCalcPMNS.h                                                //
 //                                                                      //
 // \brief  Adapt the PMNS calculator to standard interface              //
-// \author <bckhouse@caltech.edu>					//
+// \author <c.backhouse@ucl.ac.uk>					//
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 

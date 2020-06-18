@@ -3,10 +3,10 @@
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
-// \file OscCalcPMNSOpt.h                                         //
+// \file OscCalcPMNSOpt.h                                               //
 //                                                                      //
 // Adapt the PMNSOpt calculator to standard interface                   //
-// <bckhouse@caltech.edu>						//
+// <c.backhouse@ucl.ac.uk>						//
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 

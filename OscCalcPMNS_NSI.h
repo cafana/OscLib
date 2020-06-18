@@ -3,10 +3,10 @@
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
-// \file OscCalcPMNS_NSI.h                                        //
+// \file OscCalcPMNS_NSI.h                                              //
 //                                                                      //
 // Adapt the PMNS_NSI calculator to standard interface                  //
-// <bckhouse@caltech.edu>						//
+// <c.backhouse@ucl.ac.uk>						//
 // Modifications by MAAceroO <marioacero@mail.uniatlantico.edu.co>      //
 //////////////////////////////////////////////////////////////////////////
 

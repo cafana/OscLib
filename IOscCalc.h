@@ -5,10 +5,10 @@
 #include <Eigen/Eigen>
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
-// \file    IOscCalc.h                                            //
+// \file    IOscCalc.h                                                  //
 //                                                                      //
 // \brief   General interface to oscillation calculators                //
-// \author  Christopher Backhouse - bckhouse@caltech.edu                //
+// \author  Christopher Backhouse - c.backhouse@ucl.ac.uk               //
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
