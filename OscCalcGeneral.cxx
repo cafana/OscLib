@@ -1,10 +1,10 @@
 /////////////////////////////////////////////////////////////////////////////
-// \file    OscCalculatorGeneral.cxx
+// \file    OscCalcGeneral.cxx
 // \brief   Source file for general oscillation calculation
-// \version $Id: OscCalculatorGeneral.cxx,v 1.5 2012-09-25 04:51:35 gsdavies Exp $
+// \version $Id: OscCalcGeneral.cxx,v 1.5 2012-09-25 04:51:35 gsdavies Exp $
 // \author
 /////////////////////////////////////////////////////////////////////////////
-#include "OscLib/func/OscCalculatorGeneral.h"
+#include "OscLib/func/OscCalcGeneral.h"
 
 #include <boost/serialization/array_wrapper.hpp>
 #pragma GCC diagnostic push
@@ -34,7 +34,7 @@ namespace osc
 
   // Private data. Doing it this way avoids having to expose complex numbers,
   // matrices etc. to the user.
-  struct OscCalculatorGeneral::Priv
+  struct OscCalcGeneral::Priv
   {
     Priv() :
       emutau(0),
@@ -57,25 +57,25 @@ namespace osc
   };
 
 
-  OscCalculatorGeneral::OscCalculatorGeneral()
-    : d(new OscCalculatorGeneral::Priv)
+  OscCalcGeneral::OscCalcGeneral()
+    : d(new OscCalcGeneral::Priv)
   {
   }
 
-  OscCalculatorGeneral::~OscCalculatorGeneral()
+  OscCalcGeneral::~OscCalcGeneral()
   {
     delete d;
   }
 
-  IOscCalculatorAdjustable* OscCalculatorGeneral::Copy() const
+  IOscCalcAdjustable* OscCalcGeneral::Copy() const
   {
-    OscCalculatorGeneral* ret = new OscCalculatorGeneral(*this);
+    OscCalcGeneral* ret = new OscCalcGeneral(*this);
     ret->d = new Priv;
     *ret->d = *d;
     return ret;
   }
 
-  void OscCalculatorGeneral::SetTh23(const double& th23)
+  void OscCalcGeneral::SetTh23(const double& th23)
   {
     fTh23 = th23;
     d->atmos(2, 2) = d->atmos(1, 1) = cos(th23);
@@ -84,7 +84,7 @@ namespace osc
     d->dirty = true;
   }
 
-  void OscCalculatorGeneral::SetTh13(const double& th13)
+  void OscCalcGeneral::SetTh13(const double& th13)
   {
     fTh13 = th13;
     d->c13 = cos(th13);
@@ -96,7 +96,7 @@ namespace osc
     d->dirty = true;
   }
 
-  void OscCalculatorGeneral::SetTh12(const double& th12)
+  void OscCalcGeneral::SetTh12(const double& th12)
   {
     fTh12 = th12;
     d->solar(1, 1) = d->solar(0, 0) = cos(th12);
@@ -105,7 +105,7 @@ namespace osc
     d->dirty = true;
   }
 
-  void OscCalculatorGeneral::SetdCP(const double& delta)
+  void OscCalcGeneral::SetdCP(const double& delta)
   {
     fdCP = delta;
 
@@ -117,25 +117,25 @@ namespace osc
     d->dirty = true;
   }
 
-  void OscCalculatorGeneral::SetNSIEpsilonMuTau(double emutau)
+  void OscCalcGeneral::SetNSIEpsilonMuTau(double emutau)
   {
     d->emutau = emutau;
   }
 
-  double OscCalculatorGeneral::GetNSIEpsilonMuTau() const
+  double OscCalcGeneral::GetNSIEpsilonMuTau() const
   {
     return d->emutau;
   }
 
-  TMD5* OscCalculatorGeneral::GetParamsHash() const
+  TMD5* OscCalcGeneral::GetParamsHash() const
   {
     // Default isn't good enough if we need to consider NSI
     if(d->emutau) return 0;
-    return IOscCalculatorAdjustable::GetParamsHashDefault("General");
+    return IOscCalcAdjustable::GetParamsHashDefault("General");
   }
 
 
-  ComplexMat GetPMNS(OscCalculatorGeneral::Priv* d)
+  ComplexMat GetPMNS(OscCalcGeneral::Priv* d)
   {
     if(d->dirty){
       ublas::noalias(d->pmns) = ublas::prod(d->atmos, ublas::prod<ComplexMat>(d->react, d->solar));
@@ -231,7 +231,7 @@ namespace osc
 	m(i, j) = std::conj(m(i, j));
   }
 
-  double OscCalculatorGeneral::P(int from, int to, double E)
+  double OscCalcGeneral::P(int from, int to, double E)
   {
     const int af = abs(from);
     const int at = abs(to);

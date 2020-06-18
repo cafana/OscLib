@@ -1,4 +1,4 @@
-#include "OscCalculatorPMNS_NSI.h"
+#include "OscCalcPMNS_NSI.h"
 
 #include <cassert>
 #include <cstdlib>
@@ -7,14 +7,14 @@
 
 namespace osc
 {
-  OscCalculatorPMNS_NSI::OscCalculatorPMNS_NSI()
+  OscCalcPMNS_NSI::OscCalcPMNS_NSI()
     : fMixDirty(true), fDmDirty(true), fPropDirty(true), fEpsDirty(true), fPrevAnti(0)
   {
   }
   
   //---------------------------------------------------------------------------
   // 2016-10-24 - Getting all oscillation parameters (Standard and NSI)
-  std::vector<double> OscCalculatorPMNS_NSI::GetState() const
+  std::vector<double> OscCalcPMNS_NSI::GetState() const
   {
     std::vector<double> state;
     state.push_back(fL);
@@ -41,7 +41,7 @@ namespace osc
   
   //---------------------------------------------------------------------------
   // 2016-10-24 - Setting all oscillation parameters (Standard and NSI) - or the State
-  void OscCalculatorPMNS_NSI::SetState(std::vector<double> state)
+  void OscCalcPMNS_NSI::SetState(std::vector<double> state)
   {
     int iState(0);
     fMixDirty = true ;
@@ -65,11 +65,11 @@ namespace osc
   }
   //---------------------------------------------------------------------------
 
-  OscCalculatorPMNS_NSI::~OscCalculatorPMNS_NSI()
+  OscCalcPMNS_NSI::~OscCalcPMNS_NSI()
   {
   }
 
-  double OscCalculatorPMNS_NSI::P(int flavBefore, int flavAfter, double E)
+  double OscCalcPMNS_NSI::P(int flavBefore, int flavAfter, double E)
   {
     const int anti = (flavBefore > 0) ? +1 : -1;
     assert(flavAfter/anti > 0);
@@ -108,26 +108,26 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  IOscCalculatorAdjustable* OscCalculatorPMNS_NSI::Copy() const
+  IOscCalcAdjustable* OscCalcPMNS_NSI::Copy() const
   {
-    return new OscCalculatorPMNS_NSI(*this);
+    return new OscCalcPMNS_NSI(*this);
   }
   
   //---------------------------------------------------------------------------
-  const OscCalculatorPMNS_NSI* DowncastToNSI(const IOscCalculator* calc)
+  const OscCalcPMNS_NSI* DowncastToNSI(const IOscCalc* calc)
   {
-    const OscCalculatorPMNS_NSI* calc_nsi = dynamic_cast<const OscCalculatorPMNS_NSI*>(calc);
+    const OscCalcPMNS_NSI* calc_nsi = dynamic_cast<const OscCalcPMNS_NSI*>(calc);
     if(calc_nsi) return calc_nsi;
-    else             std::cout << "Input calculator was not of type OscCalculatorPMNS_NSI." << std::endl;
+    else             std::cout << "Input calculator was not of type OscCalcPMNS_NSI." << std::endl;
     return nullptr; // If the cast failed, calc_nsi should be nullptr anyway (?)                    
   }
 
   //---------------------------------------------------------------------------                     
-  OscCalculatorPMNS_NSI* DowncastToNSI(IOscCalculator* calc)
+  OscCalcPMNS_NSI* DowncastToNSI(IOscCalc* calc)
   {
-    OscCalculatorPMNS_NSI* calc_nsi = dynamic_cast<OscCalculatorPMNS_NSI*>(calc);
+    OscCalcPMNS_NSI* calc_nsi = dynamic_cast<OscCalcPMNS_NSI*>(calc);
     if(calc_nsi) return calc_nsi;
-    else             std::cout << "Input calculator was not of type OscCalculatorPMNS_NSI." << std::endl;
+    else             std::cout << "Input calculator was not of type OscCalcPMNS_NSI." << std::endl;
     return nullptr; // If the cast failed, calc_nsi should be nullptr anyway (?)                    
   }
   

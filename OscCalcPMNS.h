@@ -3,7 +3,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
-// \file   OscCalculatorPMNS.h                                          //
+// \file   OscCalcPMNS.h                                          //
 //                                                                      //
 // \brief  Adapt the PMNS calculator to standard interface              //
 // \author <bckhouse@caltech.edu>					//
@@ -12,21 +12,21 @@
 
 #include <cassert>
 
-#include "OscLib/func/IOscCalculator.h"
+#include "OscLib/func/IOscCalc.h"
 #include "OscLib/func/PMNS.h"
 
 namespace osc
 {
   /// Adapt the \ref PMNS calculator to standard interface
   template <typename T>
-  class _OscCalculatorPMNS: public _IOscCalculatorAdjustable<T>
+  class _OscCalcPMNS: public _IOscCalcAdjustable<T>
   {
     public:
-    using _IOscCalculator<T>::P;
-      _OscCalculatorPMNS();
-      virtual ~_OscCalculatorPMNS();
+    using _IOscCalc<T>::P;
+      _OscCalcPMNS();
+      virtual ~_OscCalcPMNS();
 
-      virtual _IOscCalculatorAdjustable<T>* Copy() const override;
+      virtual _IOscCalcAdjustable<T>* Copy() const override;
 
       virtual T P(int flavBefore, int flavAfter, double E) override;
 
@@ -41,7 +41,7 @@ namespace osc
 
       TMD5* GetParamsHash() const override
       {
-        return _IOscCalculatorAdjustable<T>::GetParamsHashDefault("PMNS");
+        return _IOscCalcAdjustable<T>::GetParamsHashDefault("PMNS");
       }
 
     protected:
@@ -54,7 +54,7 @@ namespace osc
       int fPrevAnti;
   };
 
-  typedef _OscCalculatorPMNS<double> OscCalculatorPMNS;
+  typedef _OscCalcPMNS<double> OscCalcPMNS;
 
 } // namespace
 

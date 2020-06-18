@@ -1,10 +1,10 @@
 /////////////////////////////////////////////////////////////////////////////
-// \file    OscCalculatorPMNS_CPT.cxx 
+// \file    OscCalcPMNS_CPT.cxx 
 // \brief   Source file for PMNS oscillation calculation
-// \version $Id: OscCalculatorPMNS_CPT.cxx,v 1.0 2013-11-21 11:17:35 tamsett Exp $
+// \version $Id: OscCalcPMNS_CPT.cxx,v 1.0 2013-11-21 11:17:35 tamsett Exp $
 // \author  Matthew Tamsett
 /////////////////////////////////////////////////////////////////////////////
-#include "OscLib/func/OscCalculatorPMNS_CPT.h"
+#include "OscLib/func/OscCalcPMNS_CPT.h"
 
 #include <cassert>
 #include <cstdlib>
@@ -12,22 +12,22 @@
 
 namespace osc
 {
-  OscCalculatorPMNS_CPT::OscCalculatorPMNS_CPT()
+  OscCalcPMNS_CPT::OscCalcPMNS_CPT()
     : fMixDirty(true), fDmDirty(true), fPropDirty(true), fPrevAnti(0),
       fMixDirty_bar(true), fDmDirty_bar(true), fPropDirty_bar(true), fPrevAnti_bar(0)
   {
   }
 
-  OscCalculatorPMNS_CPT::~OscCalculatorPMNS_CPT()
+  OscCalcPMNS_CPT::~OscCalcPMNS_CPT()
   {
   }
 
-  IOscCalculatorAdjustable* OscCalculatorPMNS_CPT::Copy() const
+  IOscCalcAdjustable* OscCalcPMNS_CPT::Copy() const
   {
-    return new OscCalculatorPMNS_CPT(*this);
+    return new OscCalcPMNS_CPT(*this);
   }
 
-  double OscCalculatorPMNS_CPT::P(int flavBefore, int flavAfter, double E)
+  double OscCalcPMNS_CPT::P(int flavBefore, int flavAfter, double E)
   {
     const int anti = (flavBefore > 0) ? +1 : -1;
     assert(flavAfter/anti > 0);
@@ -99,7 +99,7 @@ namespace osc
         return fPMNS.P(i, j);
     }
   }
-  TMD5* OscCalculatorPMNS_CPT::GetParamsHashDefaultBar() const
+  TMD5* OscCalcPMNS_CPT::GetParamsHashDefaultBar() const
   {
     const std::string& txt = "PMNSBar";
     TMD5* ret = new TMD5;

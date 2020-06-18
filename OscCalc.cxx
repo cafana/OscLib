@@ -1,13 +1,13 @@
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
-// \file OscCalculator.cxx                                              //
+// \file OscCalc.cxx                                              //
 //                                                                      //
 // Class with methods for calculating all things related to oscillation //
 // probabilities.                                                       //
 // <rbpatter@caltech.edu>						//
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
-#include "OscLib/func/OscCalculator.h"
+#include "OscLib/func/OscCalc.h"
 
 #include <iostream>
 #include <cmath>
@@ -18,7 +18,7 @@
 namespace osc {
 
   // --------------------------------------------
-  OscCalculator::OscCalculator()
+  OscCalc::OscCalc()
   { 
 
     // put some sensible defaults here...
@@ -36,18 +36,18 @@ namespace osc {
   }
 
   // --------------------------------------------
-  OscCalculator::~OscCalculator()
+  OscCalc::~OscCalc()
   {
   }
 
   // --------------------------------------------
-  IOscCalculatorAdjustable* OscCalculator::Copy() const
+  IOscCalcAdjustable* OscCalc::Copy() const
   {
-    return new OscCalculator(*this);
+    return new OscCalc(*this);
   }
 
   // --------------------------------------------
-  double OscCalculator::P(int flavBefore, int flavAfter, double E)
+  double OscCalc::P(int flavBefore, int flavAfter, double E)
   {
     bool antinu = (flavBefore<0&&flavAfter<0);
     if (antinu) {
@@ -66,30 +66,30 @@ namespace osc {
     else return 0;
   }
 
-  double OscCalculator::P_ee(double E, bool antinu) { return P_internal_ee(E,antinu,0); }
-  double OscCalculator::P_em(double E, bool antinu) { return P_internal_me(E,antinu,1); }
-  double OscCalculator::P_et(double E, bool antinu) { return P_internal_te(E,antinu,1); }
+  double OscCalc::P_ee(double E, bool antinu) { return P_internal_ee(E,antinu,0); }
+  double OscCalc::P_em(double E, bool antinu) { return P_internal_me(E,antinu,1); }
+  double OscCalc::P_et(double E, bool antinu) { return P_internal_te(E,antinu,1); }
 
-  double OscCalculator::P_me(double E, bool antinu) { return P_internal_me(E,antinu,0); }
-  double OscCalculator::P_mm(double E, bool antinu) { return 1-P_me(E,antinu)-P_mt(E,antinu); }
-  double OscCalculator::P_mt(double E, bool antinu) { return P_internal_mt(E,antinu,0); }
+  double OscCalc::P_me(double E, bool antinu) { return P_internal_me(E,antinu,0); }
+  double OscCalc::P_mm(double E, bool antinu) { return 1-P_me(E,antinu)-P_mt(E,antinu); }
+  double OscCalc::P_mt(double E, bool antinu) { return P_internal_mt(E,antinu,0); }
 
-  double OscCalculator::P_te(double E, bool antinu) { return P_internal_te(E,antinu,0); }
-  double OscCalculator::P_tm(double E, bool antinu) { return P_internal_mt(E,antinu,1); }
-  double OscCalculator::P_tt(double E, bool antinu) { return 1 - P_te(E,antinu) - P_tm(E,antinu); }
+  double OscCalc::P_te(double E, bool antinu) { return P_internal_te(E,antinu,0); }
+  double OscCalc::P_tm(double E, bool antinu) { return P_internal_mt(E,antinu,1); }
+  double OscCalc::P_tt(double E, bool antinu) { return 1 - P_te(E,antinu) - P_tm(E,antinu); }
 
   // --------------------------------------------
-  TF1* OscCalculator::GetTF1(int flavBefore, int flavAfter)
+  TF1* OscCalc::GetTF1(int flavBefore, int flavAfter)
   {
-    TF1 *theTF1 = new TF1(Form("OscCalculatorFunction_%d_%d_%p",flavBefore,flavAfter,(void*)this),
-			  this,&osc::OscCalculator::P_wrapper,0,120,2,"OscCalculator","P_wrapper");
+    TF1 *theTF1 = new TF1(Form("OscCalcFunction_%d_%d_%p",flavBefore,flavAfter,(void*)this),
+			  this,&osc::OscCalc::P_wrapper,0,120,2,"OscCalc","P_wrapper");
     theTF1->SetParameters(flavBefore,flavAfter);
     theTF1->SetNpx(1000);
     return theTF1;
   }
 
   // --------------------------------------------
-  double OscCalculator::P_wrapper(double *x, double *p)
+  double OscCalc::P_wrapper(double *x, double *p)
   {
     // function for use by TF1
     int flavBefore = int(p[0]);
@@ -100,23 +100,23 @@ namespace osc {
       flavAfter  *= -1;
     } 
 
-    double (osc::OscCalculator::*P_xx)(double,bool);
-    if      (flavBefore==12&&flavAfter==12) P_xx = &osc::OscCalculator::P_ee;
-    else if (flavBefore==12&&flavAfter==14) P_xx = &osc::OscCalculator::P_em;
-    else if (flavBefore==12&&flavAfter==16) P_xx = &osc::OscCalculator::P_et;
-    else if (flavBefore==14&&flavAfter==12) P_xx = &osc::OscCalculator::P_me;
-    else if (flavBefore==14&&flavAfter==14) P_xx = &osc::OscCalculator::P_mm;
-    else if (flavBefore==14&&flavAfter==16) P_xx = &osc::OscCalculator::P_mt;
-    else if (flavBefore==16&&flavAfter==12) P_xx = &osc::OscCalculator::P_te;
-    else if (flavBefore==16&&flavAfter==14) P_xx = &osc::OscCalculator::P_tm;
-    else if (flavBefore==16&&flavAfter==16) P_xx = &osc::OscCalculator::P_tt;
-    else P_xx = &osc::OscCalculator::P_null;
+    double (osc::OscCalc::*P_xx)(double,bool);
+    if      (flavBefore==12&&flavAfter==12) P_xx = &osc::OscCalc::P_ee;
+    else if (flavBefore==12&&flavAfter==14) P_xx = &osc::OscCalc::P_em;
+    else if (flavBefore==12&&flavAfter==16) P_xx = &osc::OscCalc::P_et;
+    else if (flavBefore==14&&flavAfter==12) P_xx = &osc::OscCalc::P_me;
+    else if (flavBefore==14&&flavAfter==14) P_xx = &osc::OscCalc::P_mm;
+    else if (flavBefore==14&&flavAfter==16) P_xx = &osc::OscCalc::P_mt;
+    else if (flavBefore==16&&flavAfter==12) P_xx = &osc::OscCalc::P_te;
+    else if (flavBefore==16&&flavAfter==14) P_xx = &osc::OscCalc::P_tm;
+    else if (flavBefore==16&&flavAfter==16) P_xx = &osc::OscCalc::P_tt;
+    else P_xx = &osc::OscCalc::P_null;
 
     return (this->*P_xx)(x[0],antinu);
   }
 
   // -----------------------------------------------
-  void OscCalculator::UpdateBasic()
+  void OscCalc::UpdateBasic()
   {
     if (fUpdated) return;
 
@@ -125,7 +125,7 @@ namespace osc {
       falpha =fDmsq21 / fDmsq31;
     }
     else {
-      std::cerr << "OscCalculator::UpdateBasic() -- fDmsq31 should never be zero, but it is" << std::endl;
+      std::cerr << "OscCalc::UpdateBasic() -- fDmsq31 should never be zero, but it is" << std::endl;
       falpha = 0;
     }
     fsin_th12 = sin(fTh12);
@@ -163,7 +163,7 @@ namespace osc {
   }
 
   // --------------------------------------------
-  void OscCalculator::UpdateEDep(double E, bool antinu, bool fliptime)
+  void OscCalc::UpdateEDep(double E, bool antinu, bool fliptime)
   {
     static const double hbar_c_eV_km = 1.97326938E-10; // eV-km
     static const double eVPerGeV = 1E9;
@@ -182,14 +182,14 @@ namespace osc {
       fC12 = TMath::Sqrt(fsin_sq_2th12+(fcos_2th12 - fA/falpha)*(fcos_2th12 - fA/falpha));
     }
     else {
-      std::cerr << "OscCalculator::UpdateEDep() -- falpha should never be zero, but it is" << std::endl;
+      std::cerr << "OscCalc::UpdateEDep() -- falpha should never be zero, but it is" << std::endl;
       fC12 = 1;
     }
     fC13 = TMath::Sqrt(fsin_sq_2th13+(fA-fcos_2th13)*(fA-fcos_2th13));
   }
 
   // --------------------------------------------
-  double OscCalculator::P_internal_me(double E, bool antinu, bool fliptime)
+  double OscCalc::P_internal_me(double E, bool antinu, bool fliptime)
   {
     UpdateBasic();
     UpdateEDep(E,antinu,fliptime);
@@ -259,7 +259,7 @@ namespace osc {
   }
 
   // --------------------------------------------
-  double OscCalculator::P_internal_te(double E, bool antinu, bool fliptime)
+  double OscCalc::P_internal_te(double E, bool antinu, bool fliptime)
   {
     UpdateBasic();
     UpdateEDep(E,antinu,fliptime);
@@ -329,7 +329,7 @@ namespace osc {
   }
 
   // --------------------------------------------
-  double OscCalculator::P_internal_ee(double E, bool antinu, bool fliptime)
+  double OscCalc::P_internal_ee(double E, bool antinu, bool fliptime)
   {
     UpdateBasic();
     UpdateEDep(E,antinu,fliptime);
@@ -374,7 +374,7 @@ namespace osc {
   }
 
   // --------------------------------------------
-  double OscCalculator::P_internal_mt(double E, bool antinu, bool fliptime)
+  double OscCalc::P_internal_mt(double E, bool antinu, bool fliptime)
   {
     UpdateBasic();
     UpdateEDep(E,antinu,fliptime);

@@ -3,14 +3,14 @@
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
-// \file OscCalculatorPMNSOpt.h                                         //
+// \file OscCalcPMNSOpt.h                                         //
 //                                                                      //
 // Adapt the PMNSOpt calculator to standard interface                   //
 // <bckhouse@caltech.edu>						//
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include "IOscCalculator.h"
+#include "IOscCalc.h"
 #include "PMNSOpt.h"
 
 #include <cassert>
@@ -18,18 +18,18 @@
 
 namespace osc
 {
-  /// \brief Optimized version of \ref OscCalculatorPMNS
+  /// \brief Optimized version of \ref OscCalcPMNS
   ///
   /// Adapt the \ref PMNSOpt calculator to standard interface
   template <typename T>
-  class _OscCalculatorPMNSOpt: public _IOscCalculatorAdjustable<T>
+  class _OscCalcPMNSOpt: public _IOscCalcAdjustable<T>
   {
     public:
-    using _IOscCalculator<T>::P;
-      _OscCalculatorPMNSOpt();
-      virtual ~_OscCalculatorPMNSOpt();
+    using _IOscCalc<T>::P;
+      _OscCalcPMNSOpt();
+      virtual ~_OscCalcPMNSOpt();
 
-      _IOscCalculatorAdjustable<T>* Copy() const override;
+      _IOscCalcAdjustable<T>* Copy() const override;
 
       T P(int flavBefore, int flavAfter, double E) override;
 
@@ -44,7 +44,7 @@ namespace osc
 
       TMD5* GetParamsHash() const override
       {
-        return _IOscCalculatorAdjustable<T>::GetParamsHashDefault("PMNSOpt");
+        return _IOscCalcAdjustable<T>::GetParamsHashDefault("PMNSOpt");
       }
 
     protected:
@@ -69,7 +69,7 @@ namespace osc
 
     std::unordered_map<double, Val_t> fPMNSOpt[2]; // [anti][E]
   };
-  typedef _OscCalculatorPMNSOpt<double> OscCalculatorPMNSOpt;
+  typedef _OscCalcPMNSOpt<double> OscCalcPMNSOpt;
 
 } // namespace
 

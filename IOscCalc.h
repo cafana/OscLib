@@ -5,7 +5,7 @@
 #include <Eigen/Eigen>
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
-// \file    IOscCalculator.h                                            //
+// \file    IOscCalc.h                                            //
 //                                                                      //
 // \brief   General interface to oscillation calculators                //
 // \author  Christopher Backhouse - bckhouse@caltech.edu                //
@@ -17,12 +17,12 @@ namespace osc
 {
   /// General interface to oscillation calculators
   template <typename T>
-  class _IOscCalculator
+  class _IOscCalc
   {
   public:
-    virtual ~_IOscCalculator() {}
+    virtual ~_IOscCalc() {}
 
-    virtual _IOscCalculator* Copy() const = 0;
+    virtual _IOscCalc* Copy() const = 0;
 
     /// E in GeV; flavors as PDG codes (so, neg==>antinu)
     virtual T P(int flavBefore, int flavAfter, double E) = 0;
@@ -33,15 +33,15 @@ namespace osc
     /// \return Null means not implemented for this calculator
     virtual TMD5* GetParamsHash() const {return 0;}
   };
-  typedef _IOscCalculator<double> IOscCalculator;
+  typedef _IOscCalc<double> IOscCalc;
 
   /// Pass neutrinos through unchanged
   template <typename T>
-  class _NoOscillations: public _IOscCalculator<T>
+  class _NoOscillations: public _IOscCalc<T>
   {
   public:
-    using _IOscCalculator<T>::P;
-    virtual _IOscCalculator<T>* Copy() const override {return new _NoOscillations<T>;}
+    using _IOscCalc<T>::P;
+    virtual _IOscCalc<T>* Copy() const override {return new _NoOscillations<T>;}
     
     virtual T P(int from, int to, double /*E*/) override
     {
@@ -63,11 +63,11 @@ namespace osc
 
   /// General interface to any calculator that lets you set the parameters
   template <typename T>
-  class _IOscCalculatorAdjustable : public _IOscCalculator<T>
+  class _IOscCalcAdjustable : public _IOscCalc<T>
   {
     public:
-      virtual ~_IOscCalculatorAdjustable();
-      virtual _IOscCalculatorAdjustable<T>* Copy() const = 0;
+      virtual ~_IOscCalcAdjustable();
+      virtual _IOscCalcAdjustable<T>* Copy() const = 0;
 
       // These setters are left unimplemented here, since calculators may want
       // to compute additional values when these are set.
@@ -113,13 +113,13 @@ namespace osc
       T      fTh23;
       T      fdCP;
   };
-  typedef _IOscCalculatorAdjustable<double> IOscCalculatorAdjustable;
+  typedef _IOscCalcAdjustable<double> IOscCalcAdjustable;
 
   //----------------------------------------------------------------------
   /// Copy parameters from one calculator to another, irrespective of their type
   template <typename T, typename U>
-  void CopyParams(const osc::_IOscCalculatorAdjustable<T> * inCalc,
-                  osc::_IOscCalculatorAdjustable<U> * outCalc);
+  void CopyParams(const osc::_IOscCalcAdjustable<T> * inCalc,
+                  osc::_IOscCalcAdjustable<U> * outCalc);
 
 } // namespace
 

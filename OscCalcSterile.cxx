@@ -1,4 +1,4 @@
-#include "OscCalculatorSterile.h"
+#include "OscCalcSterile.h"
 
 #include <cassert>
 #include <cstdlib>
@@ -7,14 +7,14 @@
 
 namespace osc
 {
-  OscCalculatorSterile::OscCalculatorSterile()
+  OscCalcSterile::OscCalcSterile()
     : fPMNS_Sterile(0), fNFlavors(3), fDirty(true), fPrevE(0), fPrevAnti(0), fPrevFlavBefore(0)
   {
     fPMNS_Sterile = new PMNS_Sterile(fNFlavors);
   }
 
   //---------------------------------------------------------------------------
-  std::vector<double> OscCalculatorSterile::GetState() const
+  std::vector<double> OscCalcSterile::GetState() const
   {
     std::vector<double> state;
     state.push_back((double)fNFlavors);
@@ -31,7 +31,7 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  void OscCalculatorSterile::SetState(std::vector<double> state)
+  void OscCalcSterile::SetState(std::vector<double> state)
   {
     int iState(0);
     fDirty = true ;
@@ -48,15 +48,15 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  OscCalculatorSterile::OscCalculatorSterile(const OscCalculatorSterile& calc)
-    : OscCalculatorSterile()
+  OscCalcSterile::OscCalcSterile(const OscCalcSterile& calc)
+    : OscCalcSterile()
   {
     std::vector<double> state = calc.GetState();
     SetState(state);
   }
 
   //---------------------------------------------------------------------------
-  TMD5* OscCalculatorSterile::GetParamsHash() const
+  TMD5* OscCalcSterile::GetParamsHash() const
   {
     TMD5* ret = new TMD5;
     std::string txt = "PMNSSterile";
@@ -68,19 +68,19 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  OscCalculatorSterile::~OscCalculatorSterile()
+  OscCalcSterile::~OscCalcSterile()
   {
     delete fPMNS_Sterile;
   }
 
   //---------------------------------------------------------------------------
-  IOscCalculatorAdjustable* OscCalculatorSterile::Copy() const
+  IOscCalcAdjustable* OscCalcSterile::Copy() const
   {
-    return new OscCalculatorSterile(*this);
+    return new OscCalcSterile(*this);
   }
 
   //---------------------------------------------------------------------------
-  void OscCalculatorSterile::SetNFlavors(int nflavors)
+  void OscCalcSterile::SetNFlavors(int nflavors)
   {
     fDirty = true;
     delete fPMNS_Sterile;
@@ -89,70 +89,70 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  void OscCalculatorSterile::SetAngle(int i, int j, double th) 
+  void OscCalcSterile::SetAngle(int i, int j, double th) 
   {
     fDirty = true; 
     fPMNS_Sterile->SetAngle(i, j, th);
   }
 
   //---------------------------------------------------------------------------
-  void OscCalculatorSterile::SetDelta(int i, int j, double delta)
+  void OscCalcSterile::SetDelta(int i, int j, double delta)
   {
     fDirty = true; 
     fPMNS_Sterile->SetDelta(i, j, delta);
   }
 
   //---------------------------------------------------------------------------
-  void OscCalculatorSterile::SetDm(int i, double dm) 
+  void OscCalcSterile::SetDm(int i, double dm) 
   {
     fDirty = true; 
     fPMNS_Sterile->SetDm(i, dm);
   }
 
   //---------------------------------------------------------------------------
-  void OscCalculatorSterile::SetDmsq21(const double& dmsq21)
+  void OscCalcSterile::SetDmsq21(const double& dmsq21)
   {
     std::cerr << "Must use SetDm!" << std::endl;
     assert(false);
   }
 
   //---------------------------------------------------------------------------
-  void OscCalculatorSterile::SetDmsq32(const double& dms32)
+  void OscCalcSterile::SetDmsq32(const double& dms32)
   {
     std::cerr << "Must use SetDm!" << std::endl;
     assert(false);
   }
 
   //---------------------------------------------------------------------------
-  void OscCalculatorSterile::SetTh12(const double& th12)
+  void OscCalcSterile::SetTh12(const double& th12)
   {
     std::cerr << "Must use SetAngle!" << std::endl;
     assert(false);
   }
 
   //---------------------------------------------------------------------------
-  void OscCalculatorSterile::SetTh13(const double& th13)
+  void OscCalcSterile::SetTh13(const double& th13)
   {
     std::cerr << "Must use SetAngle!" << std::endl;
     assert(false);
   }
 
   //---------------------------------------------------------------------------
-  void OscCalculatorSterile::SetTh23(const double& th23)
+  void OscCalcSterile::SetTh23(const double& th23)
   {
     std::cerr << "Must use SetAngle!" << std::endl;
     assert(false);
   }
 
   //---------------------------------------------------------------------------
-  void OscCalculatorSterile::SetdCP(const double& dCP)
+  void OscCalcSterile::SetdCP(const double& dCP)
   {
     std::cerr << "Must use SetDelta!" << std::endl;
     assert(false);
   }
 
   //---------------------------------------------------------------------------
-  double OscCalculatorSterile::P(int flavBefore, int flavAfter, double E)
+  double OscCalcSterile::P(int flavBefore, int flavAfter, double E)
   {
     const int anti = (flavBefore > 0) ? +1 : -1;
     //anti must be +/- 1 but flavAfter can be zero
@@ -189,62 +189,62 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  OscCalculatorSterileTrivial::OscCalculatorSterileTrivial()
-    : OscCalculatorSterile()
+  OscCalcSterileTrivial::OscCalcSterileTrivial()
+    : OscCalcSterile()
     {}
 
   //---------------------------------------------------------------------------
-  OscCalculatorSterileTrivial::OscCalculatorSterileTrivial(
-    const OscCalculatorSterile& calc)
-    : OscCalculatorSterileTrivial()
+  OscCalcSterileTrivial::OscCalcSterileTrivial(
+    const OscCalcSterile& calc)
+    : OscCalcSterileTrivial()
   {
     std::vector<double> state = calc.GetState();
     SetState(state);
   }
 
   //---------------------------------------------------------------------------
-  OscCalculatorSterileTrivial::OscCalculatorSterileTrivial(
-    const OscCalculatorSterileTrivial& calc)
-    : OscCalculatorSterileTrivial()
+  OscCalcSterileTrivial::OscCalcSterileTrivial(
+    const OscCalcSterileTrivial& calc)
+    : OscCalcSterileTrivial()
   {
     std::vector<double> state = calc.GetState();
     SetState(state);
   }
 
   //---------------------------------------------------------------------------
-  IOscCalculatorAdjustable* OscCalculatorSterileTrivial::Copy() const
+  IOscCalcAdjustable* OscCalcSterileTrivial::Copy() const
   {
-    return new OscCalculatorSterileTrivial(*this);
+    return new OscCalcSterileTrivial(*this);
   }
 
   //---------------------------------------------------------------------------
-  double OscCalculatorSterileTrivial::P(
+  double OscCalcSterileTrivial::P(
     int flavBefore, int flavAfter, double E)
   {
     return 1;
   }
 
   //---------------------------------------------------------------------------
-  const OscCalculatorSterile* DowncastToSterile(const IOscCalculator* calc)
+  const OscCalcSterile* DowncastToSterile(const IOscCalc* calc)
   {
-    const OscCalculatorSterileTrivial* calc_trivial
-            = dynamic_cast<const OscCalculatorSterileTrivial*>(calc);
+    const OscCalcSterileTrivial* calc_trivial
+            = dynamic_cast<const OscCalcSterileTrivial*>(calc);
     if (calc_trivial) return calc_trivial; 
-    const OscCalculatorSterile* calc_sterile = dynamic_cast<const OscCalculatorSterile*>(calc);
+    const OscCalcSterile* calc_sterile = dynamic_cast<const OscCalcSterile*>(calc);
     if(calc_sterile) return calc_sterile;
-    else             std::cout << "Input calculator was not of type OscCalculatorSterile." << std::endl;
+    else             std::cout << "Input calculator was not of type OscCalcSterile." << std::endl;
     return nullptr; // If the cast failed, calc_sterile should be nullptr anyway
   }
 
   //---------------------------------------------------------------------------
-  OscCalculatorSterile* DowncastToSterile(IOscCalculator* calc)
+  OscCalcSterile* DowncastToSterile(IOscCalc* calc)
   {
-    OscCalculatorSterileTrivial* calc_trivial
-            = dynamic_cast<OscCalculatorSterileTrivial*>(calc);
+    OscCalcSterileTrivial* calc_trivial
+            = dynamic_cast<OscCalcSterileTrivial*>(calc);
     if (calc_trivial) return calc_trivial;
-    OscCalculatorSterile* calc_sterile = dynamic_cast<OscCalculatorSterile*>(calc);
+    OscCalcSterile* calc_sterile = dynamic_cast<OscCalcSterile*>(calc);
     if(calc_sterile) return calc_sterile;
-    else             std::cout << "Input calculator was not of type OscCalculatorSterile." << std::endl;
+    else             std::cout << "Input calculator was not of type OscCalcSterile." << std::endl;
     return nullptr; // If the cast failed, calc_sterile should be nullptr anyway
   }
 } // namespace

@@ -7,7 +7,7 @@
 #include <Eigen/Eigen>
 
 #include "OscLib/func/OscParameters.h"
-#include "OscLib/func/IOscCalculator.h"
+#include "OscLib/func/IOscCalc.h"
 
 using namespace Eigen;
 
@@ -28,20 +28,20 @@ namespace osc
   /// \brief Struct of the cache
 
 
-  /// \brief A DMP based implementation of \ref OscCalculatorPMNS
+  /// \brief A DMP based implementation of \ref OscCalcPMNS
   ///
   /// Uses DMP
   template <typename T>
-  class _OscCalculatorDMP : public _IOscCalculatorAdjustable<T>
+  class _OscCalcDMP : public _IOscCalcAdjustable<T>
   {
   public:
-    _OscCalculatorDMP() {}
-    _OscCalculatorDMP(std::vector<double> energies) {
+    _OscCalcDMP() {}
+    _OscCalcDMP(std::vector<double> energies) {
       this->SetCachedEnergies(energies);
     }
-    ~_OscCalculatorDMP() = default;
+    ~_OscCalcDMP() = default;
 
-    _IOscCalculatorAdjustable<T> * Copy() const override;
+    _IOscCalcAdjustable<T> * Copy() const override;
     
     T P(int flavBefore, int flavAfter, double E) override;
     T P(int flavBefore, int flavAfter, double E, bool fast_and_loose);
@@ -67,7 +67,7 @@ namespace osc
   private:
     int ChannelCacheIdx(int flavBefore, int flavAfter) const;
     
-    std::string name =  "OscCalculatorDMP";
+    std::string name =  "OscCalcDMP";
     // Fill the cache at the current parameter values 
     virtual void FillCache();
 
@@ -78,5 +78,5 @@ namespace osc
     _OscParameters<T> fLastParams;
   };
 
-  typedef _OscCalculatorDMP<double> OscCalculatorDMP;
+  typedef _OscCalcDMP<double> OscCalcDMP;
 }

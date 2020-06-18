@@ -1,7 +1,7 @@
 #ifndef OSC_OSCCALCULATORPMNSOPTEIGEN_H
 #define OSC_OSCCALCULATORPMNSOPTEIGEN_H
 
-#include "OscLib/func/IOscCalculator.h"
+#include "OscLib/func/IOscCalc.h"
 #include "OscLib/func/OscParameters.h"
 #include <complex>
 #include <vector>
@@ -70,19 +70,19 @@ namespace osc
     const Eigen::Vector3d values;
   };
 
-  /// \brief A re-optimized version of \ref OscCalculatorPMNSOpt
+  /// \brief A re-optimized version of \ref OscCalcPMNSOpt
   ///
-  /// Uses a faster caching scheme than OscCalculatorPMNSOpt
-  class OscCalculatorPMNSOptEigen : public _IOscCalculatorAdjustable<double>
+  /// Uses a faster caching scheme than OscCalcPMNSOpt
+  class OscCalcPMNSOptEigen : public _IOscCalcAdjustable<double>
   {
   public:
-    OscCalculatorPMNSOptEigen() {}
-    OscCalculatorPMNSOptEigen(std::vector<double> energies) {
+    OscCalcPMNSOptEigen() {}
+    OscCalcPMNSOptEigen(std::vector<double> energies) {
       this->SetCachedEnergies(energies);
     }
-    ~OscCalculatorPMNSOptEigen() = default;
+    ~OscCalcPMNSOptEigen() = default;
 
-    IOscCalculatorAdjustable * Copy() const override;
+    IOscCalcAdjustable * Copy() const override;
     
     double P(int flavBefore, int flavAfter, double E) override;
     double P(int flavBefore, int flavAfter, double E, bool fast_and_loose);
@@ -105,7 +105,7 @@ namespace osc
     _OscCache<double> fCache; // move back to private
 
   private:
-    std::string name =  "OscCalculatorPMNSOptEigen";
+    std::string name =  "OscCalcPMNSOptEigen";
     int ChannelCacheIdx(int flavBefore, int flavAfter) const;
     
     // Fill the cache at the current parameter values 

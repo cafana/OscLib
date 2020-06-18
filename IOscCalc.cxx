@@ -1,12 +1,12 @@
-// std_isnan needs to precede IOscCalculator
+// std_isnan needs to precede IOscCalc
 // because it injects an important Stan overload of std::isnan
 // into the std namespace that need sto be there
 // BEFORE the Eigen headers are seen (due to the '#pragma once').
-// IOscCalculator.h  #includes Eigen/Eigen, so /shrug
+// IOscCalc.h  #includes Eigen/Eigen, so /shrug
 #ifndef DARWINBUILD
 #include "stan/math/rev/core/std_isnan.hpp"
 #endif
-#include "OscLib/func/IOscCalculator.h"
+#include "OscLib/func/IOscCalc.h"
 
 #include "Utilities/func/StanUtils.h"
 
@@ -15,7 +15,7 @@ namespace osc
 {
   template<class T>
   Eigen::Matrix<T,Eigen::Dynamic,1>
-  _IOscCalculator<T>::P(int flavBefore, int flavAfter, const std::vector<double> &E)
+  _IOscCalc<T>::P(int flavBefore, int flavAfter, const std::vector<double> &E)
   {
     Eigen::Matrix<T,Eigen::Dynamic,1> ret(E.size());
     for(auto i = 0u; i < E.size(); i++) {
@@ -25,13 +25,13 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  template<class T> _IOscCalculatorAdjustable<T>::~_IOscCalculatorAdjustable()
+  template<class T> _IOscCalcAdjustable<T>::~_IOscCalcAdjustable()
   {
   }
 
   //---------------------------------------------------------------------------
   template <typename T>
-  TMD5* _IOscCalculatorAdjustable<T>::GetParamsHashDefault(const std::string& txt) const
+  TMD5* _IOscCalcAdjustable<T>::GetParamsHashDefault(const std::string& txt) const
   {
     TMD5* ret = new TMD5;
     ret->Update((unsigned char*)txt.c_str(), txt.size());
@@ -44,8 +44,8 @@ namespace osc
   }
 
   template <typename T, typename U>
-  void CopyParams(const osc::_IOscCalculatorAdjustable<T> * inCalc,
-                  osc::_IOscCalculatorAdjustable<U> * outCalc)
+  void CopyParams(const osc::_IOscCalcAdjustable<T> * inCalc,
+                  osc::_IOscCalcAdjustable<U> * outCalc)
   {
     assert (inCalc);
     assert (outCalc);
@@ -62,19 +62,19 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  template class _IOscCalculatorAdjustable<double>;
-  template class _IOscCalculator<double>;
+  template class _IOscCalcAdjustable<double>;
+  template class _IOscCalc<double>;
 #ifndef DARWINBUILD
-  template class _IOscCalculatorAdjustable<stan::math::var>;
-  template class _IOscCalculator<stan::math::var>;
-  template void CopyParams(const osc::_IOscCalculatorAdjustable<double> * inCalc,
-                           osc::_IOscCalculatorAdjustable<stan::math::var> * outCalc);
-  template void CopyParams(const osc::_IOscCalculatorAdjustable<stan::math::var> * inCalc,
-                           osc::_IOscCalculatorAdjustable<double> * outCalc);
-  template void CopyParams(const osc::_IOscCalculatorAdjustable<stan::math::var> * inCalc,
-                           osc::_IOscCalculatorAdjustable<stan::math::var> * outCalc);
+  template class _IOscCalcAdjustable<stan::math::var>;
+  template class _IOscCalc<stan::math::var>;
+  template void CopyParams(const osc::_IOscCalcAdjustable<double> * inCalc,
+                           osc::_IOscCalcAdjustable<stan::math::var> * outCalc);
+  template void CopyParams(const osc::_IOscCalcAdjustable<stan::math::var> * inCalc,
+                           osc::_IOscCalcAdjustable<double> * outCalc);
+  template void CopyParams(const osc::_IOscCalcAdjustable<stan::math::var> * inCalc,
+                           osc::_IOscCalcAdjustable<stan::math::var> * outCalc);
 #endif
 
-  template void CopyParams(const osc::_IOscCalculatorAdjustable<double> * inCalc,
-                           osc::_IOscCalculatorAdjustable<double> * outCalc);
+  template void CopyParams(const osc::_IOscCalcAdjustable<double> * inCalc,
+                           osc::_IOscCalcAdjustable<double> * outCalc);
 }

@@ -1,4 +1,4 @@
-#include "OscCalculatorDMP.h"
+#include "OscCalcDMP.h"
 #include <cmath>
 
 #include "PMNS_DMP.h"
@@ -11,7 +11,7 @@ namespace osc
 {
 
   template<typename T>
-  void _OscCalculatorDMP<T>::SaveLastParams()
+  void _OscCalcDMP<T>::SaveLastParams()
   {
     this->fLastParams.L = this->fL;
     this->fLastParams.rho = this->fRho;
@@ -33,14 +33,14 @@ namespace osc
   }
 
   template<typename T>
-  _IOscCalculatorAdjustable<T> *
-  _OscCalculatorDMP<T>::Copy() const
+  _IOscCalcAdjustable<T> *
+  _OscCalcDMP<T>::Copy() const
   {
-    return new _OscCalculatorDMP<T>(*this);
+    return new _OscCalcDMP<T>(*this);
   }
 
   template<typename T>
-  bool _OscCalculatorDMP<T>::ParamsAreCached()
+  bool _OscCalcDMP<T>::ParamsAreCached()
   {
     return this->fDmsq21 == this->fCache.parameters.dmsq21 &&
     this->fDmsq32 == this->fCache.parameters.dmsq32 &&
@@ -53,7 +53,7 @@ namespace osc
   }
 
   template<typename T>
-  inline int _OscCalculatorDMP<T>::ChannelCacheIdx(int flavBefore, int flavAfter) const
+  inline int _OscCalcDMP<T>::ChannelCacheIdx(int flavBefore, int flavAfter) const
   {
     // rows in the cache are arranged in the following order
     // 11 21 31 12 22 32 13 23 33 -11 -21 -31 -12 -22 -32 -13 -23 -33
@@ -70,7 +70,7 @@ namespace osc
 
 
   template<typename T>
-  Matrix<T, Dynamic, 1> _OscCalculatorDMP<T>::P(int flavBefore, int flavAfter, const std::vector<double> &E)
+  Matrix<T, Dynamic, 1> _OscCalcDMP<T>::P(int flavBefore, int flavAfter, const std::vector<double> &E)
   {
     if (fCache.energies.size() != (size_t) fCache.probabilities.cols() &&
         fCache.energies.size() != 0)
@@ -86,7 +86,7 @@ namespace osc
   }
 
   template<typename T>
-  T _OscCalculatorDMP<T>::P(int flavBefore, int flavAfter, double E,
+  T _OscCalcDMP<T>::P(int flavBefore, int flavAfter, double E,
                                         bool fast_and_loose)
   {
     if (fast_and_loose)
@@ -103,7 +103,7 @@ namespace osc
   }
 
   template<typename T>
-  T _OscCalculatorDMP<T>::P(int flavBefore, int flavAfter, double E)
+  T _OscCalcDMP<T>::P(int flavBefore, int flavAfter, double E)
   {
     if (!std::is_same<T, stan::math::var>::value &&
         fCache.energies.size() != (size_t) fCache.probabilities.cols() &&
@@ -131,7 +131,7 @@ namespace osc
 
 
   template<typename T>
-  void _OscCalculatorDMP<T>::FillCache()
+  void _OscCalcDMP<T>::FillCache()
   {
     using ArrayXXT = Array<T, Dynamic, Dynamic>;
 
@@ -151,14 +151,14 @@ namespace osc
   }
 
   template<typename T>
-  void _OscCalculatorDMP<T>::FillCache(std::vector<double> const &energies)
+  void _OscCalcDMP<T>::FillCache(std::vector<double> const &energies)
   {
     this->SetCachedEnergies(energies);
     this->FillCache();
   }
 
   template<typename T>
-  void _OscCalculatorDMP<T>::SetCachedEnergies(std::vector<double> const &energies)
+  void _OscCalcDMP<T>::SetCachedEnergies(std::vector<double> const &energies)
   {
     this->fCache.energies = energies;
     int nbins = energies.size();
@@ -169,10 +169,10 @@ namespace osc
   }
 
 //---------------------------------------------------------------------------
-  template class osc::_OscCalculatorDMP<double>;
+  template class osc::_OscCalcDMP<double>;
 
 #ifndef DARWINBUILD
-  template class osc::_OscCalculatorDMP<stan::math::var>;
+  template class osc::_OscCalcDMP<stan::math::var>;
 
 #endif
 }

@@ -1,4 +1,4 @@
-#include "OscCalculatorPMNSOptEigen.h"
+#include "OscCalcPMNSOptEigen.h"
 #include <cmath>
 
 //#include "PMNSOpt.cxx"
@@ -11,7 +11,7 @@
 namespace osc {
 
   TMD5* 
-  OscCalculatorPMNSOptEigen::GetParamsHash() const
+  OscCalcPMNSOptEigen::GetParamsHash() const
   {
     std::string txt = "PMNSOptEigen";
     TMD5* ret = new TMD5;
@@ -32,7 +32,7 @@ namespace osc {
   }
 
   void
-  OscCalculatorPMNSOptEigen::SaveLastParams()
+  OscCalcPMNSOptEigen::SaveLastParams()
   {
     fLastParams.L = fL;
     fLastParams.rho = fRho;
@@ -53,16 +53,16 @@ namespace osc {
 #endif
   }
 
-  IOscCalculatorAdjustable * 
-  OscCalculatorPMNSOptEigen::Copy() const
+  IOscCalcAdjustable * 
+  OscCalcPMNSOptEigen::Copy() const
   {
-    OscCalculatorPMNSOptEigen * ret = new OscCalculatorPMNSOptEigen(*this); 
+    OscCalcPMNSOptEigen * ret = new OscCalcPMNSOptEigen(*this); 
     ret->fCache.clear();
     return ret;
   }
 
   bool
-  OscCalculatorPMNSOptEigen::ParamsAreCached()
+  OscCalcPMNSOptEigen::ParamsAreCached()
   {
     return 
       fDmsq21  == this->fCache.parameters.dmsq21  &&
@@ -76,7 +76,7 @@ namespace osc {
   }
 
   inline int
-  OscCalculatorPMNSOptEigen::ChannelCacheIdx(int flavBefore, int flavAfter) const
+  OscCalcPMNSOptEigen::ChannelCacheIdx(int flavBefore, int flavAfter) const
   {
     // rows in the cache are arranged in the following order
     // 11 21 31 12 22 32 13 23 33 -11 -21 -31 -12 -22 -32 -13 -23 -33
@@ -93,7 +93,7 @@ namespace osc {
 
 
   Eigen::VectorXd
-  OscCalculatorPMNSOptEigen::P(int flavBefore, int flavAfter, const std::vector<double>& E)
+  OscCalcPMNSOptEigen::P(int flavBefore, int flavAfter, const std::vector<double>& E)
   {
     // Are there probabilities cached and can we use them?
     if(fCache.energies.size() != (size_t) fCache.probabilities.cols() &&
@@ -108,7 +108,7 @@ namespace osc {
   }
 
   double
-  OscCalculatorPMNSOptEigen::P(int flavBefore, int flavAfter, double E,
+  OscCalcPMNSOptEigen::P(int flavBefore, int flavAfter, double E,
 			       bool fast_and_loose)
   {
     if(fast_and_loose) {
@@ -124,7 +124,7 @@ namespace osc {
   }
 
   double 
-  OscCalculatorPMNSOptEigen::P(int flavBefore, int flavAfter, double E)
+  OscCalcPMNSOptEigen::P(int flavBefore, int flavAfter, double E)
   {
     // Are there probabilities cached and can we use them?
     if(fCache.energies.size() != (size_t) fCache.probabilities.cols() &&
@@ -170,9 +170,9 @@ namespace osc {
 
 
   void
-  OscCalculatorPMNSOptEigen::FillCache()
+  OscCalcPMNSOptEigen::FillCache()
   {
-    //    std::cout << "Using OscCalculatorPMNSOptEigen\n";
+    //    std::cout << "Using OscCalcPMNSOptEigen\n";
     //    std::cout << "Filling cache" << std::endl;
     const OscParameters params{fDmsq21, fDmsq32,
 	fTh12,    fTh13,   fTh23,
@@ -226,7 +226,7 @@ namespace osc {
   }
 
   void 
-  OscCalculatorPMNSOptEigen::PrintMatrixAddresses(const Eigen::ArrayXXd & mat) const
+  OscCalcPMNSOptEigen::PrintMatrixAddresses(const Eigen::ArrayXXd & mat) const
   {
 
     for(int j = 0; j < mat.cols(); j++) {
@@ -238,7 +238,7 @@ namespace osc {
   }
 
   void 
-  OscCalculatorPMNSOptEigen::PrintArrayAddresses(const double * data,
+  OscCalcPMNSOptEigen::PrintArrayAddresses(const double * data,
 					      int size) const
   {
     for(int i = 0; i < size; i++)
@@ -247,7 +247,7 @@ namespace osc {
   }
 
   void 
-  OscCalculatorPMNSOptEigen::PrintMatrixAddresses(const double * data,
+  OscCalcPMNSOptEigen::PrintMatrixAddresses(const double * data,
 					       int nrows, int ncols) const
   {
     for(int i = 0; i < nrows; i++) {
@@ -259,7 +259,7 @@ namespace osc {
   }
 
   Eigen::Matrix3cd 
-  OscCalculatorPMNSOptEigen::PropMatter(Eigen::Matrix3cd const & evec,
+  OscCalcPMNSOptEigen::PropMatter(Eigen::Matrix3cd const & evec,
 				     Eigen::Vector3d const & evals,
 				     const OscParameters & params) const
   {
@@ -285,7 +285,7 @@ namespace osc {
 
 
   void
-  OscCalculatorPMNSOptEigen::FillCache(std::vector<double> const &energies)
+  OscCalcPMNSOptEigen::FillCache(std::vector<double> const &energies)
   {
     this->SetCachedEnergies(energies);
     //    std::cout << "Set Energies " << std::endl;
@@ -293,7 +293,7 @@ namespace osc {
   }
 
   void 
-  OscCalculatorPMNSOptEigen::SetCachedEnergies(std::vector<double> const & energies)
+  OscCalcPMNSOptEigen::SetCachedEnergies(std::vector<double> const & energies)
   {
     this->fCache.energies = energies;
   }
@@ -302,7 +302,7 @@ namespace osc {
   //  Eigen::SelfAdjointEigenSolver<Eigen::Matrix3cd> 
   /*
   EigenSystem
-  OscCalculatorPMNSOptEigen::SolveZheevh3(const Eigen::Matrix3cd & ham,
+  OscCalcPMNSOptEigen::SolveZheevh3(const Eigen::Matrix3cd & ham,
 				       bool use_eigen)
   {
     std::complex<double> A[3][3];
@@ -329,7 +329,7 @@ namespace osc {
   }
   */
   EigenSystem
-  OscCalculatorPMNSOptEigen::Solve(Eigen::Matrix3cd const & ham) const
+  OscCalcPMNSOptEigen::Solve(Eigen::Matrix3cd const & ham) const
   {
     Eigen::SelfAdjointEigenSolver<Eigen::Matrix3cd> eig;
     eig.computeDirect(ham);
@@ -337,7 +337,7 @@ namespace osc {
   }
   
   Eigen::Matrix3cd
-  OscCalculatorPMNSOptEigen::AddMatterEffects(const Eigen::Matrix3cd & ham,
+  OscCalcPMNSOptEigen::AddMatterEffects(const Eigen::Matrix3cd & ham,
 					   const double & E,
 					   const int & anti,
 					   const OscParameters & params) const
@@ -362,7 +362,7 @@ namespace osc {
   } 
 
   Eigen::Matrix3cd
-  OscCalculatorPMNSOptEigen::AddMatterEffectsAnti(const Eigen::Matrix3cd & ham,
+  OscCalcPMNSOptEigen::AddMatterEffectsAnti(const Eigen::Matrix3cd & ham,
 					       const double & E,
 					       const OscParameters & params) const
   {
@@ -380,7 +380,7 @@ namespace osc {
 
 
   Eigen::Matrix3cd
-  OscCalculatorPMNSOptEigen::AddMatterEffects(const Eigen::Matrix3cd & ham,
+  OscCalcPMNSOptEigen::AddMatterEffects(const Eigen::Matrix3cd & ham,
 					   const double & E,
 					   const OscParameters & params) const
   {
@@ -403,7 +403,7 @@ namespace osc {
 
 
   Eigen::Matrix3cd 
-  OscCalculatorPMNSOptEigen::MatterHamiltonian(const double & E,
+  OscCalcPMNSOptEigen::MatterHamiltonian(const double & E,
 					    const int & anti,
 					    const OscParameters & params) const
   {
@@ -426,7 +426,7 @@ namespace osc {
 
 
   Eigen::Matrix3cd
-  OscCalculatorPMNSOptEigen::BuildHam(const OscParameters & params) const
+  OscCalcPMNSOptEigen::BuildHam(const OscParameters & params) const
   {
     // Create temp variables
     double sij, cij, h00, h11, h01;

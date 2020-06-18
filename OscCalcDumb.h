@@ -4,7 +4,7 @@
 ///        so it's some kind of average of all of those
 //////////////////////////////////////////////////////////
 
-#include "OscLib/func/IOscCalculator.h"
+#include "OscLib/func/IOscCalc.h"
 #include "Utilities/func/MathUtil.h"
 
 #include <cmath>
@@ -14,10 +14,10 @@ namespace osc
   /// \brief Simple oscillation probability calculator that has no solar term
   ///        or mass hierarchy or delta so it's some kind of average of all of
   ///        those.
-  class OscCalculatorDumb: public osc::IOscCalculator
+  class OscCalcDumb: public osc::IOscCalc
   {
   public:
-    virtual IOscCalculator* Copy() const {return new OscCalculatorDumb;}
+    virtual IOscCalc* Copy() const {return new OscCalcDumb;}
     virtual double P(int flavBefore, int flavAfter, double E)
     {
       const double L      = 810.;    // km

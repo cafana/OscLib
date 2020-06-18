@@ -3,7 +3,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
-// \file OscCalculatorSterileBeam.h                                     //
+// \file OscCalcSterileBeam.h                                     //
 //                                                                      //
 // Adapt the PMNS_Sterile calculator to standard interface              //
 // <aurisaam@ucmail.uc.edu>                                             //
@@ -11,8 +11,8 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include "IOscCalculator.h"
-#include "OscCalculatorSterile.h"
+#include "IOscCalc.h"
+#include "OscCalcSterile.h"
 //#include "INoOscillations.h"
 #include "PMNS_Sterile.h"
 
@@ -21,16 +21,16 @@ namespace osc
   /// \brief Adapt the PMNS_Sterile calculator to standard interface
   ///
   /// Adapt the \ref PMNS_Sterile calculator (3+N with matter effects) to standard interface
-  class OscCalculatorSterileBeam: public OscCalculatorSterile //, public IOscCalculatorAdjustable
+  class OscCalcSterileBeam: public OscCalcSterile //, public IOscCalcAdjustable
   {
   public:
-    using IOscCalculator::P;
-    OscCalculatorSterileBeam();
-    virtual ~OscCalculatorSterileBeam();
+    using IOscCalc::P;
+    OscCalcSterileBeam();
+    virtual ~OscCalcSterileBeam();
 
-    OscCalculatorSterileBeam(const OscCalculatorSterileBeam& calc);
+    OscCalcSterileBeam(const OscCalcSterileBeam& calc);
 
-    virtual IOscCalculatorAdjustable* Copy() const override;
+    virtual IOscCalcAdjustable* Copy() const override;
 
     std::string kBeamMode;
 
@@ -61,8 +61,8 @@ namespace osc
 
   };
 
-  const OscCalculatorSterileBeam* DowncastToSterileBeam(const IOscCalculator* calc);
-  OscCalculatorSterileBeam* DowncastToSterileBeam(IOscCalculator* calc);
+  const OscCalcSterileBeam* DowncastToSterileBeam(const IOscCalc* calc);
+  OscCalcSterileBeam* DowncastToSterileBeam(IOscCalc* calc);
 
 } // namespace
 

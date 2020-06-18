@@ -3,29 +3,29 @@
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
-// \file OscCalculatorPMNS_NSI.h                                        //
+// \file OscCalcPMNS_NSI.h                                        //
 //                                                                      //
 // Adapt the PMNS_NSI calculator to standard interface                  //
 // <bckhouse@caltech.edu>						//
 // Modifications by MAAceroO <marioacero@mail.uniatlantico.edu.co>      //
 //////////////////////////////////////////////////////////////////////////
 
-#include "IOscCalculator.h"
+#include "IOscCalc.h"
 #include "PMNS_NSI.h"
 
 namespace osc
 {
-  /// \brief Optimized version of \ref OscCalculatorPMNS
+  /// \brief Optimized version of \ref OscCalcPMNS
   ///
   /// Adapt the \ref PMNS_NSI calculator to standard interface
-  class OscCalculatorPMNS_NSI: public IOscCalculatorAdjustable
+  class OscCalcPMNS_NSI: public IOscCalcAdjustable
   {
   public:
-    using IOscCalculator::P;
-    OscCalculatorPMNS_NSI();
-    virtual ~OscCalculatorPMNS_NSI();
+    using IOscCalc::P;
+    OscCalcPMNS_NSI();
+    virtual ~OscCalcPMNS_NSI();
 
-    IOscCalculatorAdjustable* Copy() const override;
+    IOscCalcAdjustable* Copy() const override;
 
     virtual double P(int flavBefore, int flavAfter, double E) override;
 
@@ -89,8 +89,8 @@ namespace osc
 
   };
 
-  const OscCalculatorPMNS_NSI* DowncastToNSI(const IOscCalculator* calc);
-  OscCalculatorPMNS_NSI* DowncastToNSI(IOscCalculator* calc);
+  const OscCalcPMNS_NSI* DowncastToNSI(const IOscCalc* calc);
+  OscCalcPMNS_NSI* DowncastToNSI(IOscCalc* calc);
 
 } // namespace
 

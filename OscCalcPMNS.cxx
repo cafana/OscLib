@@ -1,30 +1,30 @@
-#include "OscLib/func/OscCalculatorPMNS.h"
+#include "OscLib/func/OscCalcPMNS.h"
 
 namespace osc
 {
   // --------------------------------------------------------------------------
   template <typename T>
-  _OscCalculatorPMNS<T>::_OscCalculatorPMNS()
+  _OscCalcPMNS<T>::_OscCalcPMNS()
       : fMixDirty(true), fDmDirty(true), fPropDirty(true), fPrevAnti(0)
   {
   }
 
   // --------------------------------------------------------------------------
   template<typename T>
-  _OscCalculatorPMNS<T>::~_OscCalculatorPMNS()
+  _OscCalcPMNS<T>::~_OscCalcPMNS()
   {
   }
 
   // --------------------------------------------------------------------------
   template <typename T>
-  _IOscCalculatorAdjustable<T>* _OscCalculatorPMNS<T>::Copy() const
+  _IOscCalcAdjustable<T>* _OscCalcPMNS<T>::Copy() const
   {
-    return new _OscCalculatorPMNS<T>(*this);
+    return new _OscCalcPMNS<T>(*this);
   }
 
   // --------------------------------------------------------------------------
   template <typename T>
-  T _OscCalculatorPMNS<T>::P(int flavBefore, int flavAfter, double E)
+  T _OscCalcPMNS<T>::P(int flavBefore, int flavAfter, double E)
   {
     const int anti = (flavBefore > 0) ? +1 : -1;
     assert(flavAfter/anti > 0);
@@ -64,9 +64,9 @@ namespace osc
 }
 
 //---------------------------------------------------------------------------
-template class osc::_OscCalculatorPMNS<double>;
+template class osc::_OscCalcPMNS<double>;
 
 #ifndef DARWINBUILD
 #include "Utilities/func/StanVar.h"
-  template class osc::_OscCalculatorPMNS<stan::math::var>;
+  template class osc::_OscCalcPMNS<stan::math::var>;
 #endif

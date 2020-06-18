@@ -1,7 +1,7 @@
 #ifndef OSCCALCULATORGENERAL_H
 #define OSCCALCULATORGENERAL_H
 
-#include "OscLib/func/IOscCalculator.h"
+#include "OscLib/func/IOscCalc.h"
 
 namespace osc
 {
@@ -16,14 +16,14 @@ namespace osc
   /// is included.  Addition of a general four-flavour sterile neutrino model,
   /// or inclusion of varying matter densities would be relatively
   /// trivial. Also, it's always nice to have cross-checks.
-  class OscCalculatorGeneral: public IOscCalculatorAdjustable
+  class OscCalcGeneral: public IOscCalcAdjustable
   {
   public:
-    OscCalculatorGeneral();
-    virtual ~OscCalculatorGeneral();
-    using IOscCalculator::P;
+    OscCalcGeneral();
+    virtual ~OscCalcGeneral();
+    using IOscCalc::P;
 
-    virtual IOscCalculatorAdjustable* Copy() const override;
+    virtual IOscCalcAdjustable* Copy() const override;
 
     // Baseline in km
     virtual void SetL(double L) override {fL = L;}
@@ -51,8 +51,8 @@ namespace osc
     Priv* d;
 
   private:
-    OscCalculatorGeneral(const OscCalculatorGeneral&) = default;
-    OscCalculatorGeneral& operator=(const OscCalculatorGeneral&) = default;
+    OscCalcGeneral(const OscCalcGeneral&) = default;
+    OscCalcGeneral& operator=(const OscCalcGeneral&) = default;
   };
 
 } // end namespace

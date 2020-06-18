@@ -1,7 +1,7 @@
 
 
-#include "OscCalculatorSterile.h"
-#include "OscCalculatorSterileBeam.h"
+#include "OscCalcSterile.h"
+#include "OscCalcSterileBeam.h"
 
 #include <cassert>
 #include <cstdlib>
@@ -11,22 +11,22 @@
 
 namespace osc
 {
-  OscCalculatorSterileBeam::OscCalculatorSterileBeam()
-    : OscCalculatorSterile(), 
+  OscCalcSterileBeam::OscCalcSterileBeam()
+    : OscCalcSterile(), 
     fKaonscale(0), fPionscale(0), fMuonscale(0)
   {
     //fPMNS_Sterile = new PMNS_Sterile(fNFlavors);
   }
 
   //---------------------------------------------------------------------------
-  OscCalculatorSterileBeam::~OscCalculatorSterileBeam()
+  OscCalcSterileBeam::~OscCalcSterileBeam()
   {
-	  std::cout << " ** OscCalculatorSterileBeam Destructor is called ** \n";
+	  std::cout << " ** OscCalcSterileBeam Destructor is called ** \n";
   }
 
   //---------------------------------------------------------------------------
-  OscCalculatorSterileBeam::OscCalculatorSterileBeam(const OscCalculatorSterileBeam& calc)
-    : OscCalculatorSterile(calc)
+  OscCalcSterileBeam::OscCalcSterileBeam(const OscCalcSterileBeam& calc)
+    : OscCalcSterile(calc)
   {
     std::cout << "copy constructor\n";
     this->fKaonscale = calc.GetKaonScale();
@@ -35,53 +35,53 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  void OscCalculatorSterileBeam::SetKaonScale(double scale)
+  void OscCalcSterileBeam::SetKaonScale(double scale)
   {
     fKaonscale=scale;
     //assert(fKaonscale!=0.0);
   }
 
   //---------------------------------------------------------------------------
-  void OscCalculatorSterileBeam::SetPionScale(double scale)
+  void OscCalcSterileBeam::SetPionScale(double scale)
   {
     fPionscale=scale;
     //assert(fPionscale!=0.0);
   }
 
   //---------------------------------------------------------------------------
-  void OscCalculatorSterileBeam::SetMuonScale(double scale)
+  void OscCalcSterileBeam::SetMuonScale(double scale)
   {
     fMuonscale=scale;
     //assert(fMuonscale!=0.0);
   }
 
   //---------------------------------------------------------------------------
-  double OscCalculatorSterileBeam::GetKaonScale() const
+  double OscCalcSterileBeam::GetKaonScale() const
   {
     return fKaonscale;
   }
 
   //---------------------------------------------------------------------------
-  double OscCalculatorSterileBeam::GetPionScale() const
+  double OscCalcSterileBeam::GetPionScale() const
   {
     return fPionscale;
   }
 
   //---------------------------------------------------------------------------
-  double OscCalculatorSterileBeam::GetMuonScale() const
+  double OscCalcSterileBeam::GetMuonScale() const
   {
     return fMuonscale;
   }
 
   //---------------------------------------------------------------------------
-  IOscCalculatorAdjustable* OscCalculatorSterileBeam::Copy() const
+  IOscCalcAdjustable* OscCalcSterileBeam::Copy() const
   {
     std::cout << " *** OscCalSterileBeam Copy() is called *** " << std::endl;
-    return new OscCalculatorSterileBeam(*this);
+    return new OscCalcSterileBeam(*this);
   }
 
   //---------------------------------------------------------------------------
-  TMD5* OscCalculatorSterileBeam::GetParamsHash() const
+  TMD5* OscCalcSterileBeam::GetParamsHash() const
   {
     TMD5* ret = new TMD5;                                                            
     std::string txt = "SterileBeam";                                                 
@@ -104,55 +104,55 @@ namespace osc
     return ret;                                                                      
   }
   //---------------------------------------------------------------------------
-  /* virtual void OscCalculatorSterileBeam::SetBeamMode(kBeamMode, double scaleK, double scaleP, double scaleM)
+  /* virtual void OscCalcSterileBeam::SetBeamMode(kBeamMode, double scaleK, double scaleP, double scaleM)
   {
     if(kBeamMode=="Kaon") {
-      OscCalculatorSterileBeam::SetKaonScale(scaleK) ; 
-      OscCalculatorSterileBeam::SetPionScale(1.0) ; 
-      OscCalculatorSterileBeam::SetMuonScale(1.0) ;  }
+      OscCalcSterileBeam::SetKaonScale(scaleK) ; 
+      OscCalcSterileBeam::SetPionScale(1.0) ; 
+      OscCalcSterileBeam::SetMuonScale(1.0) ;  }
     else if(kBeamMode=="Pion") {
-      OscCalculatorSterileBeam::SetKaonScale(1.0) ; 
-      OscCalculatorSterileBeam::SetPionScale(scaleP); 
-      OscCalculatorSterileBeam::SetMuonScale(1.0) ;  }
+      OscCalcSterileBeam::SetKaonScale(1.0) ; 
+      OscCalcSterileBeam::SetPionScale(scaleP); 
+      OscCalcSterileBeam::SetMuonScale(1.0) ;  }
     else if(kBeamMode=="Muon") {
-      OscCalculatorSterileBeam::SetKaonScale(1.0) ; 
-      OscCalculatorSterileBeam::SetPionScale(1.0) ; 
-      OscCalculatorSterileBeam::SetMuonScale(scaleM); }
+      OscCalcSterileBeam::SetKaonScale(1.0) ; 
+      OscCalcSterileBeam::SetPionScale(1.0) ; 
+      OscCalcSterileBeam::SetMuonScale(scaleM); }
     else {
-      OscCalculatorSterileBeam::SetKaonScale(1.0) ;  
-      OscCalculatorSterileBeam::SetKaonScale(1.0) ;
-      OscCalculatorSterileBeam::SetKaonScale(1.0) ;  }
+      OscCalcSterileBeam::SetKaonScale(1.0) ;  
+      OscCalcSterileBeam::SetKaonScale(1.0) ;
+      OscCalcSterileBeam::SetKaonScale(1.0) ;  }
   }
   
   //---------------------------------------------------------------------------
-  virtual double OscCalculatorSterileBeam::P(int flavBefore, int flavAfter, double E)
+  virtual double OscCalcSterileBeam::P(int flavBefore, int flavAfter, double E)
   {
-    double origProb = OscCalculatorSterile::P(int flavBefore, int flavAfter, double E);
+    double origProb = OscCalcSterile::P(int flavBefore, int flavAfter, double E);
     double scale = 0.0;
     double prob=0.0;
     if(kBeamMode=="Kaon" || kBeamMode=="Pion" || kBeamMode=="Muon") {
-      scale = OscCalculatorSterileBeam::GetKaonScale() * 
-	OscCalculatorSterileBeam::GetPionScale() * 
-	OscCalculatorSterileBeam::GetMuonScale() ;
+      scale = OscCalcSterileBeam::GetKaonScale() * 
+	OscCalcSterileBeam::GetPionScale() * 
+	OscCalcSterileBeam::GetMuonScale() ;
       prob=origProb*scale;    
     }
     return prob;
   }
   */
   //---------------------------------------------------------------------------
-  const OscCalculatorSterileBeam* DowncastToSterileBeam(const IOscCalculator* calc)
+  const OscCalcSterileBeam* DowncastToSterileBeam(const IOscCalc* calc)
   {
-    //const IOscCalculator* base = new osc::OscCalculatorSterileBeam();
-    const OscCalculatorSterileBeam* calc_sterile = dynamic_cast<const OscCalculatorSterileBeam*>(calc);
+    //const IOscCalc* base = new osc::OscCalcSterileBeam();
+    const OscCalcSterileBeam* calc_sterile = dynamic_cast<const OscCalcSterileBeam*>(calc);
     if(calc_sterile) return calc_sterile;
-    else             std::cout << "Input calculator was not of type OscCalculatorSterileBeam." << std::endl;
+    else             std::cout << "Input calculator was not of type OscCalcSterileBeam." << std::endl;
     return nullptr; // If the cast failed, calc_sterile should be nullptr anyway
   }
 
   //---------------------------------------------------------------------------
-  OscCalculatorSterileBeam* DowncastToSterileBeam(IOscCalculator* calc)
+  OscCalcSterileBeam* DowncastToSterileBeam(IOscCalc* calc)
   {
-    //IOscCalculator* base = new osc::OscCalculatorSterileBeam();
+    //IOscCalc* base = new osc::OscCalcSterileBeam();
     //std::cout << "calc's type is: " << typeid(calc).name() << std::endl;
     //if (typeid(calc) == typeid(osc::NoOscillations))
     //  {
@@ -164,9 +164,9 @@ namespace osc
 	std::cout << "I was successfully cast to NoOscillations" << std::endl;
       }
 
-    OscCalculatorSterileBeam* calc_sterile = dynamic_cast<OscCalculatorSterileBeam*>(calc);
+    OscCalcSterileBeam* calc_sterile = dynamic_cast<OscCalcSterileBeam*>(calc);
     if(calc_sterile) return calc_sterile;
-    else             std::cout << "Input calculator was not of type OscCalculatorSterileBeam." << std::endl;
+    else             std::cout << "Input calculator was not of type OscCalcSterileBeam." << std::endl;
     return nullptr; // If the cast failed, calc_sterile should be nullptr anyway
   }
 } // namespace

@@ -1,17 +1,17 @@
-#include "OscLib/func/OscCalculatorPMNSOpt.h"
+#include "OscLib/func/OscCalcPMNSOpt.h"
 
 namespace osc
 {
   //---------------------------------------------------------------------------
   template <typename T>
-  _OscCalculatorPMNSOpt<T>::_OscCalculatorPMNSOpt()
+  _OscCalcPMNSOpt<T>::_OscCalcPMNSOpt()
       : fMixIdx(0), fDmIdx(0), fLRIdx(0)
   {
   }
 
   //---------------------------------------------------------------------------
   template <typename T>
-  _OscCalculatorPMNSOpt<T>::~_OscCalculatorPMNSOpt()
+  _OscCalcPMNSOpt<T>::~_OscCalcPMNSOpt()
   {
     for(int i = 0; i < 2; ++i)
       for(auto it: fPMNSOpt[i])
@@ -20,9 +20,9 @@ namespace osc
 
   //---------------------------------------------------------------------------
   template <typename T>
-  _IOscCalculatorAdjustable<T>* _OscCalculatorPMNSOpt<T>::Copy() const
+  _IOscCalcAdjustable<T>* _OscCalcPMNSOpt<T>::Copy() const
   {
-    _OscCalculatorPMNSOpt<T>* ret = new _OscCalculatorPMNSOpt<T>(*this);
+    _OscCalcPMNSOpt<T>* ret = new _OscCalcPMNSOpt<T>(*this);
     // Raw pointers were blindly copied, so we'd be in trouble when the
     // destructors are called. More importantly, having two calculators sharing
     // one PMNS object will lead to both of them getting confused as to whether
@@ -35,7 +35,7 @@ namespace osc
 
   //---------------------------------------------------------------------------
   template <typename T>
-  T _OscCalculatorPMNSOpt<T>::P(int flavBefore, int flavAfter, double E)
+  T _OscCalcPMNSOpt<T>::P(int flavBefore, int flavAfter, double E)
   {
     // Normal usage of a calculator in a fit is to configure one set of
     // oscillation parameters and then calculate probabilities for all flavours
@@ -108,9 +108,9 @@ namespace osc
 }
 
 //---------------------------------------------------------------------------
-template class osc::_OscCalculatorPMNSOpt<double>;
+template class osc::_OscCalcPMNSOpt<double>;
 
 #ifndef DARWINBUILD
 #include "Utilities/func/StanVar.h"
-  template class osc::_OscCalculatorPMNSOpt<stan::math::var>;
+  template class osc::_OscCalcPMNSOpt<stan::math::var>;
 #endif

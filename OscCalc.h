@@ -3,7 +3,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
-// \file   OscCalculator.h                                              //
+// \file   OscCalc.h                                              //
 //                                                                      //
 // \brief  Class with methods for calculating all things                //
 //         related to oscillation probabilities.                        //
@@ -11,20 +11,20 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include "OscLib/func/IOscCalculator.h"
+#include "OscLib/func/IOscCalc.h"
 
 class TF1;
 
 namespace osc
 {
 
-  class OscCalculator : public IOscCalculatorAdjustable
+  class OscCalc : public IOscCalcAdjustable
   {
   public:
-    OscCalculator();
-    virtual ~OscCalculator();
-    using IOscCalculator::P;
-    virtual IOscCalculatorAdjustable* Copy() const override;
+    OscCalc();
+    virtual ~OscCalc();
+    using IOscCalc::P;
+    virtual IOscCalcAdjustable* Copy() const override;
 
     /// E in GeV; flavors as PDG codes (so, neg==>antinu)
     double P(int flavBefore, int flavAfter, double E) override;
@@ -53,9 +53,9 @@ namespace osc
     // Get a TF1 for a give channel's P(E).  Reconfigurations of
     // the osc parameters do not require a new TF1.  (The TF1 just
     // accesses the same underlying functions.)  Thus, you need
-    // a new OscCalculator if you want two configurations for
+    // a new OscCalc if you want two configurations for
     // the same channel.  Having multiple channels (TF1s) from a
-    // single OscCalculator is fine, though.
+    // single OscCalc is fine, though.
     //
     // NOTE: It's up to you to delete the returned object.
     TF1 *GetTF1(int flavBefore, int flavAfter);
@@ -66,7 +66,7 @@ namespace osc
 
     virtual TMD5* GetParamsHash() const override
     {
-      return IOscCalculatorAdjustable::GetParamsHashDefault("OscCalc");
+      return IOscCalcAdjustable::GetParamsHashDefault("OscCalc");
     }
 
   private:

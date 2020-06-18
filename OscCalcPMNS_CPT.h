@@ -3,7 +3,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
-// \file   OscCalculatorPMNS_CPT.h                                           //
+// \file   OscCalcPMNS_CPT.h                                           //
 //                                                                      //
 // \brief  Adapt the PMNS calculator to standard interface and include  //
 //         neutrino and anti neutrino oscillations seperately           //
@@ -11,20 +11,20 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include "OscLib/func/IOscCalculator.h"
+#include "OscLib/func/IOscCalc.h"
 #include "OscLib/func/PMNS.h"
 
 namespace osc
 {
   /// Adapt the \ref PMNS calculator to standard interface and include neutrino and anti neutrino oscillations seperately
-  class OscCalculatorPMNS_CPT: public IOscCalculatorAdjustable
+  class OscCalcPMNS_CPT: public IOscCalcAdjustable
   {
   public:
-    using IOscCalculator::P;
-    OscCalculatorPMNS_CPT();
-    virtual ~OscCalculatorPMNS_CPT();
+    using IOscCalc::P;
+    OscCalcPMNS_CPT();
+    virtual ~OscCalcPMNS_CPT();
 
-    virtual IOscCalculatorAdjustable* Copy() const override;
+    virtual IOscCalcAdjustable* Copy() const override;
 
     virtual double P(int flavBefore, int flavAfter, double E) override;
 
@@ -53,7 +53,7 @@ namespace osc
 
     virtual TMD5* GetParamsHash() const override
     {
-      return IOscCalculatorAdjustable::GetParamsHashDefault("PMNS");
+      return IOscCalcAdjustable::GetParamsHashDefault("PMNS");
     }
     TMD5* GetParamsHashDefaultBar() const;
   protected:

@@ -3,7 +3,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
-// \file    OscCalculatorCPT.h                                          //
+// \file    OscCalcCPT.h                                          //
 //                                                                      //
 // \brief   Oscillation caculator contaning separate calculators for    //
 //          neutrinos and anti-neutrinos                                //
@@ -12,8 +12,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 
-#include "OscLib/func/IOscCalculator.h"
-#include "OscLib/func/OscCalculatorPMNSOpt.h"
+#include "OscLib/func/IOscCalc.h"
+#include "OscLib/func/OscCalcPMNSOpt.h"
 #include <map>
 #include <utility>
 
@@ -36,25 +36,25 @@ namespace osc
       calculators as data members: one for neutrinos, the other for
       anti-neutrinos.  Interface allows changing oscillation parameter for each
       calculator independently or simultaneously. **/
-  class OscCalculatorCPT: public IOscCalculatorAdjustable
+  class OscCalcCPT: public IOscCalcAdjustable
   {
 
   friend class ana::SigmaDelta;
 
   public:
-  using IOscCalculator::P;
-    /// default, uses OscCalculatorPMNSOpt for sub-calculators
-    OscCalculatorCPT();
+  using IOscCalc::P;
+    /// default, uses OscCalcPMNSOpt for sub-calculators
+    OscCalcCPT();
 
-    /** can pass custom calcs, OscCalculatorCPT will then own them
+    /** can pass custom calcs, OscCalcCPT will then own them
         and delete them when it is destroyed **/
-    OscCalculatorCPT(IOscCalculatorAdjustable* calc,
-                     IOscCalculatorAdjustable* barcalc,
+    OscCalcCPT(IOscCalcAdjustable* calc,
+                     IOscCalcAdjustable* barcalc,
                      SDMap sigdel={} );
 
-    ~OscCalculatorCPT() override;
+    ~OscCalcCPT() override;
 
-    IOscCalculatorAdjustable* Copy() const override;
+    IOscCalcAdjustable* Copy() const override;
 
     double P(int flavBefore, int flavAfter, double E) override;
 
@@ -111,8 +111,8 @@ namespace osc
   protected:
 
     // one calc for neutrinos, one for anti-neutrinos
-    IOscCalculatorAdjustable* fCalc;
-    IOscCalculatorAdjustable* fBarCalc;
+    IOscCalcAdjustable* fCalc;
+    IOscCalcAdjustable* fBarCalc;
 
     mutable SDMap fSigDel;
 
@@ -120,8 +120,8 @@ namespace osc
 
   //---------------------------------------------------------------------------
 
-  const OscCalculatorCPT* DowncastToCPT(const IOscCalculatorAdjustable* osc);
-  OscCalculatorCPT* DowncastToCPT(IOscCalculatorAdjustable* osc);
+  const OscCalcCPT* DowncastToCPT(const IOscCalcAdjustable* osc);
+  OscCalcCPT* DowncastToCPT(IOscCalcAdjustable* osc);
 
 } //namespace
 

@@ -3,14 +3,14 @@
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
-// \file OscCalculatorSterile.h                                         //
+// \file OscCalcSterile.h                                         //
 //                                                                      //
 // Adapt the PMNS_Sterile calculator to standard interface              //
 // <aurisaam@ucmail.uc.edu>						//
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include "IOscCalculator.h"
+#include "IOscCalc.h"
 #include "PMNS_Sterile.h"
 #include <vector>
 
@@ -19,17 +19,17 @@ namespace osc
   /// \brief Adapt the PMNS_Sterile calculator to standard interface
   ///
   /// Adapt the \ref PMNS_Sterile calculator (3+N with matter effects) to standard interface
-  class OscCalculatorSterile: public IOscCalculatorAdjustable
+  class OscCalcSterile: public IOscCalcAdjustable
   {
   public:
-    using IOscCalculatorAdjustable::P;
-    OscCalculatorSterile();
-    OscCalculatorSterile(const OscCalculatorSterile& calc);
-    virtual ~OscCalculatorSterile();
+    using IOscCalcAdjustable::P;
+    OscCalcSterile();
+    OscCalcSterile(const OscCalcSterile& calc);
+    virtual ~OscCalcSterile();
 
     void SetNFlavors(int nflavors);
 
-    virtual IOscCalculatorAdjustable* Copy() const override;
+    virtual IOscCalcAdjustable* Copy() const override;
     
     // if flavAfter == 0, give the active fraction
     virtual double P(int flavBefore, int flavAfter, double E) override;
@@ -71,24 +71,24 @@ namespace osc
     int    fPrevFlavBefore;
   };
 
-  /// \brief Version of OscCalculatorSterile that always returns probability of 1
-  class OscCalculatorSterileTrivial: public OscCalculatorSterile
+  /// \brief Version of OscCalcSterile that always returns probability of 1
+  class OscCalcSterileTrivial: public OscCalcSterile
   {
   public:
-    using IOscCalculator::P;
-    OscCalculatorSterileTrivial();
-    OscCalculatorSterileTrivial(const OscCalculatorSterile& calc);
-    OscCalculatorSterileTrivial(const OscCalculatorSterileTrivial& calc);
-    virtual ~OscCalculatorSterileTrivial() {};
+    using IOscCalc::P;
+    OscCalcSterileTrivial();
+    OscCalcSterileTrivial(const OscCalcSterile& calc);
+    OscCalcSterileTrivial(const OscCalcSterileTrivial& calc);
+    virtual ~OscCalcSterileTrivial() {};
 
-    virtual IOscCalculatorAdjustable* Copy() const override;
+    virtual IOscCalcAdjustable* Copy() const override;
     
     // Always return 1
     virtual double P(int flavBefore, int flavAfter, double E) override;
   };
 
-  const OscCalculatorSterile* DowncastToSterile(const IOscCalculator* calc);
-  OscCalculatorSterile* DowncastToSterile(IOscCalculator* calc);
+  const OscCalcSterile* DowncastToSterile(const IOscCalc* calc);
+  OscCalcSterile* DowncastToSterile(IOscCalc* calc);
 
 } // namespace
 
