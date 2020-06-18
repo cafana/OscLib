@@ -11,7 +11,7 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include "OscLib/func/IOscCalc.h"
+#include "OscLib/IOscCalc.h"
 
 class TF1;
 

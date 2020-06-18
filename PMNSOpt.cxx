@@ -64,12 +64,12 @@
 //    double Mag(const std::complex<T>& z) { return z.real() * z.real() + z.imag() * z.imag(); }
 // This was done in the zhe***3 libraries included below.
 
-#include "OscLib/func/PMNSOpt.h"
+#include "OscLib/PMNSOpt.h"
 
-#include "OscLib/func/MatrixDecomp/zhetrd3.h"
-#include "OscLib/func/MatrixDecomp/zheevc3.h"
-#include "OscLib/func/MatrixDecomp/zheevh3.h"
-#include "OscLib/func/MatrixDecomp/zheevq3.h"
+#include "OscLib/MatrixDecomp/zhetrd3.h"
+#include "OscLib/MatrixDecomp/zheevc3.h"
+#include "OscLib/MatrixDecomp/zheevh3.h"
+#include "OscLib/MatrixDecomp/zheevq3.h"
 
 #include <cstdlib>
 #include <cassert>
@@ -393,7 +393,7 @@ T _PMNSOpt<T>::P(int flv) const
 template class osc::_PMNSOpt<double>;
 
 #ifndef DARWINBUILD
-#include "Utilities/func/Stan.h"
+#include "Utilities/Stan.h"
   template class osc::_PMNSOpt<stan::math::var>;
 #endif
 

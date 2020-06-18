@@ -4,7 +4,7 @@
 // \version $Id: OscCalcPMNS_CPT.cxx,v 1.0 2013-11-21 11:17:35 tamsett Exp $
 // \author  Matthew Tamsett
 /////////////////////////////////////////////////////////////////////////////
-#include "OscLib/func/OscCalcPMNS_CPT.h"
+#include "OscLib/OscCalcPMNS_CPT.h"
 
 #include <cassert>
 #include <cstdlib>

@@ -4,8 +4,8 @@
 ///        so it's some kind of average of all of those
 //////////////////////////////////////////////////////////
 
-#include "OscLib/func/IOscCalc.h"
-#include "Utilities/func/MathUtil.h"
+#include "OscLib/IOscCalc.h"
+#include "Utilities/MathUtil.h"
 
 #include <cmath>
 

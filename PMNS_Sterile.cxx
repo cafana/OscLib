@@ -16,7 +16,7 @@
 // joao.coelho@tufts.edu
 ////////////////////////////////////////////////////////////////////////
 
-#include "OscLib/func/PMNS_Sterile.h"
+#include "OscLib/PMNS_Sterile.h"
 
 #include <iostream>
 #include <cassert>

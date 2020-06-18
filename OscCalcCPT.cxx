@@ -1,4 +1,4 @@
-#include "OscLib/func/OscCalcCPT.h"
+#include "OscLib/OscCalcCPT.h"
 
 #include <cassert>
 #include <cstdlib>

@@ -4,7 +4,7 @@
 #include "PMNS_DMP.h"
 
 #ifndef DARWINBUILD
-#include "Utilities/func/Stan.h"
+#include "Utilities/Stan.h"
 #endif
 
 namespace osc

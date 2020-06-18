@@ -4,7 +4,7 @@
 // \version $Id: OscCalcGeneral.cxx,v 1.5 2012-09-25 04:51:35 gsdavies Exp $
 // \author
 /////////////////////////////////////////////////////////////////////////////
-#include "OscLib/func/OscCalcGeneral.h"
+#include "OscLib/OscCalcGeneral.h"
 
 #include <boost/serialization/array_wrapper.hpp>
 #pragma GCC diagnostic push

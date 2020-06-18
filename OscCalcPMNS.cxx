@@ -1,4 +1,4 @@
-#include "OscLib/func/OscCalcPMNS.h"
+#include "OscLib/OscCalcPMNS.h"
 
 namespace osc
 {
@@ -67,6 +67,6 @@ namespace osc
 template class osc::_OscCalcPMNS<double>;
 
 #ifndef DARWINBUILD
-#include "Utilities/func/StanVar.h"
+#include "Utilities/StanVar.h"
   template class osc::_OscCalcPMNS<stan::math::var>;
 #endif

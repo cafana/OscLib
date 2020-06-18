@@ -33,7 +33,7 @@
 //
 // messier@indiana.edu
 ////////////////////////////////////////////////////////////////////////
-#include "OscLib/func/PMNS.h"
+#include "OscLib/PMNS.h"
 
 #include <cstdlib>
 #include <iostream>
@@ -618,6 +618,6 @@ T _PMNS<T>::P(int i, int j) const
 template class osc::_PMNS<double>;
 
 #ifndef DARWINBUILD
-#include "Utilities/func/Stan.h"
+#include "Utilities/Stan.h"
   template class osc::_PMNS<stan::math::var>;
 #endif

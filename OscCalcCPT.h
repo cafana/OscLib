@@ -12,8 +12,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 
-#include "OscLib/func/IOscCalc.h"
-#include "OscLib/func/OscCalcPMNSOpt.h"
+#include "OscLib/IOscCalc.h"
+#include "OscLib/OscCalcPMNSOpt.h"
 #include <map>
 #include <utility>
 

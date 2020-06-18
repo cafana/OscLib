@@ -6,8 +6,8 @@
 
 #include <Eigen/Eigen>
 
-#include "OscLib/func/OscParameters.h"
-#include "OscLib/func/IOscCalc.h"
+#include "OscLib/OscParameters.h"
+#include "OscLib/IOscCalc.h"
 
 using namespace Eigen;
 

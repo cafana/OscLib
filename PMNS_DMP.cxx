@@ -139,7 +139,7 @@ namespace osc
 template class osc::_PMNS_DMP<double>;
 
 #ifndef DARWINBUILD
-#include "Utilities/func/Stan.h"
+#include "Utilities/Stan.h"
 template class osc::_PMNS_DMP<stan::math::var>;
 #endif
 

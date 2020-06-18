@@ -4,8 +4,8 @@
 /// \author  messier@indiana.edu
 /// \version $Id: EarthModel.cxx,v 1.2 2012-07-01 22:21:59 gsdavies Exp $
 ///
-#include "OscLib/func/EarthModel.h"
-#include "Utilities/func/MathUtil.h"
+#include "OscLib/EarthModel.h"
+#include "Utilities/MathUtil.h"
 #include <cstdlib>
 #include <iostream>
 #include <cmath>

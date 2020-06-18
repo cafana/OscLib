@@ -1,8 +1,8 @@
 #ifndef OSC_OSCCALCULATORPMNSOPTEIGEN_H
 #define OSC_OSCCALCULATORPMNSOPTEIGEN_H
 
-#include "OscLib/func/IOscCalc.h"
-#include "OscLib/func/OscParameters.h"
+#include "OscLib/IOscCalc.h"
+#include "OscLib/OscParameters.h"
 #include <complex>
 #include <vector>
 

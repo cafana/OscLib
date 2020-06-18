@@ -1,7 +1,7 @@
 #ifndef OSCCALCULATORGENERAL_H
 #define OSCCALCULATORGENERAL_H
 
-#include "OscLib/func/IOscCalc.h"
+#include "OscLib/IOscCalc.h"
 
 namespace osc
 {

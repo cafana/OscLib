@@ -11,8 +11,8 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include "OscLib/func/IOscCalc.h"
-#include "OscLib/func/PMNS.h"
+#include "OscLib/IOscCalc.h"
+#include "OscLib/PMNS.h"
 
 namespace osc
 {

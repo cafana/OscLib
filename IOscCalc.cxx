@@ -6,9 +6,9 @@
 #ifndef DARWINBUILD
 #include "stan/math/rev/core/std_isnan.hpp"
 #endif
-#include "OscLib/func/IOscCalc.h"
+#include "OscLib/IOscCalc.h"
 
-#include "Utilities/func/StanUtils.h"
+#include "Utilities/StanUtils.h"
 
 #include <Eigen/Dense>
 namespace osc

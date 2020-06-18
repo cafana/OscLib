@@ -19,14 +19,14 @@
 // joao.coelho@tufts.edu
 ////////////////////////////////////////////////////////////////////////
 
-#include "OscLib/func/PMNS_NSI.h"
+#include "OscLib/PMNS_NSI.h"
 
 // Just pull in all the cxx files from MatrixDecomp. This way we don't have
 // another library to worry about building and linking everywhere.
-//#include "OscLib/func/MatrixDecomp/zhetrd3.cxx"
-//#include "OscLib/func/MatrixDecomp/zheevc3.cxx"
-#include "OscLib/func/MatrixDecomp/zheevh3.h"
-//#include "OscLib/func/MatrixDecomp/zheevq3.cxx"
+//#include "OscLib/MatrixDecomp/zhetrd3.cxx"
+//#include "OscLib/MatrixDecomp/zheevc3.cxx"
+#include "OscLib/MatrixDecomp/zheevh3.h"
+//#include "OscLib/MatrixDecomp/zheevq3.cxx"
 
 #include <cstdlib>
 #include <cassert>

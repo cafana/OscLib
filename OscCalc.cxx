@@ -7,7 +7,7 @@
 // <rbpatter@caltech.edu>						//
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
-#include "OscLib/func/OscCalc.h"
+#include "OscLib/OscCalc.h"
 
 #include <iostream>
 #include <cmath>

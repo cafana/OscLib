@@ -15,7 +15,7 @@
 #include <list>
 #include <complex>
 
-#include "OscLib/func/PMNSOpt.h"
+#include "OscLib/PMNSOpt.h"
 
 namespace osc {
   class PMNS_NSI : public PMNSOpt {
