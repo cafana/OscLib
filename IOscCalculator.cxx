@@ -1,0 +1,80 @@
+// std_isnan needs to precede IOscCalculator
+// because it injects an important Stan overload of std::isnan
+// into the std namespace that need sto be there
+// BEFORE the Eigen headers are seen (due to the '#pragma once').
+// IOscCalculator.h  #includes Eigen/Eigen, so /shrug
+#ifndef DARWINBUILD
+#include "stan/math/rev/core/std_isnan.hpp"
+#endif
+#include "OscLib/func/IOscCalculator.h"
+
+#include "Utilities/func/StanUtils.h"
+
+#include <Eigen/Dense>
+namespace osc
+{
+  template<class T>
+  Eigen::Matrix<T,Eigen::Dynamic,1>
+  _IOscCalculator<T>::P(int flavBefore, int flavAfter, const std::vector<double> &E)
+  {
+    Eigen::Matrix<T,Eigen::Dynamic,1> ret(E.size());
+    for(auto i = 0u; i < E.size(); i++) {
+      ret(i) = util::GetValAs<T>(this->P(flavBefore, flavAfter, E[i]));
+    }
+    return ret.array().isNaN().select(0, ret);
+  }
+
+  //---------------------------------------------------------------------------
+  template<class T> _IOscCalculatorAdjustable<T>::~_IOscCalculatorAdjustable()
+  {
+  }
+
+  //---------------------------------------------------------------------------
+  template <typename T>
+  TMD5* _IOscCalculatorAdjustable<T>::GetParamsHashDefault(const std::string& txt) const
+  {
+    TMD5* ret = new TMD5;
+    ret->Update((unsigned char*)txt.c_str(), txt.size());
+    const int kNumParams = 8;
+    T buf[kNumParams] = {fRho, fL, fDmsq21, fDmsq32,
+                         fTh12, fTh13, fTh23, fdCP};
+    ret->Update((unsigned char*)buf, sizeof(T)*kNumParams);
+    ret->Final();
+    return ret;
+  }
+
+  template <typename T, typename U>
+  void CopyParams(const osc::_IOscCalculatorAdjustable<T> * inCalc,
+                  osc::_IOscCalculatorAdjustable<U> * outCalc)
+  {
+    assert (inCalc);
+    assert (outCalc);
+
+    outCalc->SetL(inCalc->GetL());
+    outCalc->SetRho(inCalc->GetRho());
+
+    outCalc->SetdCP(util::GetValAs<U>(inCalc->GetdCP()));
+    outCalc->SetDmsq21(util::GetValAs<U>(inCalc->GetDmsq21()));
+    outCalc->SetDmsq32(util::GetValAs<U>(inCalc->GetDmsq32()));
+    outCalc->SetTh12(util::GetValAs<U>(inCalc->GetTh12()));
+    outCalc->SetTh13(util::GetValAs<U>(inCalc->GetTh13()));
+    outCalc->SetTh23(util::GetValAs<U>(inCalc->GetTh23()));
+  }
+
+  //---------------------------------------------------------------------------
+  template class _IOscCalculatorAdjustable<double>;
+  template class _IOscCalculator<double>;
+#ifndef DARWINBUILD
+  template class _IOscCalculatorAdjustable<stan::math::var>;
+  template class _IOscCalculator<stan::math::var>;
+  template void CopyParams(const osc::_IOscCalculatorAdjustable<double> * inCalc,
+                           osc::_IOscCalculatorAdjustable<stan::math::var> * outCalc);
+  template void CopyParams(const osc::_IOscCalculatorAdjustable<stan::math::var> * inCalc,
+                           osc::_IOscCalculatorAdjustable<double> * outCalc);
+  template void CopyParams(const osc::_IOscCalculatorAdjustable<stan::math::var> * inCalc,
+                           osc::_IOscCalculatorAdjustable<stan::math::var> * outCalc);
+#endif
+
+  template void CopyParams(const osc::_IOscCalculatorAdjustable<double> * inCalc,
+                           osc::_IOscCalculatorAdjustable<double> * outCalc);
+}
