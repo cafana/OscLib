@@ -1,8 +1,8 @@
 # NB, the resulting executables must be run from the directory above so they
 # can find libOscLib
 
-CFLAGS := -I../.. $(shell root-config --cflags) -I${EIGEN_INC} -g -O3
-LDFLAGS := $(shell root-config --libs) -L.. -lOscLib
+CFLAGS := -std=c++17 -I../.. -I${ROOT_INC} -I${EIGEN_INC} -g -O3
+LDFLAGS := -L${ROOTSYS}/lib -lCore -lGraf -lGpad -L.. -lOscLib
 
 # Uncomment to enable (broken) stan build
 #CFLAGS += -DOSCLIB_STAN -I${STAN_MATH_INC}

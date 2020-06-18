@@ -1,8 +1,8 @@
 # Extremely crude stop-gap makefile
 
-CFLAGS := -I.. $(shell root-config --cflags) -I${EIGEN_INC} -I${BOOST_INC} -I${GSL_INC} -g -O3
+CFLAGS := -std=c++17 -I.. -I${ROOT_INC} -I${EIGEN_INC} -I${BOOST_INC} -I${GSL_INC} -g -O3
 
-LDFLAGS := $(shell root-config --libs) -L${GSL_LIB} -lgsl -lgslcblas
+LDFLAGS := -L${ROOTSYS}/lib -lCore -L${GSL_LIB} -lgsl -lgslcblas
 
 # Uncomment to enable (broken) stan build
 #CFLAGS += -DOSCLIB_STAN -I${STAN_MATH_INC}
