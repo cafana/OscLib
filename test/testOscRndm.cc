@@ -1,11 +1,11 @@
 #include <cmath>
 #include <vector>
 
-#include "OscLib/func/OscCalculator.h"
-#include "OscLib/func/OscCalculatorGeneral.h"
-#include "OscLib/func/OscCalculatorPMNS.h"
-#include "OscLib/func/OscCalculatorPMNSOpt.h"
-#include "OscLib/func/OscCalculatorPMNS_CPT.h"
+#include "OscLib/OscCalc.h"
+#include "OscLib/OscCalcGeneral.h"
+#include "OscLib/OscCalcPMNS.h"
+#include "OscLib/OscCalcPMNSOpt.h"
+#include "OscLib/OscCalcPMNS_CPT.h"
 
 #include "TCanvas.h"
 #include "TFile.h"
@@ -46,13 +46,13 @@ int main()
   TCanvas* canvs = new TCanvas("canv_all","",350*kCols,350*kRows);
   canvs->Divide(kCols, kRows);
 
-  osc::OscCalculator osc1;
-  osc::OscCalculatorGeneral osc2;
-  osc::OscCalculatorPMNS osc3;
-  osc::OscCalculatorPMNSOpt osc4;
-  osc::OscCalculatorPMNS_CPT osc5;
+  osc::OscCalc osc1;
+  osc::OscCalcGeneral osc2;
+  osc::OscCalcPMNS osc3;
+  osc::OscCalcPMNSOpt osc4;
+  osc::OscCalcPMNS_CPT osc5;
 
-  osc::IOscCalculatorAdjustable* oscs[kNumCalcs] = {&osc1, &osc2, &osc3, &osc4, &osc5};
+  osc::IOscCalcAdjustable* oscs[kNumCalcs] = {&osc1, &osc2, &osc3, &osc4, &osc5};
   const TString names[kNumCalcs] = {"Approx", "General", "PMNS", "PMNSOpt", "PMNS_CPT"};
 
   const int kIter = 10000;

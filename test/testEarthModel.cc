@@ -1,6 +1,6 @@
 #include <iostream>
-#include "OscLib/func/EarthModel.h"
-#include "OscLib/func/PMNS.h"
+#include "OscLib/EarthModel.h"
+#include "OscLib/PMNS.h"
 #include "TH1F.h"
 #include "TFile.h"
 using namespace osc;

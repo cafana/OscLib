@@ -1,12 +1,12 @@
 #include <cmath>
 #include <vector>
 
-#include "OscLib/func/OscCalculator.h"
-#include "OscLib/func/OscCalculatorGeneral.h"
-#include "OscLib/func/OscCalculatorPMNS.h"
-#include "OscLib/func/OscCalculatorPMNSOpt.h"
-#include "OscLib/func/OscCalculatorDMP.h"
-#include "OscLib/func/OscCalculatorPMNS_CPT.h"
+#include "OscLib/OscCalc.h"
+#include "OscLib/OscCalcGeneral.h"
+#include "OscLib/OscCalcPMNS.h"
+#include "OscLib/OscCalcPMNSOpt.h"
+#include "OscLib/OscCalcDMP.h"
+#include "OscLib/OscCalcPMNS_CPT.h"
 
 #include "TCanvas.h"
 #include "TFile.h"
@@ -19,9 +19,9 @@
 #include <fenv.h>
 
 #ifndef DARWINBUILD
-#include "Utilities/func/StanVar.h"
+#include "Utilities/StanVar.h"
 #endif
-#include "Utilities/func/StanUtils.h"
+#include "Utilities/StanUtils.h"
 
 int main()
 {
@@ -42,17 +42,17 @@ int main()
 
   TLegend* leg = new TLegend(.1, .1, .9, .9);
 
-  osc::OscCalculator osc1;
-  osc::OscCalculatorGeneral osc2;
-  osc::OscCalculatorPMNS osc3;
-  osc::OscCalculatorPMNSOpt osc4;
-  osc::OscCalculatorPMNS_CPT osc5;
-  osc::_OscCalculatorPMNS<stan::math::var> osc6;
-  osc::_OscCalculatorPMNSOpt<stan::math::var> osc7;
-  osc::_OscCalculatorDMP<stan::math::var> osc8;
+  osc::OscCalc osc1;
+  osc::OscCalcGeneral osc2;
+  osc::OscCalcPMNS osc3;
+  osc::OscCalcPMNSOpt osc4;
+  osc::OscCalcPMNS_CPT osc5;
+  osc::_OscCalcPMNS<stan::math::var> osc6;
+  osc::_OscCalcPMNSOpt<stan::math::var> osc7;
+  osc::_OscCalcDMP<stan::math::var> osc8;
 
-  std::vector<osc::IOscCalculatorAdjustable*> oscs {&osc1, &osc2, &osc3, &osc4, &osc5};
-  std::vector<osc::_IOscCalculatorAdjustable<stan::math::var>*> oscStan {&osc6, &osc7, &osc8};
+  std::vector<osc::IOscCalcAdjustable*> oscs {&osc1, &osc2, &osc3, &osc4, &osc5};
+  std::vector<osc::_IOscCalcAdjustable<stan::math::var>*> oscStan {&osc6, &osc7, &osc8};
   std::vector<TString> names {"Approx", "General", "PMNS", "PMNSOpt", "PMNS_CPT", "PMNS_Stan", "PMNSOpt_Stan", "PMNSOpt_DMP_Stan"};
   std::vector<int> colors {kBlue, kRed, kGreen+2, kMagenta, kBlack, kCyan, kOrange, kViolet+1};
 

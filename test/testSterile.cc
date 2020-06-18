@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <cstdlib>
 
-#include "OscLib/func/OscCalculatorSterile.h"
+#include "OscLib/OscCalcSterile.h"
 
 #include "TCanvas.h"
 #include "TFile.h"
@@ -21,8 +21,8 @@ int main(int argc, char* argv[])
 {
   feenableexcept(FE_INVALID); // Spot any infs or nans early
 
-  osc::OscCalculatorSterile oscStd;
-  osc::OscCalculatorSterile oscSterile;
+  osc::OscCalcSterile oscStd;
+  osc::OscCalcSterile oscSterile;
 
   double baselineNear(1.04);
   double baselineFar(810.0);
@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
   oscSterile.SetDelta(1, 4, delta2);
   oscSterile.SetDelta(2, 4, delta3);
 
-  osc::OscCalculatorSterile oscTest;
+  osc::OscCalcSterile oscTest;
   std::vector<double> state = oscSterile.GetState();
   oscTest.SetState(state);
 
