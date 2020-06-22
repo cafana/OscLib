@@ -13,8 +13,8 @@ do
     newname=${newname/OS=SLF7/slf7.x86_64}
     newname=${newname/QUALIFIER=/}
     newname=${newname/STAN=/}
-    newname=${newname/,/.}
-    newname=${newname/;/.}
+    newname=${newname//,/.}
+    newname=${newname//:/.}
     echo mv $oldname $TAG/$newname
     mv $oldname $TAG/$newname
     mkdir $TAG/$newname/bin
