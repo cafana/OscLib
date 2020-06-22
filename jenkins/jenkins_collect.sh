@@ -8,7 +8,7 @@ ls
 
 for olddir in 'OS='*
 do
-    newdir=$TAG/$olddir
+    newdir=$TAG/${olddir/OscLib/}
     newdir=${newdir/OS=SLF6/slf6.x86_64}
     newdir=${newdir/OS=SLF7/slf7.x86_64}
     newdir=${newdir/QUALIFIER=/}
