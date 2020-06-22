@@ -3,7 +3,7 @@
 *~
 *.root
 # binaries
-test/testEarthModel
-test/testOsc
-test/testOscRndm
-test/testSterile
+OscLib/test/testEarthModel
+OscLib/test/testOsc
+OscLib/test/testOscRndm
+OscLib/test/testSterile
