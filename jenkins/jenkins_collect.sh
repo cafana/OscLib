@@ -3,8 +3,6 @@
 TAG=v00.01
 rm -rf $TAG # clean out any previous build
 mkdir $TAG
-mkdir $TAG/include
-mkdir $TAG/src
 
 ls
 
@@ -22,18 +20,19 @@ do
     mv $newdir/OscLib/bin $newdir/$bin
     mv $newdir/OscLib/lib $newdir/$lib
     # will overwrite each other but should all be identical
-    for k in `find $TAG/$newdir/OscLib -name '*.h'`
+    for k in `find $newdir/OscLib -name '*.h'`
     do
         fname=${k/$newdir/}
-        mkdir -p $TAG/include/`dirname $fname`
-        cp $k $TAG/include/$fname
+        mkdir -p $TAG/include/OscLib/`dirname $fname`
+        cp $k $TAG/include/OscLib/$fname
     done
-    for k in `find $TAG/$newdir/OscLib`
+    for k in `find $newdir/OscLib`
     do
         fname=${k/$newdir/}
         mkdir -p $TAG/src/`dirname $fname`
         mv $k $TAG/src/$fname
     done
+    rm -r $newdir/OscLib
 done
 
 mkdir $TAG/ups
