@@ -7,3 +7,6 @@ OscLib/test/testEarthModel
 OscLib/test/testOsc
 OscLib/test/testOscRndm
 OscLib/test/testSterile
+OscLib/bin/
+OscLib/tmp/
+OscLib/lib/

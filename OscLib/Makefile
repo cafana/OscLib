@@ -4,19 +4,27 @@ CFLAGS := -std=c++17 -I.. -I${ROOT_INC} -I${EIGEN_INC} -I${BOOST_INC} -I${GSL_IN
 
 LDFLAGS := -L${ROOTSYS}/lib -lCore -L${GSL_LIB} -lgsl -lgslcblas
 
+LDFLAGS_BINS := -L${ROOTSYS}/lib -lCore -lGraf -lGpad -lHist -lMathCore -lRIO -Llib -lOscLib
+
 # Uncomment to enable (broken) stan build
 #CFLAGS += -DOSCLIB_STAN -I${STAN_MATH_INC}
 
 SRCS := $(wildcard *.cxx)
 HDRS := $(wildcard *.h)
-OBJS := $(patsubst %.cxx,%.o,$(SRCS))
+OBJS := $(patsubst %.cxx,tmp/%.o,$(SRCS))
+BIN_SRCS := $(wildcard test/test*.cc)
+BINS := $(patsubst test/test%.cc,bin/test%,$(BIN_SRCS))
 
-%.o: %.cxx ${HDRS}
-	g++ $< ${CFLAGS} -c -fpic
+all: prereqs ${OBJS} ${BINS} lib/libOscLib.so
 
-all: prereqs ${OBJS}
-	g++ -shared -o libOscLib.so *.o ${LDFLAGS}
-	+make -C test
+tmp/%.o: %.cxx ${HDRS}
+	g++ $< ${CFLAGS} -c -fpic -o $@
+
+bin/test%: test/test%.cc ${HDRS} lib/libOscLib.so
+	g++ $< ${CFLAGS} ${LDFLAGS_BINS} -o $@
+
+lib/libOscLib.so: ${OBJS}
+	g++ -shared -o $@ tmp/*.o ${LDFLAGS}
 
 prereqs:
 	@echo Checking all necessary env vars are set
@@ -26,6 +34,9 @@ prereqs:
 	test ${GSL_INC} # GSL_INC
 	test ${ROOTSYS} # ROOTSYS
 	test ${GSL_LIB} # GSL_LIB
+	mkdir -p tmp
+	mkdir -p lib
+	mkdir -p bin
 
 clean:
-	rm *.o *.so
+	rm tmp/*.o lib/*.so bin/*
