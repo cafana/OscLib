@@ -7,7 +7,7 @@ ls
 
 for oldname in 'os='*
 do
-    newname=oldname
+    newname=$oldname
     newname=${newname/os=SLF6/slf6.x86_64}
     newname=${newname/qualifier=/}
     newname=${newname/stan=/}
