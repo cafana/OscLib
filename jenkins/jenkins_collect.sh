@@ -13,6 +13,7 @@ do
     newname=${newname/stan=/}
     newname=${newname/,/.}
     newname=${newname/;/.}
+    echo mv $oldname $TAG/$newname
     mv $oldname $TAG/$newname
     mkdir $TAG/$newname/bin
     mkdir $TAG/$newname/lib
