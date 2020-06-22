@@ -3,26 +3,38 @@
 TAG=v00.01
 rm -rf $TAG # clean out any previous build
 mkdir $TAG
+mkdir $TAG/include
+mkdir $TAG/src
 
 ls
 
-for oldname in 'OS='*
+for olddir in 'OS='*
 do
-    newname=$oldname
-    newname=${newname/OS=SLF6/slf6.x86_64}
-    newname=${newname/OS=SLF7/slf7.x86_64}
-    newname=${newname/QUALIFIER=/}
-    newname=${newname/STAN=/}
-    newname=${newname//,/.}
-    newname=${newname//:/.}
-    echo mv $oldname $TAG/$newname
-    mv $oldname $TAG/$newname
-    mkdir $TAG/$newname/bin
-    mkdir $TAG/$newname/lib
+    newdir=$TAG/$olddir
+    newdir=${newdir/OS=SLF6/slf6.x86_64}
+    newdir=${newdir/OS=SLF7/slf7.x86_64}
+    newdir=${newdir/QUALIFIER=/}
+    newdir=${newdir/STAN=/}
+    newdir=${newdir//,/.}
+    newdir=${newdir//:/.}
+    echo mv $olddir $newdir
+    mv $olddir $newdir
+    mv $newdir/OscLib/bin $newdir/$bin
+    mv $newdir/OscLib/lib $newdir/$lib
+    # will overwrite each other but should all be identical
+    for k in `find $TAG/$newdir/OscLib -name '*.h'`
+    do
+        fname=${k/$newdir/}
+        mkdir -p $TAG/include/`dirname $fname`
+        cp $k $TAG/include/$fname
+    done
+    for k in `find $TAG/$newdir/OscLib`
+    do
+        fname=${k/$newdir/}
+        mkdir -p $TAG/src/`dirname $fname`
+        mv $k $TAG/src/$fname
+    done
 done
 
-cd $TAG
-mkdir src
-mkdir include
-mkdir ups
-touch ups/osclib.table
+mkdir $TAG/ups
+touch $TAG/ups/osclib.table
