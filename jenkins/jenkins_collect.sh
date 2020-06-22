@@ -1,6 +1,7 @@
 #!/bin/bash
 
 TAG=v00.01
+rm -rf $TAG # clean out any previous build
 mkdir $TAG
 
 ls
