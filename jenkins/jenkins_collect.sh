@@ -20,16 +20,19 @@ do
     mv $newdir/OscLib/bin $newdir/$bin
     mv $newdir/OscLib/lib $newdir/$lib
     # will overwrite each other but should all be identical
+    echo newdir is $newdir
     for k in `find $newdir/OscLib -name '*.h'`
     do
         fname=${k/$newdir/}
-        mkdir -p $TAG/include/OscLib/`dirname $fname`
-        cp $k $TAG/include/OscLib/$fname
+        mkdir -p $TAG/include/`dirname $fname`
+        echo cp $k $TAG/include/$fname
+        cp $k $TAG/include/$fname
     done
     for k in `find $newdir/OscLib`
     do
         fname=${k/$newdir/}
         mkdir -p $TAG/src/`dirname $fname`
+        echo mv $k $TAG/src/$fname
         mv $k $TAG/src/$fname
     done
     rm -r $newdir/OscLib
