@@ -6,12 +6,13 @@ mkdir $TAG
 
 ls
 
-for oldname in 'os='*
+for oldname in 'OS='*
 do
     newname=$oldname
-    newname=${newname/os=SLF6/slf6.x86_64}
-    newname=${newname/qualifier=/}
-    newname=${newname/stan=/}
+    newname=${newname/OS=SLF6/slf6.x86_64}
+    newname=${newname/OS=SLF7/slf7.x86_64}
+    newname=${newname/QUALIFIER=/}
+    newname=${newname/STAN=/}
     newname=${newname/,/.}
     newname=${newname/;/.}
     echo mv $oldname $TAG/$newname
