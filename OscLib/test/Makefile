@@ -2,7 +2,7 @@
 # can find libOscLib
 
 CFLAGS := -std=c++17 -I../.. -I${ROOT_INC} -I${EIGEN_INC} -g -O3
-LDFLAGS := -L${ROOTSYS}/lib -lCore -lGraf -lGpad -lHist -L.. -lOscLib
+LDFLAGS := -L${ROOTSYS}/lib -lCore -lGraf -lGpad -lHist -lRIO -L.. -lOscLib
 
 # Uncomment to enable (broken) stan build
 #CFLAGS += -DOSCLIB_STAN -I${STAN_MATH_INC}
