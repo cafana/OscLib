@@ -111,8 +111,6 @@ namespace osc
 template class osc::_OscCalcPMNSOpt<double>;
 
 #ifdef OSCLIB_STAN
-#ifndef DARWINBUILD
-#include "Utilities/StanVar.h"
-  template class osc::_OscCalcPMNSOpt<stan::math::var>;
-#endif
+#include "stan/math/rev/scal.hpp"
+template class osc::_OscCalcPMNSOpt<stan::math::var>;
 #endif

@@ -1,12 +1,10 @@
 // std_isnan needs to precede the header
 // because it injects an important Stan overload of std::isnan
-// into the std namespace that need sto be there
+// into the std namespace that needs to be there
 // BEFORE the Eigen headers are seen (due to the '#pragma once').
 // PMNS_DMP.h  #includes Eigen/Eigen, so /shrug
 #ifdef OSCLIB_STAN
-#ifndef DARWINBUILD
 #include "stan/math/rev/core/std_isnan.hpp"
-#endif
 #endif
 
 #include "PMNS_DMP.h"
@@ -142,8 +140,6 @@ namespace osc
 template class osc::_PMNS_DMP<double>;
 
 #ifdef OSCLIB_STAN
-#ifndef DARWINBUILD
-#include "Utilities/Stan.h"
+#include "stan/math/rev/scal.hpp"
 template class osc::_PMNS_DMP<stan::math::var>;
-#endif
 #endif

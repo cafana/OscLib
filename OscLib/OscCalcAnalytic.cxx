@@ -385,8 +385,6 @@ namespace osc
 template class osc::_OscCalcAnalytic<double>;
 
 #ifdef OSCLIB_STAN
-#ifndef DARWINBUILD
-#include "Utilities/func/Stan.h"
+#include "stan/math/rev/scal.hpp"
 template class osc::_OscCalcAnalytic<stan::math::var>;
-#endif
 #endif

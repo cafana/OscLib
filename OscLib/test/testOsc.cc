@@ -19,20 +19,12 @@
 #include <fenv.h>
 
 #ifdef OSCLIB_STAN
-#ifndef DARWINBUILD
-#include "Utilities/StanVar.h"
-#endif
-#include "Utilities/StanUtils.h"
+#include "stan/math/rev/scal.hpp"
 #endif
 
 int main()
 {
-
-#ifndef DARWINBUILD
   feenableexcept(FE_INVALID); // Spot any infs or nans early
-#else
-  std::cerr << "WARNING: OscLib/test/testOsc.cc was built on OS X where feenableexcept is unavailable" << std::endl;
-#endif
 
   TCanvas* canvs[4];
   canvs[0] = new TCanvas("canv_norm");
@@ -131,7 +123,7 @@ int main()
             }
 #ifdef OSCLIB_STAN
             for(auto osc : oscStan){
-              Ps.push_back(util::GetValAs<double>(osc->P(anti * from, anti * to, E)));
+              Ps.push_back(osc->P(anti * from, anti * to, E).val());
               gs[n]->SetPoint(gs[n]->GetN(), E, Ps[n]);
               ++n;
             }

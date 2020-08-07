@@ -393,8 +393,6 @@ T _PMNSOpt<T>::P(int flv) const
 template class osc::_PMNSOpt<double>;
 
 #ifdef OSCLIB_STAN
-#ifndef DARWINBUILD
-#include "Utilities/Stan.h"
-  template class osc::_PMNSOpt<stan::math::var>;
-#endif
+#include "stan/math/rev/scal.hpp"
+template class osc::_PMNSOpt<stan::math::var>;
 #endif

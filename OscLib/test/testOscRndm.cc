@@ -24,11 +24,7 @@ double GetMin(double array[],int Nentries);
 
 int main()
 {
-#ifndef DARWINBUILD
   feenableexcept(FE_INVALID); // Spot any infs or nans early
-#else
-  std::cerr << "WARNING: OscLib/test/testOscRndm.cc was built on OS X where feenableexcept is unavailable" << std::endl;
-#endif
 
   TRandom3 rnd;
   rnd.SetSeed(0);
