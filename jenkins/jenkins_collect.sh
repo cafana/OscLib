@@ -38,4 +38,5 @@ do
     rm -r $newdir/OscLib
 done
 
+rm -f ${TAG}.version
 cp -r jenkins/version ${TAG}.version
