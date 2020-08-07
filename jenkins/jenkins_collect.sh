@@ -20,7 +20,7 @@ do
     mv $newdir/OscLib/bin $newdir/$bin
     mv $newdir/OscLib/lib $newdir/$lib
     # will overwrite each other but should all be identical
-    mv $newdir/OscLib/OscLib/ups $TAG/
+    mv $newdir/OscLib/ups $TAG/
     for k in `find $newdir/OscLib -name '*.h'`
     do
         fname=${k/$newdir/}
