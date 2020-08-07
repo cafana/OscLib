@@ -20,6 +20,7 @@ do
     mv $newdir/OscLib/bin $newdir/$bin
     mv $newdir/OscLib/lib $newdir/$lib
     # will overwrite each other but should all be identical
+    mv $olddir/OscLib/ups $TAG/
     for k in `find $newdir/OscLib -name '*.h'`
     do
         fname=${k/$newdir/}
@@ -37,5 +38,5 @@ do
     rm -r $newdir/OscLib
 done
 
-mkdir $TAG/ups
-touch $TAG/ups/osclib.table
+ls
+cp -r jenkins/version ${TAG}.version

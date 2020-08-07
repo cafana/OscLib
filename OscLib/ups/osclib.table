@@ -1,0 +1,88 @@
+FILE=TABLE
+PRODUCT=osclib
+VERSION=v00.01
+
+FLAVOR=ANY
+QUALIFIERS = "debug:e17:stanfree"
+
+ACTION=SETUP
+  setupEnv()
+  proddir()
+
+  # for get-directory-name
+  setupRequired(cetpkgsupport)
+  setupRequired(root v6_16_00 -qe17:debug)
+  setupRequired(eigen v3.3.5)
+  setupRequired(boost v1_66_0a -qe17:debug)
+
+  EnvSet(OSCLIB_VERSION, ${UPS_PROD_VERSION} )
+  EnvSet(OSCLIB_INC, ${UPS_PROD_DIR}/include )
+  EnvSet(OSCLIB_FQ_DIR, ${OSCLIB_DIR}`get-directory-name subdir`.`echo ${UPS_PROD_QUALIFIERS} | tr ':' '.'` )
+  EnvSet(OSCLIB_LIB, ${OSCLIB_FQ_DIR}/lib )
+  EnvSet(OSCLIB_BIN, ${OSCLIB_FQ_DIR}/bin )
+  pathPrepend(PATH, ${OSCLIB_BIN} )
+
+
+FLAVOR=ANY
+QUALIFIERS = "e17:debug:stan"
+
+ACTION=SETUP
+  setupEnv()
+  proddir()
+
+  # for get-directory-name
+  setupRequired(cetpkgsupport)
+  setupRequired(root v6_16_00 -qe17:debug)
+  setupRequired(eigen v3.3.5)
+  setupRequired(boost v1_66_0a -qe17:debug)
+  setupRequired(stan_math v2.18.0 -qe17:debug)
+
+  EnvSet(OSCLIB_VERSION, ${UPS_PROD_VERSION} )
+  EnvSet(OSCLIB_INC, ${UPS_PROD_DIR}/include )
+  EnvSet(OSCLIB_FQ_DIR, ${OSCLIB_DIR}`get-directory-name subdir`.`echo ${UPS_PROD_QUALIFIERS} | tr ':' '.'` )
+  EnvSet(OSCLIB_LIB, ${OSCLIB_FQ_DIR}/lib )
+  EnvSet(OSCLIB_BIN, ${OSCLIB_FQ_DIR}/bin )
+  pathPrepend(PATH, ${UPS_PROD_DIR}/bin )
+
+
+FLAVOR=ANY
+QUALIFIERS = "prof:e17:stanfree"
+
+ACTION=SETUP
+  setupEnv()
+  proddir()
+
+  # for get-directory-name
+  setupRequired(cetpkgsupport)
+  setupRequired(root v6_16_00 -qe17:prof)
+  setupRequired(eigen v3.3.5)
+  setupRequired(boost v1_66_0a -qe17:prof)
+
+  EnvSet(OSCLIB_VERSION, ${UPS_PROD_VERSION} )
+  EnvSet(OSCLIB_INC, ${UPS_PROD_DIR}/include )
+  EnvSet(OSCLIB_FQ_DIR, ${OSCLIB_DIR}`get-directory-name subdir`.`echo ${UPS_PROD_QUALIFIERS} | tr ':' '.'` )
+  EnvSet(OSCLIB_LIB, ${OSCLIB_FQ_DIR}/lib )
+  EnvSet(OSCLIB_BIN, ${OSCLIB_FQ_DIR}/bin )
+  pathPrepend(PATH, ${OSCLIB_BIN} )
+
+
+FLAVOR=ANY
+QUALIFIERS = "e17:prof:stan"
+
+ACTION=SETUP
+  setupEnv()
+  proddir()
+
+  # for get-directory-name
+  setupRequired(cetpkgsupport)
+  setupRequired(root v6_16_00 -qe17:prof)
+  setupRequired(eigen v3.3.5)
+  setupRequired(boost v1_66_0a -qe17:prof)
+  setupRequired(stan_math v2.18.0 -qe17:prof)
+
+  EnvSet(OSCLIB_VERSION, ${UPS_PROD_VERSION} )
+  EnvSet(OSCLIB_INC, ${UPS_PROD_DIR}/include )
+  EnvSet(OSCLIB_FQ_DIR, ${OSCLIB_DIR}`get-directory-name subdir`.`echo ${UPS_PROD_QUALIFIERS} | tr ':' '.'` )
+  EnvSet(OSCLIB_LIB, ${OSCLIB_FQ_DIR}/lib )
+  EnvSet(OSCLIB_BIN, ${OSCLIB_FQ_DIR}/bin )
+  pathPrepend(PATH, ${UPS_PROD_DIR}/bin )
