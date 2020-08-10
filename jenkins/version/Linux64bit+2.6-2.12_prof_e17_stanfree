@@ -1,9 +1,9 @@
 FILE = version
 PRODUCT = osclib
-VERSION = v00.01
+VERSION = vXX.YY
 
 FLAVOR = Linux64bit+2.6-2.12
 QUALIFIERS = "prof:e17:stanfree"
-  PROD_DIR = osclib/v00.01/
+  PROD_DIR = osclib/vXX.YY/
   UPS_DIR = ups
   TABLE_FILE = osclib.table

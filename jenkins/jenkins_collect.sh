@@ -1,7 +1,11 @@
 #!/bin/bash
 
-TAG=v00.01
-rm -rf $TAG # clean out any previous build
+TAG=`git describe --tags`
+# clean out any previous build
+rm -rf v??.??
+rm -rf $TAG
+rm -rf v??.??.version
+rm -rf ${TAG}.version
 mkdir $TAG
 
 ls
@@ -21,6 +25,7 @@ do
     mv $newdir/OscLib/lib $newdir/$lib
     # will overwrite each other but should all be identical
     mv $newdir/OscLib/ups $TAG/
+    sed -i s/vXX.YY/$TAG/g ${TAG}/ups/osclib.table
     for k in `find $newdir/OscLib -name '*.h'`
     do
         fname=${k/$newdir/}
@@ -38,5 +43,5 @@ do
     rm -r $newdir/OscLib
 done
 
-rm -f ${TAG}.version
 cp -r jenkins/version ${TAG}.version
+sed -i s/vXX.YY/$TAG/g ${TAG}.version/*
