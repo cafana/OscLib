@@ -20,7 +20,13 @@ setup eigen v3.3.5 || exit 1
 
 if [ $STAN == stan ]
 then
-    setup stan_math v2.18.0 -q $QUALIFIER || exit 1
+    if [[ $QUALIFIER == *e19* ]]
+    then
+        # This is silly...
+        setup stan_math v2_18_0 -q $QUALIFIER || exit 1
+    else
+        setup stan_math v2.18.0 -q $QUALIFIER || exit 1
+    fi
 fi
 
 make clean # don't trust my build system
