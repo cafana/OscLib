@@ -8,7 +8,7 @@ source /cvmfs/nova.opensciencegrid.org/externals/setup || exit 1
 if [[ $QUALIFIER == *e19* ]]
 then
     # DUNE lblpwgtools versions
-    setup root v6_18_04d -q $QUALIFIER || exit 1
+    setup root v6_18_04d -q ${QUALIFIER}:py2 || exit 1
     setup boost v1_70_0 -q $QUALIFIER || exit 1
 else
     # NOvA versions

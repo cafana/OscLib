@@ -107,7 +107,7 @@ ACTION=SETUP
 
   # for get-directory-name
   setupRequired(cetpkgsupport)
-  setupRequired(root v6_18_04d -qe19:debug)
+  setupRequired(root v6_18_04d -qe19:debug:py2)
   setupRequired(eigen v3.3.5)
   setupRequired(boost v1_70_0 -qe19:debug)
 
@@ -129,7 +129,7 @@ ACTION=SETUP
 
   # for get-directory-name
   setupRequired(cetpkgsupport)
-  setupRequired(root v6_18_04d -qe19:debug)
+  setupRequired(root v6_18_04d -qe19:debug:py2)
   setupRequired(eigen v3.3.5)
   setupRequired(boost v1_70_0 -qe19:debug)
   setupRequired(stan_math v2.18.0 -qe19:debug)
@@ -152,7 +152,7 @@ ACTION=SETUP
 
   # for get-directory-name
   setupRequired(cetpkgsupport)
-  setupRequired(root v6_18_04d -qe19:prof)
+  setupRequired(root v6_18_04d -qe19:prof:py2)
   setupRequired(eigen v3.3.5)
   setupRequired(boost v1_70_0 -qe19:prof)
 
@@ -174,7 +174,7 @@ ACTION=SETUP
 
   # for get-directory-name
   setupRequired(cetpkgsupport)
-  setupRequired(root v6_18_04d -qe19:prof)
+  setupRequired(root v6_18_04d -qe19:prof:py2)
   setupRequired(eigen v3.3.5)
   setupRequired(boost v1_70_0 -qe19:prof)
   setupRequired(stan_math v2.18.0 -qe19:prof)
