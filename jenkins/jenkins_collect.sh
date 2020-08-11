@@ -2,9 +2,9 @@
 
 TAG=`git describe --tags`
 # clean out any previous build
-rm -rf v??.??
+rm -rf v??.*
 rm -rf $TAG
-rm -rf v??.??.version
+rm -rf v??.*
 rm -rf ${TAG}.version
 mkdir $TAG
 
