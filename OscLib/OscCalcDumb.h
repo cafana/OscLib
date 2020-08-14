@@ -16,7 +16,7 @@ namespace osc
   class OscCalcDumb: public osc::IOscCalc
   {
   public:
-    virtual IOscCalc* Copy() const {return new OscCalcDumb;}
+    virtual IOscCalc* Copy() const override {return new OscCalcDumb;}
     using IOscCalc::P;
     virtual double P(int flavBefore, int flavAfter, double E) override
     {
