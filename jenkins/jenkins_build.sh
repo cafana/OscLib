@@ -7,7 +7,7 @@ if [[ $QUALIFIER == *e19* ]]
 then
     # DUNE lblpwgtools versions
     source /cvmfs/dune.opensciencegrid.org/products/dune/setup_dune.sh || exit 1
-    setup root v6_18_04d -q ${QUALIFIER}:py2 || exit 1
+    setup root v6_18_04d -q ${QUALIFIER} || exit 1
     setup boost v1_70_0 -q $QUALIFIER || exit 1
     setup eigen v3_3_5 || exit 1
     if [ $STAN == stan ]; then setup stan_math v2_18_0 -q $QUALIFIER || exit 1; fi
