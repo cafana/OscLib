@@ -1,7 +1,7 @@
-#include "OscCalcDMP.h"
-#include <cmath>
+#include "OscLib/OscCalcDMP.h"
+#include "OscLib/PMNS_DMP.h"
 
-#include "PMNS_DMP.h"
+#include <cmath>
 
 namespace osc
 {

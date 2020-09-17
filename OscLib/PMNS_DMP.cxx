@@ -7,7 +7,7 @@
 #include "stan/math/rev/core/std_isnan.hpp"
 #endif
 
-#include "PMNS_DMP.h"
+#include "OscLib/PMNS_DMP.h"
 
 namespace osc 
 {

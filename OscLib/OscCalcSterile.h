@@ -10,8 +10,9 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include "IOscCalc.h"
-#include "PMNS_Sterile.h"
+#include "OscLib/IOscCalc.h"
+#include "OscLib/PMNS_Sterile.h"
+
 #include <vector>
 
 namespace osc

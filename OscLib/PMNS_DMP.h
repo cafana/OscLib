@@ -1,8 +1,7 @@
 #ifndef PMNSDMP_H
 #define PMNSDMP_H
-#include <iostream>
 
-#include "OscParameters.h"
+#include "OscLib/OscParameters.h"
 #include <Eigen/Eigen>
 using namespace Eigen;
 

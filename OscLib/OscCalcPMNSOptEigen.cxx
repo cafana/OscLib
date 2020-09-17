@@ -1,7 +1,8 @@
-#include "OscCalcPMNSOptEigen.h"
+#include "OscLib/OscCalcPMNSOptEigen.h"
+
 #include <cmath>
 
-//#include "PMNSOpt.cxx"
+//#include "OscLib/PMNSOpt.cxx"
 
 //#include "zhetrd3.cxx"
 //#include "zheevc3.cxx"

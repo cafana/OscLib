@@ -10,8 +10,8 @@
 // Modifications by MAAceroO <marioacero@mail.uniatlantico.edu.co>      //
 //////////////////////////////////////////////////////////////////////////
 
-#include "IOscCalc.h"
-#include "PMNS_NSI.h"
+#include "OscLib/IOscCalc.h"
+#include "OscLib/PMNS_NSI.h"
 
 namespace osc
 {

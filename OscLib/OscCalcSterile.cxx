@@ -1,4 +1,4 @@
-#include "OscCalcSterile.h"
+#include "OscLib/OscCalcSterile.h"
 
 #include <cassert>
 #include <cstdlib>

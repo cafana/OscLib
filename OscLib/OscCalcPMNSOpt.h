@@ -10,8 +10,8 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include "IOscCalc.h"
-#include "PMNSOpt.h"
+#include "OscLib/IOscCalc.h"
+#include "OscLib/PMNSOpt.h"
 
 #include <cassert>
 #include <unordered_map>

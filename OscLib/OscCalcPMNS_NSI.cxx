@@ -1,4 +1,4 @@
-#include "OscCalcPMNS_NSI.h"
+#include "OscLib/OscCalcPMNS_NSI.h"
 
 #include <cassert>
 #include <cstdlib>

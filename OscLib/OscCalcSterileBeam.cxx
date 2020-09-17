@@ -1,7 +1,5 @@
-
-
-#include "OscCalcSterile.h"
-#include "OscCalcSterileBeam.h"
+#include "OscLib/OscCalcSterile.h"
+#include "OscLib/OscCalcSterileBeam.h"
 
 #include <cassert>
 #include <cstdlib>

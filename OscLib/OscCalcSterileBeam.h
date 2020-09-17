@@ -11,10 +11,9 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include "IOscCalc.h"
-#include "OscCalcSterile.h"
-//#include "INoOscillations.h"
-#include "PMNS_Sterile.h"
+#include "OscLib/IOscCalc.h"
+#include "OscLib/OscCalcSterile.h"
+#include "OscLib/PMNS_Sterile.h"
 
 namespace osc
 {
