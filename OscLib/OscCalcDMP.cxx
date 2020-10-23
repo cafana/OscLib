@@ -5,6 +5,21 @@
 
 namespace osc
 {
+  template<typename T>
+  TMD5* 
+  _OscCalcDMP<T>::GetParamsHash() const
+  {
+    std::string txt = "DMP";
+    TMD5* ret = new TMD5;
+    ret->Update((unsigned char*)txt.c_str(), txt.size());
+    const int kNumParams = 8;
+    T buf[kNumParams] = {this->fRho, this->fL, this->fDmsq21, this->fDmsq32,
+			      this->fTh12, this->fTh13, this->fTh23, this->fdCP};
+    ret->Update((unsigned char*)buf, sizeof(T)*kNumParams);
+    ret->Final();
+    return ret;
+  }
+
 
   template<typename T>
   void _OscCalcDMP<T>::SaveLastParams()
