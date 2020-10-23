@@ -61,10 +61,13 @@ namespace osc
     void InvalidateCache() override { this->fCache.clear(); }
 
     std::string Name() const{ return  name;}
+
+  private:
     void FillCache(std::vector<double> const & energies); // move back to private
     _OscCache<T> fCache; // move back to private
 
-  private:
+    TMD5* GetParamsHash() const override;
+
     int ChannelCacheIdx(int flavBefore, int flavAfter) const;
     
     std::string name =  "OscCalcDMP";

@@ -101,10 +101,11 @@ namespace osc
 
     TMD5* GetParamsHash() const override;
     std::string Name() const { return  name; }
+
+  private:
     void FillCache(const std::vector<double> & energies);// move back to private
     _OscCache<double> fCache; // move back to private
 
-  private:
     std::string name =  "OscCalcPMNSOptEigen";
     int ChannelCacheIdx(int flavBefore, int flavAfter) const;
     
