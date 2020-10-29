@@ -86,7 +86,7 @@ namespace osc
     
     double P(int flavBefore, int flavAfter, double E) override;
     double P(int flavBefore, int flavAfter, double E, bool fast_and_loose);
-    Eigen::VectorXd P(int flavBefore, int flavAfter, 
+    Eigen::ArrayXd P(int flavBefore, int flavAfter,
 		     const std::vector<double>& E) override;
     
 

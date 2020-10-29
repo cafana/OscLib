@@ -47,7 +47,7 @@ namespace osc
     T P(int flavBefore, int flavAfter, double E, bool fast_and_loose);
 
     Array<T,Dynamic,Dynamic> P() {return this->fCache.probabilities;}
-    Matrix<T,Dynamic,1>      P(int flavBefore, int flavAfter, const std::vector<double> &E) override;
+    Array<T,Dynamic,1>      P(int flavBefore, int flavAfter, const std::vector<double> &E) override;
 
     void SetL     (double L       ) override {SaveLastParams(); this->fL      = L;}
     void SetRho   (double rho     ) override {SaveLastParams(); this->fRho    = rho;}

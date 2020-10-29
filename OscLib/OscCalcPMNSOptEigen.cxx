@@ -93,7 +93,7 @@ namespace osc {
   }
 
 
-  Eigen::VectorXd
+  Eigen::ArrayXd
   OscCalcPMNSOptEigen::P(int flavBefore, int flavAfter, const std::vector<double>& E)
   {
     // Are there probabilities cached and can we use them?

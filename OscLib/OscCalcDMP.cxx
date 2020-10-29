@@ -81,7 +81,7 @@ namespace osc
 
 
   template<typename T>
-  Matrix<T, Dynamic, 1> _OscCalcDMP<T>::P(int flavBefore, int flavAfter, const std::vector<double> &E)
+  Array<T, Dynamic, 1> _OscCalcDMP<T>::P(int flavBefore, int flavAfter, const std::vector<double> &E)
   {
     if (fCache.energies.size() != (size_t) fCache.probabilities.cols() &&
         fCache.energies.size() != 0)

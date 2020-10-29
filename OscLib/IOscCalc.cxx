@@ -23,15 +23,20 @@ namespace{
 
 namespace osc
 {
-  template<class T>
-  Eigen::Matrix<T,Eigen::Dynamic,1>
-  _IOscCalc<T>::P(int flavBefore, int flavAfter, const std::vector<double> &E)
+  template<class T> Eigen::Array<T, Eigen::Dynamic, 1> _IOscCalc<T>::
+  P(int flavBefore, int flavAfter, const std::vector<double>& E)
   {
     Eigen::Matrix<T,Eigen::Dynamic,1> ret(E.size());
     for(auto i = 0u; i < E.size(); i++) {
       ret(i) = this->P(flavBefore, flavAfter, E[i]);
     }
     return ret.array().isNaN().select(0, ret);
+  }
+
+  template<class T> Eigen::Array<T, Eigen::Dynamic, 1> _IOscCalc<T>::
+  P(int flavBefore, int flavAfter, const Eigen::ArrayXd& E)
+  {
+    return P(flavBefore, flavAfter, std::vector<double>(&E[0], &E[0]+E.size()));
   }
 
   //---------------------------------------------------------------------------

@@ -26,7 +26,12 @@ namespace osc
 
     /// E in GeV; flavors as PDG codes (so, neg==>antinu)
     virtual T P(int flavBefore, int flavAfter, double E) = 0;
-    virtual Eigen::Matrix<T,Eigen::Dynamic,1> P(int flavBefore, int flavAfter, const std::vector<double> &E);
+    /// Default implementation forwards to non-vector version using a simple
+    /// loop. Override if your calculator has a more efficient implementation.
+    virtual Eigen::Array<T, Eigen::Dynamic, 1> P(int flavBefore, int flavAfter, const std::vector<double>& E);
+    /// Default implementation forawrds to vector<double> version. Override if
+    /// your calculator has a more efficient implementation.
+    virtual Eigen::Array<T, Eigen::Dynamic, 1> P(int flavBefore, int flavAfter, const Eigen::ArrayXd& E);
       
     /// \brief Use to check two calculators are in the same state
     ///
