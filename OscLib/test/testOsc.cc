@@ -7,6 +7,7 @@
 #include "OscLib/OscCalcPMNSOpt.h"
 #include "OscLib/OscCalcDMP.h"
 #include "OscLib/OscCalcPMNS_CPT.h"
+#include "OscLib/OscCalcAnalytic.h"
 
 #include "TCanvas.h"
 #include "TFile.h"
@@ -41,17 +42,19 @@ int main()
   osc::OscCalcPMNS osc3;
   osc::OscCalcPMNSOpt osc4;
   osc::OscCalcPMNS_CPT osc5;
+  osc::OscCalcAnalytic osc5b;
 
-  std::vector<osc::IOscCalcAdjustable*> oscs {&osc1, &osc2, &osc3, &osc4, &osc5};
+  std::vector<osc::IOscCalcAdjustable*> oscs {&osc1, &osc2, &osc3, &osc4, &osc5, &osc5b};
 #ifdef OSCLIB_STAN
   osc::_OscCalcPMNS<stan::math::var> osc6;
   osc::_OscCalcPMNSOpt<stan::math::var> osc7;
   osc::_OscCalcDMP<stan::math::var> osc8;
-  std::vector<osc::_IOscCalcAdjustable<stan::math::var>*> oscStan {&osc6, &osc7, &osc8};
+  osc::_OscCalcAnalytic<stan::math::var> osc9;
+  std::vector<osc::_IOscCalcAdjustable<stan::math::var>*> oscStan {&osc6, &osc7, &osc8, &osc9};
 #else
   std::vector<void*> oscStan;
 #endif
-  std::vector<TString> names {"Approx", "General", "PMNS", "PMNSOpt", "PMNS_CPT", "PMNS_Stan", "PMNSOpt_Stan", "PMNSOpt_DMP_Stan"};
+  std::vector<TString> names {"Approx", "General", "PMNS", "PMNSOpt", "PMNS_CPT", "Analytic", "PMNS_Stan", "PMNSOpt_Stan", "PMNSOpt_DMP_Stan", "Analytic_Stan"};
   std::vector<int> colors {kBlue, kRed, kGreen+2, kMagenta, kBlack, kCyan, kOrange, kViolet+1};
 
   const double L = 800;

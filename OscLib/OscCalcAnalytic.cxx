@@ -2,87 +2,105 @@
 
 #include <cassert>
 
-// Stan doesn't provide sincos(). Make sure not to hide the fast one for double
-template<class T> std::enable_if_t<!std::is_arithmetic_v<T>, void> sincos(const T& x, T* sx, T* cx)
+#ifdef OSCLIB_STAN
+#include "stan/math/rev/scal.hpp"
+
+// Stan doesn't provide sincos()
+void sincos(const stan::math::var& x, stan::math::var* sx, stan::math::var* cx)
 {
   *sx = sin(x);
   *cx = cos(x);
 }
+#endif
+
+template<class T, class U> void sincos(T& x,
+                                       Eigen::Array<U, Eigen::Dynamic, 1>* sx,
+                                       Eigen::Array<U, Eigen::Dynamic, 1>* cx)
+{
+  // Presumably this is faster than the commented out version below
+  sx->resize(x.size());
+  cx->resize(x.size());
+  for(int i = 0; i < x.size(); ++i) sincos(x[i], &(*sx)[i], &(*cx)[i]);
+
+  //  *sx = sin(x);
+  //  *cx = cos(x);
+}
 
 namespace osc
 {
-  template<class T> inline __attribute__((always_inline)) cmplx<T>
-  operator*(const cmplx<T>& x, const cmplx<T>& y)
+  template<class T, class U> cmplx<T, U> make_cmplx(const T& re, const U& im){return cmplx<T, U>(re, im);}
+
+  template<class A, class B, class C, class D> inline __attribute__((always_inline)) auto
+  operator*(const cmplx<A, B>& x, const cmplx<C, D>& y)
   {
-    return cmplx<T>(x.re*y.re - x.im*y.im, x.re*y.im + x.im*y.re);
+    return make_cmplx(x.re*y.re - x.im*y.im, x.re*y.im + x.im*y.re);
   }
 
-  template<class T, class U> inline __attribute__((always_inline)) cmplx<T>
-  operator*(const U& x, const cmplx<T>& y)
+  template<class A, class B, class C> inline __attribute__((always_inline)) auto
+  operator*(const A& x, const cmplx<B, C>& y)
   {
-    return cmplx<T>(x*y.re, x*y.im);
+    return make_cmplx(x*y.re, x*y.im);
   }
 
-  template<class T, class U> inline __attribute__((always_inline)) cmplx<T>
-  operator*(const cmplx<T>& x, const U& y)
+  template<class A, class B, class C> inline __attribute__((always_inline)) auto
+  operator*(const cmplx<A, B>& x, const C& y)
   {
-    return cmplx<T>(x.re*y, x.im*y);
+    return make_cmplx(x.re*y, x.im*y);
   }
 
-  template<class T, class U> inline __attribute__((always_inline)) cmplx<T>
+  template<class T, class U> inline __attribute__((always_inline)) auto
   operator/(const cmplx<T>& x, const U& y)
   {
     return cmplx<T>(x.re/y, x.im/y);
   }
 
-  template<class T> inline __attribute__((always_inline)) cmplx<T>
-  operator+(const cmplx<T>& x, const cmplx<T>& y)
+  template<class A, class B, class C, class D> inline __attribute__((always_inline)) auto
+  operator+(const cmplx<A, B>& x, const cmplx<C, D>& y)
   {
-    return cmplx<T>(x.re + y.re, x.im + y.im);
+    return make_cmplx(x.re + y.re, x.im + y.im);
   }
 
-  template<class T, class U> inline __attribute__((always_inline)) cmplx<T>
-  operator+(const cmplx<T>& x, const U& y)
+  template<class A, class B, class C> inline __attribute__((always_inline)) auto
+  operator+(const cmplx<A, B>& x, const C& y)
   {
-    return cmplx<T>(x.re + y, x.im);
+    return make_cmplx(x.re + y, x.im);
   }
 
-  template<class T, class U> inline __attribute__((always_inline)) cmplx<T>
-  operator+(const U& x, const cmplx<T>& y)
+  template<class A, class B, class C> inline __attribute__((always_inline)) auto
+  operator+(const A& x, const cmplx<B, C>& y)
   {
-    return cmplx<T>(x + y.re, y.im);
+    return make_cmplx(x + y.re, y.im);
   }
 
-  template<class T> inline __attribute__((always_inline)) cmplx<T>
-  operator-(const cmplx<T>& x, const cmplx<T>& y)
+  template<class A, class B, class C, class D> inline __attribute__((always_inline)) auto
+  operator-(const cmplx<A, B>& x, const cmplx<C, D>& y)
   {
-    return cmplx<T>(x.re - y.re, x.im - y.im);
+    return make_cmplx(x.re - y.re, x.im - y.im);
   }
 
-  template<class T, class U> inline __attribute__((always_inline)) cmplx<T>
-  operator-(const cmplx<T>& x, const U& y)
+  template<class A, class B, class C> inline __attribute__((always_inline)) auto
+  operator-(const cmplx<A, B>& x, const C& y)
   {
-    return cmplx<T>(x.re - y, x.im);
+    return make_cmplx(x.re - y, x.im);
   }
 
-  template<class T, class U> inline __attribute__((always_inline)) cmplx<T>
-  operator-(const U& x, const cmplx<T>& y)
+  template<class A, class B, class C> inline __attribute__((always_inline)) auto
+  operator-(const A& x, const cmplx<B, C>& y)
   {
-    return cmplx<T>(x - y.re, -y.im);
+    return make_cmplx(x - y.re, -y.im);
   }
 
   template<class T> inline __attribute__((always_inline)) cmplx<T>
   operator-(const cmplx<T>& x)
   {
-    return cmplx<T>(-x.re, -x.im);
+    return make_cmplx(-x.re, -x.im);
   }
 
   //---------------------------------------------------------------------------
   template<class T> _OscCalcAnalytic<T>::_OscCalcAnalytic()
     : fDirty12(true), fDirty13(true), fDirty23(true), fDirtyCP(true), fDirtyMasses(true),
       Ue3(0, 0), Um2(0, 0), Ut2(0, 0),
-      Hem(0, 0), Het(0, 0), Hmt(0, 0),
-      Mem(0, 0), Met(0, 0), Mmt(0, 0)
+      Hem(0, 0), Het(0, 0), Hmt(0, 0)
   {
   }
 
@@ -104,7 +122,7 @@ namespace osc
     if(L == this->fL) return;
 
     this->fL = L;
-    fProbCache.clear();
+    ClearProbCaches();
   }
 
   //---------------------------------------------------------------------------
@@ -113,7 +131,7 @@ namespace osc
     if(rho == this->fRho) return;
 
     this->fRho = rho;
-    fProbCache.clear();
+    ClearProbCaches();
   }
 
   //---------------------------------------------------------------------------
@@ -231,22 +249,24 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  template<class T> typename _OscCalcAnalytic<T>::Eigenvalues _OscCalcAnalytic<T>::GetEigenvalues(double E)
+  template<class T> Eigenvalues<T> Hermitian<T>::GetEigenvalues(const T& E)
   {
+    const auto& M = *this;
+
     // const T a = 1; // cube term
 
-    const T b = -Mee-Mmm-Mtt; // square term
+    const T b = -M.ee-M.mm-M.tt; // square term
 
-    const T Lem = Mem.norm();
-    const T Let = Met.norm();
-    const T Lmt = Mmt.norm();
+    const T Lem = M.em.norm();
+    const T Let = M.et.norm();
+    const T Lmt = M.mt.norm();
 
     // Matrix is Hermitian
-    const T c =  Mee*Mmm + Mee*Mtt + Mmm*Mtt - Lem - Let - Lmt; // linear term
+    const T c =  M.ee*M.mm + M.ee*M.tt + M.mm*M.tt - Lem - Let - Lmt; // linear term
 
-    const T d = (Mee*Lmt + Mmm*Let + Mtt*Lem
-                      - Mee*Mmm*Mtt
-                      -2*(Mem.re * Mmt.re * Met.re + Mem.re * Mmt.im * Met.im + Mem.im * Mmt.re * Met.im - Mem.im * Mmt.im * Met.re)); // const term
+    const T d = (M.ee*Lmt + M.mm*Let + M.tt*Lem
+                 - M.ee*M.mm*M.tt
+                  -2*(M.em.re * M.mt.re * M.et.re + M.em.re * M.mt.im * M.et.im + M.em.im * M.mt.re * M.et.im - M.em.im * M.mt.im * M.et.re)); // const term
 
     const std::array<T, 3> xs = SolveCubic(b, c, d);
 
@@ -294,11 +314,11 @@ namespace osc
     Het = d2 * Ue2 * Ut2.conj() + d3 * Ue3 * Ut3;
     Hmt = d2 * Um2 * Ut2.conj() + d3 * Um3 * Ut3;
 
-    fProbCache.clear();
+    ClearProbCaches();
   }
 
   //---------------------------------------------------------------------------
-  template<class T> T _OscCalcAnalytic<T>::Probs::P(int from, int to) const
+  template<class T> T Probs<T>::P(int from, int to) const
   {
     // convert flavours to indices into matrix
     const int i0 = (from-12)/2;
@@ -320,7 +340,8 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  template<class T> T _OscCalcAnalytic<T>::P(int from, int to, double E)
+  template<class T> template<class VT, class KVT> VT _OscCalcAnalytic<T>::
+  _P(int from, int to, const KVT& E)
   {
     // -E effectively flips rho and conjugates H
     if(from < 0) return P(-from, -to, -E);
@@ -345,37 +366,59 @@ namespace osc
         UpdateHamiltonian();
       }
       else{
-        auto it = fProbCache.find(E);
-        if(it != fProbCache.end()) return it->second.P(from, to);
+        auto it = ProbCache<KVT, VT>::find(E);
+        if(it != ProbCache<KVT, VT>::end()) return it->second.P(from, to);
       }
     }
 
     fDirty12 = fDirty13 = fDirty23 = fDirtyCP = fDirtyMasses = false;
 
-    const double k = -this->fL * 2*1.267 / E;
-    Mee = Hee * k  - this->fL * Hmat();
-    Mem = Hem * k;
-    Mmm = Hmm * k;
-    Met = Het * k;
-    Mmt = Hmt * k;
-    Mtt = Htt * k;
+    const KVT k = -this->fL * 2*1.267 / E;
+    Hermitian<VT> M;
+    M.ee = Hee * k  - this->fL * Hmat();
+    M.em = Hem * k;
+    M.mm = Hmm * k;
+    M.et = Het * k;
+    M.mt = Hmt * k;
+    M.tt = Htt * k;
 
     // Matrix exponent is based on https://www.wolframalpha.com/input/?i=matrixExp+%5B%5Br%2Cs%2Ct%5D%2C%5Bu%2Cv%2Cw%5D%2C%5Bx%2Cy%2Cz%5D%5D
 
-    const Eigenvalues es = GetEigenvalues(E);
+    const Eigenvalues<VT> es = M.GetEigenvalues(E);
+    const VT Aee = M.mm*M.tt - M.mt.norm();
+    const VT Amm = M.ee*M.tt - M.et.norm();
+    const cmplx<VT> Aem = M.et*M.mt.conj() - M.em*M.tt;
 
-    const T Aee = Mmm*Mtt - Mmt.norm();
-    const T Amm = Mee*Mtt - Met.norm();
-    const cmplx<T> Aem = Met*Mmt.conj() - Mem*Mtt;
+    const Probs<VT> ps((Aee       *es.sume - (M.mm+M.tt) *es.sumxe + es.sumxxe).norm(),
+                       (Aem.conj()*es.sume +  M.em.conj()*es.sumxe            ).norm(),
+                       (Aem       *es.sume +  M.em       *es.sumxe            ).norm(),
+                       (Amm       *es.sume - (M.ee+M.tt) *es.sumxe + es.sumxxe).norm());
 
-    const Probs ps((Aee       *es.sume - (Mmm+Mtt)  *es.sumxe + es.sumxxe).norm(),
-                   (Aem.conj()*es.sume +  Mem.conj()*es.sumxe            ).norm(),
-                   (Aem       *es.sume +  Mem       *es.sumxe            ).norm(),
-                   (Amm       *es.sume - (Mee+Mtt)  *es.sumxe + es.sumxxe).norm());
-
-    fProbCache.emplace(E, ps);
+    ProbCache<KVT, VT>::emplace(E, ps);
 
     return ps.P(from, to);
+  }
+
+  //---------------------------------------------------------------------------
+  template<class T> T _OscCalcAnalytic<T>::
+  P(int from, int to, double E)
+  {
+    return _P<T>(from, to, E);
+  }
+
+  //---------------------------------------------------------------------------
+  template<class T> Eigen::Array<T, Eigen::Dynamic, 1> _OscCalcAnalytic<T>::
+  P(int from, int to, const Eigen::ArrayXd& E)
+  {
+    return _P<Eigen::Array<T, Eigen::Dynamic, 1>>(from, to, E);
+  }
+
+  //---------------------------------------------------------------------------
+  template<class T> Eigen::Array<T, Eigen::Dynamic, 1> _OscCalcAnalytic<T>::
+  P(int from, int to, const std::vector<double>& E)
+  {
+    // Forward to the eigen implementation
+    return P(from, to, Eigen::Map<const Eigen::ArrayXd>(E.data(), E.size()));
   }
 
 } // namespace
@@ -385,6 +428,5 @@ namespace osc
 template class osc::_OscCalcAnalytic<double>;
 
 #ifdef OSCLIB_STAN
-#include "stan/math/rev/scal.hpp"
 template class osc::_OscCalcAnalytic<stan::math::var>;
 #endif
