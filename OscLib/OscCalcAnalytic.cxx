@@ -14,8 +14,8 @@ void sincos(const stan::math::var& x, stan::math::var* sx, stan::math::var* cx)
 #endif
 
 template<class T, class U> void sincos(T& x,
-                                       Eigen::Array<U, Eigen::Dynamic, 1>* sx,
-                                       Eigen::Array<U, Eigen::Dynamic, 1>* cx)
+                                       Eigen::ArrayX<U>* sx,
+                                       Eigen::ArrayX<U>* cx)
 {
   // Presumably this is faster than the commented out version below
   sx->resize(x.size());
@@ -26,7 +26,7 @@ template<class T, class U> void sincos(T& x,
   //  *cx = cos(x);
 }
 
-namespace osc
+namespace osc::analytic
 {
   template<class T, class U> cmplx<T, U> make_cmplx(const T& re, const U& im){return cmplx<T, U>(re, im);}
 
@@ -97,7 +97,7 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  template<class T> _OscCalcAnalytic<T>::_OscCalcAnalytic()
+  template<class T> _OscCalc<T>::_OscCalc()
     : fDirty12(true), fDirty13(true), fDirty23(true), fDirtyCP(true), fDirtyMasses(true),
       Ue3(0, 0), Um2(0, 0), Ut2(0, 0),
       Hem(0, 0), Het(0, 0), Hmt(0, 0)
@@ -105,19 +105,19 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  template<class T> _OscCalcAnalytic<T>::~_OscCalcAnalytic()
+  template<class T> _OscCalc<T>::~_OscCalc()
   {
   }
 
   //---------------------------------------------------------------------------
-  template<class T> _IOscCalcAdjustable<T>* _OscCalcAnalytic<T>::
+  template<class T> _IOscCalcAdjustable<T>* _OscCalc<T>::
   Copy() const
   {
-    return new _OscCalcAnalytic<T>(*this);
+    return new _OscCalc<T>(*this);
   }
 
   //---------------------------------------------------------------------------
-  template<class T> void _OscCalcAnalytic<T>::SetL(double L)
+  template<class T> void _OscCalc<T>::SetL(double L)
   {
     if(L == this->fL) return;
 
@@ -126,7 +126,7 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  template<class T> void _OscCalcAnalytic<T>::SetRho(double rho)
+  template<class T> void _OscCalc<T>::SetRho(double rho)
   {
     if(rho == this->fRho) return;
 
@@ -135,7 +135,7 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  template<class T> void _OscCalcAnalytic<T>::SetDmsq21(const T& dmsq21)
+  template<class T> void _OscCalc<T>::SetDmsq21(const T& dmsq21)
   {
     if constexpr(std::is_arithmetic_v<T>) if(dmsq21 == this->fDmsq21) return;
 
@@ -144,7 +144,7 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  template<class T> void _OscCalcAnalytic<T>::SetDmsq32(const T& dmsq32)
+  template<class T> void _OscCalc<T>::SetDmsq32(const T& dmsq32)
   {
     if constexpr(std::is_arithmetic_v<T>) if(dmsq32 == this->fDmsq32) return;
 
@@ -153,7 +153,7 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  template<class T> void _OscCalcAnalytic<T>::SetTh23(const T& th23)
+  template<class T> void _OscCalc<T>::SetTh23(const T& th23)
   {
     if constexpr(std::is_arithmetic_v<T>) if(th23 == this->fTh23) return;
 
@@ -162,7 +162,7 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  template<class T> void _OscCalcAnalytic<T>::SetTh13(const T& th13)
+  template<class T> void _OscCalc<T>::SetTh13(const T& th13)
   {
     if constexpr(std::is_arithmetic_v<T>) if(th13 == this->fTh13) return;
 
@@ -171,7 +171,7 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  template<class T> void _OscCalcAnalytic<T>::SetTh12(const T& th12)
+  template<class T> void _OscCalc<T>::SetTh12(const T& th12)
   {
     if constexpr(std::is_arithmetic_v<T>) if(th12 == this->fTh12) return;
 
@@ -180,7 +180,7 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  template<class T> void _OscCalcAnalytic<T>::SetdCP(const T& delta)
+  template<class T> void _OscCalc<T>::SetdCP(const T& delta)
   {
     if constexpr(std::is_arithmetic_v<T>) if(delta == this->fdCP) return;
 
@@ -189,13 +189,13 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  template<class T> TMD5* _OscCalcAnalytic<T>::GetParamsHash() const
+  template<class T> TMD5* _OscCalc<T>::GetParamsHash() const
   {
     return _IOscCalcAdjustable<T>::GetParamsHashDefault("Analytic");
   }
 
   //---------------------------------------------------------------------------
-  template<class T> double _OscCalcAnalytic<T>::Hmat()
+  template<class T> double _OscCalc<T>::Hmat()
   {
     // Need to convert avogadro's constant so that the total term comes out in
     // units of inverse distance. Note that Ne will be specified in g/cm^-3
@@ -287,7 +287,7 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  template<class T> void _OscCalcAnalytic<T>::UpdatePMNS()
+  template<class T> void _OscCalc<T>::UpdatePMNS()
   {
     Ue2 = s12*c13;
     Um3 = s23*c13;
@@ -300,7 +300,7 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  template<class T> void _OscCalcAnalytic<T>::UpdateHamiltonian()
+  template<class T> void _OscCalc<T>::UpdateHamiltonian()
   {
     // d1 would be zero, so all those terms drop out
     const T d2 = this->fDmsq21;
@@ -340,7 +340,7 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  template<class T> template<class VT, class KVT> VT _OscCalcAnalytic<T>::
+  template<class T> template<class VT, class KVT> VT _OscCalc<T>::
   _P(int from, int to, const KVT& E)
   {
     // -E effectively flips rho and conjugates H
@@ -400,21 +400,20 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  template<class T> T _OscCalcAnalytic<T>::
-  P(int from, int to, double E)
+  template<class T> T _OscCalc<T>::P(int from, int to, double E)
   {
     return _P<T>(from, to, E);
   }
 
   //---------------------------------------------------------------------------
-  template<class T> Eigen::Array<T, Eigen::Dynamic, 1> _OscCalcAnalytic<T>::
+  template<class T> Eigen::ArrayX<T> _OscCalc<T>::
   P(int from, int to, const Eigen::ArrayXd& E)
   {
     return _P<Eigen::Array<T, Eigen::Dynamic, 1>>(from, to, E);
   }
 
   //---------------------------------------------------------------------------
-  template<class T> Eigen::Array<T, Eigen::Dynamic, 1> _OscCalcAnalytic<T>::
+  template<class T> Eigen::ArrayX<T> _OscCalc<T>::
   P(int from, int to, const std::vector<double>& E)
   {
     // Forward to the eigen implementation
@@ -425,8 +424,8 @@ namespace osc
 
 
 // Instantiate
-template class osc::_OscCalcAnalytic<double>;
+template class osc::analytic::_OscCalc<double>;
 
 #ifdef OSCLIB_STAN
-template class osc::_OscCalcAnalytic<stan::math::var>;
+template class osc::analytic::_OscCalc<stan::math::var>;
 #endif

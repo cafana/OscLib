@@ -6,6 +6,13 @@
 #include <functional>
 #include <unordered_map>
 
+namespace Eigen
+{
+  // Seems like an oversight to me...
+  template<class T> using ArrayX = Eigen::Array<T, Eigen::Dynamic, 1>;
+}
+
+// We want to put ArrayXd into an unordered_map, so define hash and equality
 namespace std
 {
   template<> struct hash<Eigen::ArrayXd>
@@ -13,7 +20,7 @@ namespace std
     size_t operator()(const Eigen::ArrayXd& x) const
     {
       // Adapted from the boost `hash_combine` function
-      // http://www.boost.org/doc/libs/1_55_0/doc/html/hash/reference.html#boost.hash_combine .
+      // http://www.boost.org/doc/libs/1_55_0/doc/html/hash/reference.html#boost.hash_combine
 
       size_t seed = 0;
       for(int i = 0; i < x.size(); ++i) {
@@ -32,7 +39,7 @@ namespace std
   };
 }
 
-namespace osc
+namespace osc::analytic
 {
   /// std::complex takes a lot of care with inf/nan which we don't want
   template<class T, class U = T> struct cmplx
@@ -90,11 +97,13 @@ namespace osc
 
   template<class KT, class VT> class ProbCache : public std::unordered_map<KT, Probs<VT>> {};
 
-  template<class T> class _OscCalcAnalytic: public _IOscCalcAdjustable<T>, protected ProbCache<double, T>, protected ProbCache<Eigen::ArrayXd, Eigen::Array<T, Eigen::Dynamic, 1>>
+  template<class T> class _OscCalc: public _IOscCalcAdjustable<T>,
+                                    protected ProbCache<double, T>,
+                                    protected ProbCache<Eigen::ArrayXd, Eigen::ArrayX<T>>
   {
   public:
-    _OscCalcAnalytic();
-    virtual ~_OscCalcAnalytic();
+    _OscCalc();
+    virtual ~_OscCalc();
     using _IOscCalc<T>::P;
 
     virtual _IOscCalcAdjustable<T>* Copy() const override;
@@ -114,8 +123,8 @@ namespace osc
     virtual void SetdCP(const T& dCP) override;
 
     virtual T P(int from, int to, double E) override;
-    virtual Eigen::Array<T, Eigen::Dynamic, 1> P(int from, int to, const std::vector<double>& E) override;
-    virtual Eigen::Array<T, Eigen::Dynamic, 1> P(int from, int to, const Eigen::ArrayXd& E) override;
+    virtual Eigen::ArrayX<T> P(int from, int to, const std::vector<double>& E) override;
+    virtual Eigen::ArrayX<T> P(int from, int to, const Eigen::ArrayXd& E) override;
 
     virtual TMD5* GetParamsHash() const override;
 
@@ -123,7 +132,7 @@ namespace osc
     void ClearProbCaches()
     {
       ProbCache<double, T>::clear();
-      ProbCache<Eigen::ArrayXd, Eigen::Array<T, Eigen::Dynamic, 1>>::clear();
+      ProbCache<Eigen::ArrayXd, Eigen::ArrayX<T>>::clear();
     }
 
     /// Actual implementation of P(). VT is potentially a vector type, if a
@@ -151,11 +160,16 @@ namespace osc
     inline __attribute__((always_inline)) double Hmat();
 
   private:
-    _OscCalcAnalytic(const _OscCalcAnalytic&) = default;
-    _OscCalcAnalytic& operator=(const _OscCalcAnalytic&) = default;
+    _OscCalc(const _OscCalc&) = default;
+    _OscCalc& operator=(const _OscCalc&) = default;
   };
+} // end namespaces
 
-  typedef _OscCalcAnalytic<double> OscCalcAnalytic;
-} // end namespace
+// Public names
+namespace osc
+{
+  template<class T> using _OscCalcAnalytic = osc::analytic::_OscCalc<T>;
+  using OscCalcAnalytic = _OscCalcAnalytic<double>;
+}
 
 #endif
