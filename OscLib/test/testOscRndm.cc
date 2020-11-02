@@ -6,6 +6,7 @@
 #include "OscLib/OscCalcPMNS.h"
 #include "OscLib/OscCalcPMNSOpt.h"
 #include "OscLib/OscCalcPMNS_CPT.h"
+#include "OscLib/OscCalcAnalytic.h"
 
 #include "TCanvas.h"
 #include "TFile.h"
@@ -32,7 +33,7 @@ int main()
   double dmsq21, dmsq32, th12, th23, th13, delta, E, rho, L;
   int anti, from, to;
 
-  const int kNumCalcs = 5;
+  const int kNumCalcs = 6;
   const int kNumDiffs = kNumCalcs*(kNumCalcs-1)/2;
   const int kRows = GetRows(kNumDiffs);
   const int kCols = kNumDiffs/kRows;
@@ -47,9 +48,10 @@ int main()
   osc::OscCalcPMNS osc3;
   osc::OscCalcPMNSOpt osc4;
   osc::OscCalcPMNS_CPT osc5;
+  osc::OscCalcAnalytic osc6;
 
-  osc::IOscCalcAdjustable* oscs[kNumCalcs] = {&osc1, &osc2, &osc3, &osc4, &osc5};
-  const TString names[kNumCalcs] = {"Approx", "General", "PMNS", "PMNSOpt", "PMNS_CPT"};
+  osc::IOscCalcAdjustable* oscs[kNumCalcs] = {&osc1, &osc2, &osc3, &osc4, &osc5, &osc6};
+  const TString names[kNumCalcs] = {"Approx", "General", "PMNS", "PMNSOpt", "PMNS_CPT", "Analytic"};
 
   const int kIter = 10000;
 
