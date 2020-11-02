@@ -110,42 +110,42 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  void OscCalcSterile::SetDmsq21(const double& dmsq21)
+  void OscCalcSterile::SetDmsq21(const double&)
   {
     std::cerr << "Must use SetDm!" << std::endl;
     assert(false);
   }
 
   //---------------------------------------------------------------------------
-  void OscCalcSterile::SetDmsq32(const double& dms32)
+  void OscCalcSterile::SetDmsq32(const double&)
   {
     std::cerr << "Must use SetDm!" << std::endl;
     assert(false);
   }
 
   //---------------------------------------------------------------------------
-  void OscCalcSterile::SetTh12(const double& th12)
+  void OscCalcSterile::SetTh12(const double&)
   {
     std::cerr << "Must use SetAngle!" << std::endl;
     assert(false);
   }
 
   //---------------------------------------------------------------------------
-  void OscCalcSterile::SetTh13(const double& th13)
+  void OscCalcSterile::SetTh13(const double&)
   {
     std::cerr << "Must use SetAngle!" << std::endl;
     assert(false);
   }
 
   //---------------------------------------------------------------------------
-  void OscCalcSterile::SetTh23(const double& th23)
+  void OscCalcSterile::SetTh23(const double&)
   {
     std::cerr << "Must use SetAngle!" << std::endl;
     assert(false);
   }
 
   //---------------------------------------------------------------------------
-  void OscCalcSterile::SetdCP(const double& dCP)
+  void OscCalcSterile::SetdCP(const double&)
   {
     std::cerr << "Must use SetDelta!" << std::endl;
     assert(false);
@@ -218,8 +218,7 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  double OscCalcSterileTrivial::P(
-    int flavBefore, int flavAfter, double E)
+  double OscCalcSterileTrivial::P(int, int, double)
   {
     return 1;
   }

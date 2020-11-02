@@ -249,7 +249,7 @@ namespace osc::analytic
   }
 
   //---------------------------------------------------------------------------
-  template<class T> Eigenvalues<T> Hermitian<T>::GetEigenvalues(const T& E)
+  template<class T> Eigenvalues<T> Hermitian<T>::GetEigenvalues()
   {
     const auto& M = *this;
 
@@ -384,7 +384,7 @@ namespace osc::analytic
 
     // Matrix exponent is based on https://www.wolframalpha.com/input/?i=matrixExp+%5B%5Br%2Cs%2Ct%5D%2C%5Bu%2Cv%2Cw%5D%2C%5Bx%2Cy%2Cz%5D%5D
 
-    const Eigenvalues<VT> es = M.GetEigenvalues(E);
+    const Eigenvalues<VT> es = M.GetEigenvalues();
     const VT Aee = M.mm*M.tt - M.mt.norm();
     const VT Amm = M.ee*M.tt - M.et.norm();
     const cmplx<VT> Aem = M.et*M.mt.conj() - M.em*M.tt;

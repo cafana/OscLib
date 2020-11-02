@@ -74,7 +74,7 @@ namespace osc::analytic
     Hermitian() : em({}, {}), et({}, {}), mt({}, {}) {}
 
     inline __attribute__((always_inline))
-    Eigenvalues<T> GetEigenvalues(const T& E);
+    Eigenvalues<T> GetEigenvalues();
 
     T          ee;   cmplx<T> em;   cmplx<T>  et;
     /*cmplx<T> me;*/ T        mm;   cmplx<T>  mt;

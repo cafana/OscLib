@@ -48,6 +48,7 @@ namespace osc
 
     Array<T,Dynamic,Dynamic> P() {return this->fCache.probabilities;}
     Array<T,Dynamic,1>      P(int flavBefore, int flavAfter, const std::vector<double> &E) override;
+    using _IOscCalcAdjustable<T>::P;
 
     void SetL     (double L       ) override {SaveLastParams(); this->fL      = L;}
     void SetRho   (double rho     ) override {SaveLastParams(); this->fRho    = rho;}
