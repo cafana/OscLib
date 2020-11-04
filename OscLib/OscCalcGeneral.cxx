@@ -7,9 +7,11 @@
 #include "OscLib/OscCalcGeneral.h"
 
 #include <boost/serialization/array_wrapper.hpp>
+
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunknown-warning-option"
+#ifndef __clang__
 #pragma GCC diagnostic ignored "-Wmisleading-indentation"
+#endif
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
 #pragma GCC diagnostic pop
