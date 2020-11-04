@@ -1,5 +1,6 @@
 #include "OscLib/OscCalcAnalytic.h"
 
+#include <array>
 #include <cassert>
 
 #ifdef OSCLIB_STAN

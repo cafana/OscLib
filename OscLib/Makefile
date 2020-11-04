@@ -4,6 +4,8 @@ CFLAGS := -std=c++17 -I.. -I${ROOT_INC} -I${EIGEN_INC} -I${BOOST_INC} -I${GSL_IN
 
 CFLAGS += $(shell if [[ x${QUALIFIER} == *debug* ]]; then echo ''; else echo '-O3'; fi )
 
+CXX := $(shell if [[ x${QUALIFIER} == *c7* ]]; then echo 'clang++'; else echo 'g++'; fi )
+
 LDFLAGS := -L${ROOTSYS}/lib -lCore -L${GSL_LIB} -lgsl -lgslcblas
 
 LDFLAGS_BINS := -L${ROOTSYS}/lib -lCore -lGraf -lGpad -lHist -lMathCore -lRIO -Llib -lOscLib
@@ -22,13 +24,13 @@ BINS := $(patsubst test/test%.cc,bin/test%,$(BIN_SRCS))
 all: prereqs ${OBJS} ${BINS} lib/libOscLib.so
 
 tmp/%.o: %.cxx ${HDRS}
-	g++ $< ${CFLAGS} -c -fpic -o $@
+	${CXX} $< ${CFLAGS} -c -fpic -o $@
 
 bin/test%: test/test%.cc ${HDRS} lib/libOscLib.so
-	g++ $< ${CFLAGS} ${LDFLAGS_BINS} -o $@
+	${CXX} $< ${CFLAGS} ${LDFLAGS_BINS} -o $@
 
 lib/libOscLib.so: ${OBJS}
-	g++ -shared -o $@ tmp/*.o ${LDFLAGS}
+	${CXX} -shared -o $@ tmp/*.o ${LDFLAGS}
 
 prereqs:
 	@echo Checking all necessary env vars are set

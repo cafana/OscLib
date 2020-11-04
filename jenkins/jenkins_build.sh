@@ -3,7 +3,7 @@
 set +ex
 env
 
-if [[ $QUALIFIER == *e19* ]]
+if [[ $QUALIFIER == *e19* || $QUALIFIER == *c7* ]]
 then
     # DUNE lblpwgtools versions
     source /cvmfs/dune.opensciencegrid.org/products/dune/setup_dune.sh || exit 1

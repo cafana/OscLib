@@ -88,6 +88,7 @@ namespace osc
     double P(int flavBefore, int flavAfter, double E, bool fast_and_loose);
     Eigen::ArrayXd P(int flavBefore, int flavAfter,
 		     const std::vector<double>& E) override;
+    using _IOscCalcAdjustable::P;
     
 
     void SetL     (double L            ) override {SaveLastParams(); fL      = L;}
