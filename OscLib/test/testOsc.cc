@@ -20,7 +20,10 @@
 #include <fenv.h>
 
 #ifdef OSCLIB_STAN
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 #include "stan/math/rev/scal.hpp"
+#pragma GCC diagnostic pop
 #endif
 
 int main()
@@ -134,7 +137,7 @@ int main()
             for(std::size_t i = 0; i < Ps.size(); ++i){
               for(std::size_t j = i+1; j < Ps.size(); ++j){
                 if(fabs(Ps[i]-Ps[j]) > .01 && E > 0.25){
-                  std::cerr << "!!! Probabilities for " << title
+                  std::cerr << "!!! Probabilities for " << title.Data()
                             << " differ at " << E << " GeV. "
                             << Ps[i] << " vs " << Ps[j]
                             << " between calculators " << i << " and " << j << std::endl;

@@ -4,7 +4,10 @@
 #include <cassert>
 
 #ifdef OSCLIB_STAN
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 #include "stan/math/rev/scal.hpp"
+#pragma GCC diagnostic pop
 
 // Stan doesn't provide sincos()
 void sincos(const stan::math::var& x, stan::math::var* sx, stan::math::var* cx)

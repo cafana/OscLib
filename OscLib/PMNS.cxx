@@ -618,6 +618,7 @@ T _PMNS<T>::P(int i, int j) const
 template class osc::_PMNS<double>;
 
 #ifdef OSCLIB_STAN
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 #include "stan/math/rev/scal.hpp"
 template class osc::_PMNS<stan::math::var>;
 #endif

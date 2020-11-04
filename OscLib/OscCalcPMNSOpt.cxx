@@ -111,6 +111,7 @@ namespace osc
 template class osc::_OscCalcPMNSOpt<double>;
 
 #ifdef OSCLIB_STAN
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 #include "stan/math/rev/scal.hpp"
 template class osc::_OscCalcPMNSOpt<stan::math::var>;
 #endif
