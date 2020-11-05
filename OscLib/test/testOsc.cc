@@ -140,7 +140,7 @@ int main()
                   std::cerr << "!!! Probabilities for " << title.Data()
                             << " differ at " << E << " GeV. "
                             << Ps[i] << " vs " << Ps[j]
-                            << " between calculators " << i << " and " << j << std::endl;
+                            << " between calculators " << names[i] << " and " << names[j] << std::endl;
                 }
               } // end for j
             } // end for i

@@ -624,7 +624,7 @@ template class osc::_PMNS<double>;
 #ifdef __clang__
 namespace stan::math{
   inline bool isinf(const stan::math::var& x){return stan::math::is_inf(x);}
-  inline bool isnan(const stan::math::var& x){return !stan::math::is_nan(x);}
+  inline bool isnan(const stan::math::var& x){return stan::math::is_nan(x);}
   inline bool isfinite(const stan::math::var& x){return !stan::math::is_inf(x) && !stan::math::is_nan(x);}
   inline stan::math::var copysign(stan::math::var x, stan::math::var y){return y > 0 ? x : -x;}
 }
