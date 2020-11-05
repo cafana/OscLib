@@ -4,7 +4,7 @@ CFLAGS := -std=c++17 -I.. -I${ROOT_INC} -I${EIGEN_INC} -I${BOOST_INC} -I${GSL_IN
 
 CFLAGS += $(shell if [[ x${QUALIFIER} == *debug* ]]; then echo ''; else echo '-O3'; fi )
 
-CXX := $(shell if [[ x${QUALIFIER} == *c7* ]]; then echo 'clang++ -stdlib=libstdc++'; else echo 'g++'; fi )
+CXX := $(shell if [[ x${QUALIFIER} == *c7* ]]; then echo 'clang++'; else echo 'g++'; fi )
 
 LDFLAGS := -L${ROOTSYS}/lib -lCore -L${GSL_LIB} -lgsl -lgslcblas
 
