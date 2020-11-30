@@ -1,9 +1,0 @@
-FILE = version
-PRODUCT = osclib
-VERSION = vXX.YY
-
-FLAVOR = Linux64bit+2.6-2.12
-QUALIFIERS = "debug:e19:stan"
-  PROD_DIR = osclib/vXX.YY/
-  UPS_DIR = ups
-  TABLE_FILE = osclib.table
