@@ -79,6 +79,17 @@ namespace osc::analytic
     T          ee;   cmplx<T> em;   cmplx<T>  et;
     /*cmplx<T> me;*/ T        mm;   cmplx<T>  mt;
     /*cmplx<T> te;   cmplx<T> tm;*/ T         tt;
+
+    // TODO gives some fancy Eigen type, which we might want, but leads to a lot more auto
+    //    template<class U> Hermitian<decltype(T{}*U{})> operator*(U k) const {return {ee*k, em*k, et*k, mm*k, mt*k, tt*k};}
+    template<class U> Hermitian<U> operator*(const U& k) const {return Hermitian<U>(ee*k, em*k, et*k, mm*k, mt*k, tt*k);}
+
+    // TODO why can't my operator* see this? because it's a different template type?
+    //  protected:
+    Hermitian(const T& _ee, const cmplx<T>& _em, const cmplx<T>& _et, const T& _mm, const cmplx<T>& _mt, const T& _tt)
+      : ee(_ee), em(_em), et(_et), mm(_mm), mt(_mt), tt(_tt)
+    {
+    }
   };
 
   template<class T> class Probs
@@ -140,6 +151,8 @@ namespace osc::analytic
     /// type.
     template<class VT, class KVT> VT _P(int from, int to, const KVT& E);
 
+    template<class VT, class KVT> cmplx<VT> _Amplitude(int from, int to, const KVT& E);
+
     bool fDirty12, fDirty13, fDirty23, fDirtyCP, fDirtyMasses;
 
     T s12, c12, s13, c13, s23, c23, sCP, cCP;
@@ -151,9 +164,7 @@ namespace osc::analytic
     inline __attribute__((always_inline)) void UpdatePMNS();
 
     // This is Hvac without the division by E
-    T Hee;            cmplx<T>  Hem; cmplx<T>  Het;
-    /*cmplx<T> Hme;*/ T         Hmm; cmplx<T>  Hmt;
-    /*cmplx<T> Hte; cmplx<T>  Htm;*/ T         Htt;
+    Hermitian<T> H;
 
     inline __attribute__((always_inline)) void UpdateHamiltonian();
 

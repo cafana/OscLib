@@ -103,8 +103,7 @@ namespace osc::analytic
   //---------------------------------------------------------------------------
   template<class T> _OscCalc<T>::_OscCalc()
     : fDirty12(true), fDirty13(true), fDirty23(true), fDirtyCP(true), fDirtyMasses(true),
-      Ue3(0, 0), Um2(0, 0), Ut2(0, 0),
-      Hem(0, 0), Het(0, 0), Hmt(0, 0)
+      Ue3(0, 0), Um2(0, 0), Ut2(0, 0)
   {
   }
 
@@ -310,13 +309,13 @@ namespace osc::analytic
     const T d2 = this->fDmsq21;
     const T d3 = this->fDmsq21 + this->fDmsq32;
 
-    Hee = d2 * sqr(Ue2)   + d3 * Ue3.norm();
-    Hmm = d2 * Um2.norm() + d3 * sqr(Um3);
-    Htt = d2 * Ut2.norm() + d3 * sqr(Ut3);
+    H.ee = d2 * sqr(Ue2)   + d3 * Ue3.norm();
+    H.mm = d2 * Um2.norm() + d3 * sqr(Um3);
+    H.tt = d2 * Ut2.norm() + d3 * sqr(Ut3);
 
-    Hem = d2 * Ue2 * Um2.conj() + d3 * Ue3 * Um3;
-    Het = d2 * Ue2 * Ut2.conj() + d3 * Ue3 * Ut3;
-    Hmt = d2 * Um2 * Ut2.conj() + d3 * Um3 * Ut3;
+    H.em = d2 * Ue2 * Um2.conj() + d3 * Ue3 * Um3;
+    H.et = d2 * Ue2 * Ut2.conj() + d3 * Ue3 * Ut3;
+    H.mt = d2 * Um2 * Ut2.conj() + d3 * Um3 * Ut3;
 
     ClearProbCaches();
   }
@@ -328,6 +327,7 @@ namespace osc::analytic
     const int i0 = (from-12)/2;
     const int i1 = (to-12)/2;
 
+    // TODO TODO seems to me that all the Pab's are named in reverse...
     // Exploit unitarity
     switch(i0*3+i1){
     case 0: return Pee;
@@ -344,11 +344,11 @@ namespace osc::analytic
   }
 
   //---------------------------------------------------------------------------
-  template<class T> template<class VT, class KVT> VT _OscCalc<T>::
-  _P(int from, int to, const KVT& E)
+  template<class T> template<class VT, class KVT> cmplx<VT> _OscCalc<T>::
+  _Amplitude(int from, int to, const KVT& E)
   {
     // -E effectively flips rho and conjugates H
-    if(from < 0) return P(-from, -to, -E);
+    if(from < 0) return _Amplitude<VT, KVT>(-from, -to, -E);
 
     assert(from > 0 && to > 0);
 
@@ -370,6 +370,117 @@ namespace osc::analytic
         UpdateHamiltonian();
       }
       else{
+        //        auto it = ProbCache<KVT, VT>::find(E);
+        //        if(it != ProbCache<KVT, VT>::end()) return it->second.P(from, to);
+      }
+    }
+
+    fDirty12 = fDirty13 = fDirty23 = fDirtyCP = fDirtyMasses = false;
+
+    const KVT k = -this->fL * 2*1.267 / E;
+    Hermitian<VT> M = H * k;
+    M.ee -= this->fL * Hmat();
+
+    // Matrix exponent is based on https://www.wolframalpha.com/input/?i=matrixExp+%5B%5Br%2Cs%2Ct%5D%2C%5Bu%2Cv%2Cw%5D%2C%5Bx%2Cy%2Cz%5D%5D
+
+    const auto es = M.GetEigenvalues();
+    Hermitian<VT> A;
+    A.ee = M.mm*M.tt - M.mt.norm();
+    A.mm = M.ee*M.tt - M.et.norm();
+    A.tt = M.ee*M.mm - M.em.norm(); // ADDED
+
+    A.em = M.et       *M.mt.conj() - M.em*M.tt;
+    A.et = M.em       *M.mt        - M.et*M.mm; // ADDED
+    A.mt = M.em.conj()*M.et        - M.mt*M.ee; // ADDED
+
+    // NB 12/14 entries reversed from P()!
+    if(from == 12 && to == 12) return (A.ee       *es.sume - (M.mm+M.tt) *es.sumxe + es.sumxxe);
+    if(from == 14 && to == 14) return (A.mm       *es.sume - (M.ee+M.tt) *es.sumxe + es.sumxxe);
+    if(from == 16 && to == 16) return (A.tt       *es.sume - (M.ee+M.mm) *es.sumxe + es.sumxxe); // ADDED
+
+    if(from == 12 && to == 14) return (A.em.conj()*es.sume +  M.em.conj()*es.sumxe            );
+    if(from == 12 && to == 16) return (A.et.conj()*es.sume +  M.et.conj()*es.sumxe            ); // ADDED
+
+    if(from == 14 && to == 12) return (A.em       *es.sume +  M.em       *es.sumxe            );
+    if(from == 14 && to == 16) return (A.mt.conj()*es.sume +  M.mt.conj()*es.sumxe            ); // ADDED
+
+    if(from == 16 && to == 12) return (A.et       *es.sume +  M.et       *es.sumxe            ); // ADDED
+    if(from == 16 && to == 14) return (A.mt       *es.sume +  M.mt       *es.sumxe            ); // ADDED
+    /*
+    Hermitian<VT> amps;
+    amps.ee = Aee*es.sume - (M.mm+M.tt) *es.sumxe + es.sumxxe;
+    amps.mm = Amm*es.sume - (M.ee+M.tt) *es.sumxe + es.sumxxe;
+    amps.tt = Att*es.sume - (M.ee+M.mm) *es.sumxe + es.sumxxe;
+
+    // NB conjugates we probably don't like :(
+    amps.em = Aem.conj()*es.sume + M.em.conj()*es.sumxe;
+    amps.et = Aet.conj()*es.sume + M.et.conj()*es.sumxe;
+    amps.mt = Amt.conj()*es.sume + M.mt.conj()*es.sumxe;
+
+    // convert flavours to indices into matrix
+    const int i0 = (from-12)/2;
+    const int i1 = (to-12)/2;
+
+    // TODO TODO seems to me that all the Pab's are named in reverse...
+    // Exploit unitarity
+    switch(i0*3+i1){
+    case 0: return amps.ee;
+    case 1: return amps.em;
+    case 2: return amps.et;
+    case 3: return amps.em.conj();
+    case 4: return amps.mm;
+    case 5: return amps.mt;
+    case 6: return amps.et.conj();
+    case 7: return amps.mt.conj();
+    case 8: return amps.tt;
+    default: abort();
+    }
+    */
+
+    abort();
+
+    /*
+    const Probs<VT> ps((Aee       *es.sume - (M.mm+M.tt) *es.sumxe + es.sumxxe).norm(),
+                       (Aem.conj()*es.sume +  M.em.conj()*es.sumxe            ).norm(),
+                       (Aem       *es.sume +  M.em       *es.sumxe            ).norm(),
+                       (Amm       *es.sume - (M.ee+M.tt) *es.sumxe + es.sumxxe).norm());
+
+    ProbCache<KVT, VT>::emplace(E, ps);
+
+    return ps.P(from, to);
+    */
+  }
+
+  //---------------------------------------------------------------------------
+  template<class T> template<class VT, class KVT> VT _OscCalc<T>::
+  _P(int from, int to, const KVT& E)
+  {
+    // -E effectively flips rho and conjugates H
+    if(from < 0) return _P<VT, KVT>(-from, -to, -E);
+
+    return _Amplitude<VT, KVT>(from, to, E).norm();
+
+    assert(from > 0 && to > 0);
+
+    assert(from == 12 || from == 14 || from == 16);
+    assert(to == 12 || to == 14 || to == 16);
+
+    const bool dirtyAngles = fDirty12 || fDirty13 || fDirty23 || fDirtyCP;
+
+    if(dirtyAngles){
+      if(fDirty12) sincos(this->fTh12, &s12, &c12);
+      if(fDirty13) sincos(this->fTh13, &s13, &c13);
+      if(fDirty23) sincos(this->fTh23, &s23, &c23);
+      if(fDirtyCP) sincos(this->fdCP,  &sCP, &cCP);
+      UpdatePMNS();
+      UpdateHamiltonian();
+    }
+    else{
+      if(fDirtyMasses){
+        UpdateHamiltonian();
+      }
+      else{
+        // TODO TODO need to check L and rho first before this is safe
         auto it = ProbCache<KVT, VT>::find(E);
         if(it != ProbCache<KVT, VT>::end()) return it->second.P(from, to);
       }
@@ -378,13 +489,8 @@ namespace osc::analytic
     fDirty12 = fDirty13 = fDirty23 = fDirtyCP = fDirtyMasses = false;
 
     const KVT k = -this->fL * 2*1.267 / E;
-    Hermitian<VT> M;
-    M.ee = Hee * k  - this->fL * Hmat();
-    M.em = Hem * k;
-    M.mm = Hmm * k;
-    M.et = Het * k;
-    M.mt = Hmt * k;
-    M.tt = Htt * k;
+    Hermitian<VT> M = H * k;
+    M.ee -= this->fL * Hmat();
 
     // Matrix exponent is based on https://www.wolframalpha.com/input/?i=matrixExp+%5B%5Br%2Cs%2Ct%5D%2C%5Bu%2Cv%2Cw%5D%2C%5Bx%2Cy%2Cz%5D%5D
 
