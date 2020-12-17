@@ -86,6 +86,29 @@ namespace osc::analytic
     //    template<class U> Hermitian<decltype(T{}*U{})> operator*(U k) const {return {ee*k, em*k, et*k, mm*k, mt*k, tt*k};}
     template<class U> Hermitian<U> operator*(const U& k) const {return Hermitian<U>(ee*k, em*k, et*k, mm*k, mt*k, tt*k);}
 
+    template<class U> Eigen::Array<cmplx<U>, 3, 3> operator*(const cmplx<U>& k) const
+    {
+      Eigen::Array<cmplx<U>, 3, 3> M;
+      // TODO TODO this layout is the conjugate of what we imply above
+      M << k*ee, k*em.conj(), k*et.conj(),
+           k*em, k*mm,        k*mt.conj(),
+           k*et, k*mt,        k*tt;
+      return M;
+    }
+
+    /// Matrix of determinants of minor matrices
+    Hermitian<T> Minor() const
+    {
+      Hermitian<T> A;
+      A.ee = mm*tt - mt.norm();
+      A.mm = ee*tt - et.norm();
+      A.tt = ee*mm - em.norm();
+      A.em = et       *mt.conj() - em*tt;
+      A.et = em       *mt        - et*mm;
+      A.mt = em.conj()*et        - mt*ee;
+      return A;
+    }
+
     // TODO why can't my operator* see this? because it's a different template type?
     //  protected:
     Hermitian(const T& _ee, const cmplx<T>& _em, const cmplx<T>& _et, const T& _mm, const cmplx<T>& _mt, const T& _tt)

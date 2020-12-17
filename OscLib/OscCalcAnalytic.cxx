@@ -277,14 +277,13 @@ namespace osc::analytic
     sincos(xs[1]-xs[0], &s10, &c10);
     sincos(xs[2]-xs[0], &s20, &c20);
 
-    const T ei0 = 1/(3*sqr(xs[0]) + 2*b*xs[0] + c);
+    const T        ei0 = 1              /(3*sqr(xs[0]) + 2*b*xs[0] + c);
     const cmplx<T> ei1 = cmplx(c10, s10)/(3*sqr(xs[1]) + 2*b*xs[1] + c);
     const cmplx<T> ei2 = cmplx(c20, s20)/(3*sqr(xs[2]) + 2*b*xs[2] + c);
 
     // TODO, is there a way to more cheaply calculate these combinations?
-    return {
-      ei0 + ei1 + ei2,
-      xs[0]*ei0 + xs[1]*ei1 + xs[2]*ei2,
+    return {     ei0 +            ei1 +            ei2,
+          xs[0] *ei0 +     xs[1] *ei1 +     xs[2] *ei2,
       sqr(xs[0])*ei0 + sqr(xs[1])*ei1 + sqr(xs[2])*ei2};
   }
 
@@ -361,27 +360,18 @@ namespace osc::analytic
     // Matrix exponent is based on https://www.wolframalpha.com/input/?i=matrixExp+%5B%5Br%2Cs%2Ct%5D%2C%5Bu%2Cv%2Cw%5D%2C%5Bx%2Cy%2Cz%5D%5D
 
     const auto es = M.GetEigenvalues();
-    Hermitian<VT> A;
-    A.ee = M.mm*M.tt - M.mt.norm();
-    A.mm = M.ee*M.tt - M.et.norm();
-    A.tt = M.ee*M.mm - M.em.norm();
+    const Hermitian<VT> A = M.Minor();
 
-    A.em = M.et       *M.mt.conj() - M.em*M.tt;
-    A.et = M.em       *M.mt        - M.et*M.mm;
-    A.mt = M.em.conj()*M.et        - M.mt*M.ee;
+    // I don't know if this structure has a particular name
+    Hermitian<VT> B = M;
+    B.ee = -(M.mm+M.tt);
+    B.mm = -(M.ee+M.tt);
+    B.tt = -(M.ee+M.mm);
 
-    Eigen::Array<cmplx<VT>, 3, 3> amps;
-    amps(0, 0) = A.ee * es.sume - (M.mm+M.tt) * es.sumxe + es.sumxxe;
-    amps(1, 1) = A.mm * es.sume - (M.ee+M.tt) * es.sumxe + es.sumxxe;
-    amps(2, 2) = A.tt * es.sume - (M.ee+M.mm) * es.sumxe + es.sumxxe;
-
-    // TODO think about ordering of indices. This first one is e->mu
-    amps(0, 1) = A.em.conj() * es.sume + M.em.conj() * es.sumxe;
-    amps(0, 2) = A.et.conj() * es.sume + M.et.conj() * es.sumxe;
-    amps(1, 0) = A.em        * es.sume + M.em        * es.sumxe;
-    amps(1, 2) = A.mt.conj() * es.sume + M.mt.conj() * es.sumxe;
-    amps(2, 0) = A.et        * es.sume + M.et        * es.sumxe;
-    amps(2, 1) = A.mt        * es.sume + M.mt        * es.sumxe;
+    Eigen::Array<cmplx<VT>, 3, 3> amps = A * es.sume + B * es.sumxe;
+    amps(0, 0) = amps(0, 0) + es.sumxxe; // didn't make a += ?
+    amps(1, 1) = amps(1, 1) + es.sumxxe;
+    amps(2, 2) = amps(2, 2) + es.sumxxe;
 
     AmpCache<KVT, VT>::emplace(E, amps);
 
