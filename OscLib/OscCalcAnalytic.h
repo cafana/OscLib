@@ -44,6 +44,8 @@ namespace osc::analytic
   /// std::complex takes a lot of care with inf/nan which we don't want
   template<class T, class U = T> struct cmplx
   {
+    cmplx() {} // TODO TODO had to add this for Eigen::Array. Are we happy?
+
     cmplx(const T& r, const U& i) : re(r), im(i) {}
 
     template<class A, class B> cmplx(const cmplx<A, B>& x) : re(x.re), im(x.im) {}
@@ -92,25 +94,20 @@ namespace osc::analytic
     }
   };
 
-  template<class T> class Probs
+  template<class T> struct PMNS
   {
-  public:
-    Probs(T ee, T me, T em, T mm)
-      : Pee(ee), Pme(me), Pem(em), Pmm(mm)
-    {
-    }
+    PMNS() : e3({}, {}), m2({}, {}), t2({}, {}) {}
 
-    inline __attribute__((always_inline)) T P(int from, int to) const;
-
-  protected:
-    T Pee, Pme, Pem, Pmm;
+    /*T        e1;*/ T        e2; cmplx<T> e3;
+    /*cmplx<T> m1;*/ cmplx<T> m2; T        m3;
+    /*cmplx<T> t1;*/ cmplx<T> t2; T        t3;
   };
 
-  template<class KT, class VT> class ProbCache : public std::unordered_map<KT, Probs<VT>> {};
+  template<class KT, class VT> class AmpCache : public std::unordered_map<KT, Eigen::Array<cmplx<VT>, 3, 3>> {};
 
   template<class T> class _OscCalc: public _IOscCalcAdjustable<T>,
-                                    protected ProbCache<double, T>,
-                                    protected ProbCache<Eigen::ArrayXd, Eigen::ArrayX<T>>
+                                    protected AmpCache<double, T>,
+                                    protected AmpCache<Eigen::ArrayXd, Eigen::ArrayX<T>>
   {
   public:
     _OscCalc();
@@ -140,10 +137,10 @@ namespace osc::analytic
     virtual TMD5* GetParamsHash() const override;
 
   protected:
-    void ClearProbCaches()
+    void ClearAmpCaches()
     {
-      ProbCache<double, T>::clear();
-      ProbCache<Eigen::ArrayXd, Eigen::ArrayX<T>>::clear();
+      AmpCache<double, T>::clear();
+      AmpCache<Eigen::ArrayXd, Eigen::ArrayX<T>>::clear();
     }
 
     /// Actual implementation of P(). VT is potentially a vector type, if a
@@ -157,9 +154,7 @@ namespace osc::analytic
 
     T s12, c12, s13, c13, s23, c23, sCP, cCP;
 
-    /*T        Ue1;*/ T        Ue2; cmplx<T>  Ue3;
-    /*cmplx<T> Um1;*/ cmplx<T> Um2; T         Um3;
-    /*cmplx<T> Ut1;*/ cmplx<T> Ut2; T         Ut3;
+    PMNS<T> U;
 
     inline __attribute__((always_inline)) void UpdatePMNS();
 
