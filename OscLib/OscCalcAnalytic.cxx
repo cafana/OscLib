@@ -15,6 +15,28 @@ void sincos(const stan::math::var& x, stan::math::var* sx, stan::math::var* cx)
   *sx = sin(x);
   *cx = cos(x);
 }
+
+namespace osc::analytic{
+  // Define the additional product types once stan vars get involved
+  template<> struct ProductType<stan::math::var, stan::math::var>{typedef stan::math::var type;};
+
+  template<> struct ProductType<double, stan::math::var>{typedef stan::math::var type;};
+  template<> struct ProductType<stan::math::var, double>{typedef stan::math::var type;};
+
+  using ArrayXstan = Eigen::Array<stan::math::var, Eigen::Dynamic, 1>;
+
+  template<> struct ProductType<stan::math::var, Eigen::ArrayXd>{typedef ArrayXstan type;};
+  template<> struct ProductType<Eigen::ArrayXd, stan::math::var>{typedef ArrayXstan type;};
+
+  template<> struct ProductType<stan::math::var, ArrayXstan>{typedef ArrayXstan type;};
+  template<> struct ProductType<ArrayXstan, stan::math::var>{typedef ArrayXstan type;};
+
+  template<> struct ProductType<Eigen::ArrayXd, ArrayXstan>{typedef ArrayXstan type;};
+  template<> struct ProductType<ArrayXstan, Eigen::ArrayXd>{typedef ArrayXstan type;};
+
+  template<> struct ProductType<ArrayXstan, ArrayXstan>{typedef ArrayXstan type;};
+}
+
 #endif
 
 template<class T, class U> void sincos(T& x,
@@ -319,17 +341,9 @@ namespace osc::analytic
   }
 
   //---------------------------------------------------------------------------
-  template<class T> template<class VT, class KVT> cmplx<VT> _OscCalc<T>::
-  _Amplitude(int from, int to, const KVT& E)
+  template<class T> template<class VT, class KVT> Eigen::Matrix<cmplx<VT>, 3, 3> _OscCalc<T>::
+  _Amplitudes(const KVT& E)
   {
-    // -E effectively flips rho and conjugates H
-    if(from < 0) return _Amplitude<VT, KVT>(-from, -to, -E);
-
-    assert(from > 0 && to > 0);
-
-    assert(from == 12 || from == 14 || from == 16);
-    assert(to == 12 || to == 14 || to == 16);
-
     const bool dirtyAngles = fDirty12 || fDirty13 || fDirty23 || fDirtyCP;
 
     if(dirtyAngles){
@@ -347,7 +361,7 @@ namespace osc::analytic
       else{
         // It's safe not to check L or rho, because if they are altered the whole cache is dropped
         auto it = AmpCache<KVT, VT>::find(E);
-        if(it != AmpCache<KVT, VT>::end()) return it->second(from/2-6, to/2-6);
+        if(it != AmpCache<KVT, VT>::end()) return it->second;
       }
     }
 
@@ -368,12 +382,29 @@ namespace osc::analytic
     B.mm = -(M.ee+M.tt);
     B.tt = -(M.ee+M.mm);
 
-    Eigen::Array<cmplx<VT>, 3, 3> amps = A * es.sume + B * es.sumxe;
+    Eigen::Matrix<cmplx<VT>, 3, 3> amps = A * es.sume + B * es.sumxe;
     amps(0, 0) = amps(0, 0) + es.sumxxe; // didn't make a += ?
     amps(1, 1) = amps(1, 1) + es.sumxxe;
     amps(2, 2) = amps(2, 2) + es.sumxxe;
 
     AmpCache<KVT, VT>::emplace(E, amps);
+
+    return amps;
+  }
+
+  //---------------------------------------------------------------------------
+  template<class T> template<class VT, class KVT> cmplx<VT> _OscCalc<T>::
+  _Amplitude(int from, int to, const KVT& E)
+  {
+    // -E effectively flips rho and conjugates H
+    if(from < 0) return _Amplitude<VT, KVT>(-from, -to, -E);
+
+    assert(from > 0 && to > 0);
+
+    assert(from == 12 || from == 14 || from == 16);
+    assert(to == 12 || to == 14 || to == 16);
+
+    Eigen::Array<cmplx<VT>, 3, 3> amps = _Amplitudes<VT, KVT>(E);
 
     return amps(from/2-6, to/2-6);
   }

@@ -44,7 +44,8 @@ namespace osc::analytic
   /// std::complex takes a lot of care with inf/nan which we don't want
   template<class T, class U = T> struct cmplx
   {
-    cmplx() {} // TODO TODO had to add this for Eigen::Array. Are we happy?
+    cmplx() {} // TODO TODO had to add this for Eigen::Matrix. Are we happy?
+    cmplx(int x) : re(x), im(0) {assert(x == 0);} // this is needed for product operations
 
     cmplx(const T& r, const U& i) : re(r), im(i) {}
 
@@ -71,6 +72,14 @@ namespace osc::analytic
     cmplx<T> sume, sumxe, sumxxe;
   };
 
+  // Define what type the product of certain types should be
+  template<class T, class U> struct ProductType;
+  template<> struct ProductType<double, double>{typedef double type;};
+  template<> struct ProductType<Eigen::ArrayXd, double>{typedef Eigen::ArrayXd type;};
+  template<> struct ProductType<double, Eigen::ArrayXd>{typedef Eigen::ArrayXd type;};
+  template<> struct ProductType<Eigen::ArrayXd, Eigen::ArrayXd>{typedef Eigen::ArrayXd type;};
+  template<class T, class U> using ProductType_t = typename ProductType<T, U>::type;
+
   template<class T> struct Hermitian
   {
     Hermitian() : em({}, {}), et({}, {}), mt({}, {}) {}
@@ -82,13 +91,12 @@ namespace osc::analytic
     /*cmplx<T> me;*/ T        mm;   cmplx<T>  mt;
     /*cmplx<T> te;   cmplx<T> tm;*/ T         tt;
 
-    // TODO gives some fancy Eigen type, which we might want, but leads to a lot more auto
-    //    template<class U> Hermitian<decltype(T{}*U{})> operator*(U k) const {return {ee*k, em*k, et*k, mm*k, mt*k, tt*k};}
-    template<class U> Hermitian<U> operator*(const U& k) const {return Hermitian<U>(ee*k, em*k, et*k, mm*k, mt*k, tt*k);}
+    template<class U> Hermitian<ProductType_t<T, U>>
+    operator*(const U& k) const {return {ee*k, em*k, et*k, mm*k, mt*k, tt*k};}
 
-    template<class U> Eigen::Array<cmplx<U>, 3, 3> operator*(const cmplx<U>& k) const
+    Eigen::Array<cmplx<T>, 3, 3> operator*(const cmplx<T>& k) const
     {
-      Eigen::Array<cmplx<U>, 3, 3> M;
+      Eigen::Array<cmplx<T>, 3, 3> M;
       // TODO TODO this layout is the conjugate of what we imply above
       M << k*ee, k*em.conj(), k*et.conj(),
            k*em, k*mm,        k*mt.conj(),
@@ -126,7 +134,7 @@ namespace osc::analytic
     /*cmplx<T> t1;*/ cmplx<T> t2; T        t3;
   };
 
-  template<class KT, class VT> class AmpCache : public std::unordered_map<KT, Eigen::Array<cmplx<VT>, 3, 3>> {};
+  template<class KT, class VT> class AmpCache : public std::unordered_map<KT, Eigen::Matrix<cmplx<VT>, 3, 3>> {};
 
   template<class T> class _OscCalc: public _IOscCalcAdjustable<T>,
                                     protected AmpCache<double, T>,
@@ -170,6 +178,8 @@ namespace osc::analytic
     /// vector of energies is passed in. KVT != VT in the case T is a stan
     /// type.
     template<class VT, class KVT> VT _P(int from, int to, const KVT& E);
+
+    template<class VT, class KVT> Eigen::Matrix<cmplx<VT>, 3, 3> _Amplitudes(const KVT& E);
 
     template<class VT, class KVT> cmplx<VT> _Amplitude(int from, int to, const KVT& E);
 
