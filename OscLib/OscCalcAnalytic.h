@@ -39,6 +39,14 @@ namespace std
   };
 }
 
+namespace osc
+{
+  struct Layer{
+    Layer(double L, double d) : length(L), density(d) {}
+    double length; double density;
+  };
+}
+
 namespace osc::analytic
 {
   /// std::complex takes a lot of care with inf/nan which we don't want
@@ -165,6 +173,9 @@ namespace osc::analytic
     virtual Eigen::ArrayX<T> P(int from, int to, const std::vector<double>& E) override;
     virtual Eigen::ArrayX<T> P(int from, int to, const Eigen::ArrayXd& E) override;
 
+    virtual T P(int from, int to, double E, const std::vector<Layer>& layers);
+    virtual Eigen::ArrayX<T> P(int from, int to, const Eigen::ArrayXd& E, const std::vector<Layer>& layers);
+
     virtual TMD5* GetParamsHash() const override;
 
   protected:
@@ -179,9 +190,19 @@ namespace osc::analytic
     /// type.
     template<class VT, class KVT> VT _P(int from, int to, const KVT& E);
 
-    template<class VT, class KVT> Eigen::Matrix<cmplx<VT>, 3, 3> _Amplitudes(const KVT& E);
+    template<class VT, class KVT> VT _P(int from, int to, const KVT& E,
+                                        const std::vector<Layer>& layers);
+
+    template<class VT, class KVT> Eigen::Matrix<cmplx<VT>, 3, 3>
+    _Amplitudes(const KVT& E);
+
+    template<class VT, class KVT> Eigen::Matrix<cmplx<VT>, 3, 3>
+    _Amplitudes(const KVT& E, const std::vector<Layer>& layers);
 
     template<class VT, class KVT> cmplx<VT> _Amplitude(int from, int to, const KVT& E);
+
+    template<class VT, class KVT> cmplx<VT> _Amplitude(int from, int to, const KVT& E,
+                                                       const std::vector<Layer>& layers);
 
     bool fDirty12, fDirty13, fDirty23, fDirtyCP, fDirtyMasses;
 

@@ -393,6 +393,22 @@ namespace osc::analytic
   }
 
   //---------------------------------------------------------------------------
+  template<class T> template<class VT, class KVT> Eigen::Matrix<cmplx<VT>, 3, 3> _OscCalc<T>::
+  _Amplitudes(const KVT& E, const std::vector<Layer>& layers)
+  {
+    Eigen::Matrix<cmplx<VT>, 3, 3> prod(Eigen::Matrix<cmplx<VT>, 3, 3>::Identity());
+
+    for(auto it = layers.rbegin(); it != layers.rend(); ++it){
+      SetL(it->length);
+      SetRho(it->density);
+
+      prod *= _Amplitudes<VT, KVT>(E);
+    }
+
+    return prod;
+  }
+
+  //---------------------------------------------------------------------------
   template<class T> template<class VT, class KVT> cmplx<VT> _OscCalc<T>::
   _Amplitude(int from, int to, const KVT& E)
   {
@@ -410,10 +426,34 @@ namespace osc::analytic
   }
 
   //---------------------------------------------------------------------------
+  template<class T> template<class VT, class KVT> cmplx<VT> _OscCalc<T>::
+  _Amplitude(int from, int to, const KVT& E, const std::vector<Layer>& layers)
+  {
+    // -E effectively flips rho and conjugates H
+    if(from < 0) return _Amplitude<VT, KVT>(-from, -to, -E);
+
+    assert(from > 0 && to > 0);
+
+    assert(from == 12 || from == 14 || from == 16);
+    assert(to == 12 || to == 14 || to == 16);
+
+    Eigen::Array<cmplx<VT>, 3, 3> amps = _Amplitudes<VT, KVT>(E, layers);
+
+    return amps(from/2-6, to/2-6);
+  }
+
+  //---------------------------------------------------------------------------
   template<class T> template<class VT, class KVT> VT _OscCalc<T>::
   _P(int from, int to, const KVT& E)
   {
     return _Amplitude<VT, KVT>(from, to, E).norm();
+  }
+
+  //---------------------------------------------------------------------------
+  template<class T> template<class VT, class KVT> VT _OscCalc<T>::
+  _P(int from, int to, const KVT& E, const std::vector<Layer>& layers)
+  {
+    return _Amplitude<VT, KVT>(from, to, E, layers).norm();
   }
 
   //---------------------------------------------------------------------------
@@ -426,7 +466,7 @@ namespace osc::analytic
   template<class T> Eigen::ArrayX<T> _OscCalc<T>::
   P(int from, int to, const Eigen::ArrayXd& E)
   {
-    return _P<Eigen::Array<T, Eigen::Dynamic, 1>>(from, to, E);
+    return _P<Eigen::ArrayX<T>>(from, to, E);
   }
 
   //---------------------------------------------------------------------------
@@ -435,6 +475,19 @@ namespace osc::analytic
   {
     // Forward to the eigen implementation
     return P(from, to, Eigen::Map<const Eigen::ArrayXd>(E.data(), E.size()));
+  }
+
+  //---------------------------------------------------------------------------
+  template<class T> T _OscCalc<T>::P(int from, int to, double E, const std::vector<Layer>& layers)
+  {
+    return _P<T>(from, to, E, layers);
+  }
+
+  //---------------------------------------------------------------------------
+  template<class T> Eigen::ArrayX<T> _OscCalc<T>::
+  P(int from, int to, const Eigen::ArrayXd& E, const std::vector<Layer>& layers)
+  {
+    return _P<Eigen::ArrayX<T>>(from, to, E, layers);
   }
 
 } // namespace
