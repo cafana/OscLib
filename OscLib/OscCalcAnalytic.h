@@ -53,7 +53,7 @@ namespace osc::analytic
   template<class T, class U = T> struct cmplx
   {
     cmplx() {} // TODO TODO had to add this for Eigen::Matrix. Are we happy?
-    cmplx(int x) : re(x), im(0) {assert(x == 0);} // this is needed for product operations
+    cmplx(int x) : re(x), im(0) {assert(x == 0 || x == 1);} // this is needed for product operations
 
     cmplx(const T& r, const U& i) : re(r), im(i) {}
 
