@@ -341,7 +341,7 @@ namespace osc::analytic
   }
 
   //---------------------------------------------------------------------------
-  template<class T> template<class VT, class KVT> Eigen::Matrix<cmplx<VT>, 3, 3> _OscCalc<T>::
+  template<class T> template<class VT, class KVT> AmpMatrix<VT> _OscCalc<T>::
   _Amplitudes(const KVT& E)
   {
     const bool dirtyAngles = fDirty12 || fDirty13 || fDirty23 || fDirtyCP;
@@ -393,16 +393,26 @@ namespace osc::analytic
   }
 
   //---------------------------------------------------------------------------
-  template<class T> template<class VT, class KVT> Eigen::Matrix<cmplx<VT>, 3, 3> _OscCalc<T>::
+  template<class T> template<class VT, class KVT> AmpMatrix<VT> _OscCalc<T>::
+  _AmplitudesSingleLayer(const KVT& E, const Layer& layer)
+  {
+    // TODO this is gross
+    SetL(layer.length);
+    SetRho(layer.density);
+
+    return _Amplitudes<VT, KVT>(E);
+  }
+
+  //---------------------------------------------------------------------------
+  template<class T> template<class VT, class KVT> AmpMatrix<VT> _OscCalc<T>::
   _Amplitudes(const KVT& E, const std::vector<Layer>& layers)
   {
-    Eigen::Matrix<cmplx<VT>, 3, 3> prod(Eigen::Matrix<cmplx<VT>, 3, 3>::Identity());
+    // Do it this way, because there's no simple way to make an identity matrix
+    // of the right size in the energy dimension.
+    AmpMatrix<VT> prod = _AmplitudesSingleLayer<VT, KVT>(E, layers.back());
 
-    for(auto it = layers.rbegin(); it != layers.rend(); ++it){
-      SetL(it->length);
-      SetRho(it->density);
-
-      prod *= _Amplitudes<VT, KVT>(E);
+    for(auto it = layers.rbegin()+1; it != layers.rend(); ++it){
+      prod *= _AmplitudesSingleLayer<VT, KVT>(E, *it);
     }
 
     return prod;

@@ -142,7 +142,10 @@ namespace osc::analytic
     /*cmplx<T> t1;*/ cmplx<T> t2; T        t3;
   };
 
-  template<class KT, class VT> class AmpCache : public std::unordered_map<KT, Eigen::Matrix<cmplx<VT>, 3, 3>> {};
+
+  template<class VT> using AmpMatrix = Eigen::Matrix<cmplx<VT>, 3, 3>;
+
+  template<class KT, class VT> class AmpCache : public std::unordered_map<KT, AmpMatrix<VT>> {};
 
   template<class T> class _OscCalc: public _IOscCalcAdjustable<T>,
                                     protected AmpCache<double, T>,
@@ -193,10 +196,13 @@ namespace osc::analytic
     template<class VT, class KVT> VT _P(int from, int to, const KVT& E,
                                         const std::vector<Layer>& layers);
 
-    template<class VT, class KVT> Eigen::Matrix<cmplx<VT>, 3, 3>
+    template<class VT, class KVT> AmpMatrix<VT>
     _Amplitudes(const KVT& E);
 
-    template<class VT, class KVT> Eigen::Matrix<cmplx<VT>, 3, 3>
+    template<class VT, class KVT> AmpMatrix<VT>
+    _AmplitudesSingleLayer(const KVT& E, const Layer& layer);
+
+    template<class VT, class KVT> AmpMatrix<VT>
     _Amplitudes(const KVT& E, const std::vector<Layer>& layers);
 
     template<class VT, class KVT> cmplx<VT> _Amplitude(int from, int to, const KVT& E);

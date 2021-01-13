@@ -72,6 +72,13 @@ int main()
             const Eigen::ArrayXd PsVec = osc->P(anti*from, anti*to, Es);
             const Eigen::ArrayXd PsEig = osc->P(anti*from, anti*to, EsEig);
 
+            Eigen::ArrayXd PsEigLayers;
+            if(osc::OscCalcAnalytic* oca = dynamic_cast<osc::OscCalcAnalytic*>(osc)){
+              std::vector<osc::Layer> layers;
+              layers.emplace_back(L, rho);
+              PsEigLayers = oca->P(anti*from, anti*to, EsEig, layers);
+            }
+
             for(unsigned int i = 0; i < Ps.size(); ++i){
               if(Ps[i] != PsVec[i]){
                 std::cout << "Standard and vector probabilities differ at E = " << Es[i] << ": " << Ps[i] << " vs " << PsVec[i] << std::endl;
@@ -79,6 +86,10 @@ int main()
 
               if(PsVec[i] != PsEig[i]){
                 std::cout << "Vector and eigen probabilities somehow manage to differ at E = " << Es[i] << ": " << PsVec[i] << " vs " << PsEig[i] << std::endl;
+              }
+
+              if(PsEigLayers.size() != 0 && Ps[i] != PsEigLayers[i]){
+                std::cout << "Standard and eigen layers probabilities differ at E = " << Es[i] << ": " << Ps[i] << " vs " << PsEigLayers[i] << std::endl;
               }
             } // end for i
           } // end for oscIdx
