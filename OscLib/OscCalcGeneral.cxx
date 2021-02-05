@@ -11,9 +11,12 @@
 #pragma GCC diagnostic push
 #ifndef __clang__
 #pragma GCC diagnostic ignored "-Wmisleading-indentation"
+#include "features.h"
+#if __GNUC_PREREQ(8,2)
+#pragma GCC diagnostic ignored "-Wdeprecated-copy"
+#endif
 #endif
 #include <boost/numeric/ublas/vector.hpp>
-#pragma GCC diagnostic ignored "-Wdeprecated-copy"
 #include <boost/numeric/ublas/matrix.hpp>
 #pragma GCC diagnostic pop
 
