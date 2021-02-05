@@ -12,7 +12,7 @@
 #ifndef __clang__
 #pragma GCC diagnostic ignored "-Wmisleading-indentation"
 #include "features.h"
-#if __GNUC_PREREQ(8,2)
+#if __GNUC_PREREQ(9,0)
 #pragma GCC diagnostic ignored "-Wdeprecated-copy"
 #endif
 #endif
