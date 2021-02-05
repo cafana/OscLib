@@ -13,6 +13,7 @@
 #pragma GCC diagnostic ignored "-Wmisleading-indentation"
 #endif
 #include <boost/numeric/ublas/vector.hpp>
+#pragma GCC diagnostic ignored "-Werror=deprecated-copy"
 #include <boost/numeric/ublas/matrix.hpp>
 #pragma GCC diagnostic pop
 
