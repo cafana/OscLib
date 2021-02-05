@@ -9,7 +9,7 @@ then
     source /cvmfs/dune.opensciencegrid.org/products/dune/setup_dune.sh || exit 1
     # Add SBN products path to get additional products
     export PRODUCTS=/cvmfs/sbn.opensciencegrid.org/products/sbn/:$PRODUCTS
-    setup root v6_22_06a -q ${QUALIFIER} || exit 1
+    setup root v6_22_06a -q ${QUALIFIER}:p383b || exit 1
     setup boost v1_73_0 -q $QUALIFIER || exit 1
     setup eigen v3_3_9a || exit 1
     if [ $STAN == stan ]; then setup stan_math v3_4_0 -q $QUALIFIER || exit 1; fi

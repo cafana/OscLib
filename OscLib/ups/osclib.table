@@ -107,7 +107,7 @@ ACTION=SETUP
 
   # for get-directory-name
   setupRequired(cetpkgsupport)
-  setupRequired(root v6_22_06a -qe19:debug)
+  setupRequired(root v6_22_06a -qe19:debug:p383b)
   setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_73_0 -qe19:debug)
 
@@ -129,7 +129,7 @@ ACTION=SETUP
 
   # for get-directory-name
   setupRequired(cetpkgsupport)
-  setupRequired(root v6_22_06a -qe19:debug)
+  setupRequired(root v6_22_06a -qe19:debug:p383b)
   setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_73_0 -qe19:debug)
   setupRequired(stan_math v3_4_0 -qe19:debug)
@@ -152,7 +152,7 @@ ACTION=SETUP
 
   # for get-directory-name
   setupRequired(cetpkgsupport)
-  setupRequired(root v6_22_06a -qe19:prof)
+  setupRequired(root v6_22_06a -qe19:prof:p383b)
   setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_73_0 -qe19:prof)
 
@@ -174,7 +174,7 @@ ACTION=SETUP
 
   # for get-directory-name
   setupRequired(cetpkgsupport)
-  setupRequired(root v6_22_06a -qe19:prof)
+  setupRequired(root v6_22_06a -qe19:prof:p383b)
   setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_73_0 -qe19:prof)
   setupRequired(stan_math v3_4_0 -qe19:prof)
@@ -198,7 +198,7 @@ ACTION=SETUP
 
   # for get-directory-name
   setupRequired(cetpkgsupport)
-  setupRequired(root v6_22_06a -qe20:debug)
+  setupRequired(root v6_22_06a -qe20:debug:p383b)
   setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_73_0 -qe20:debug)
 
@@ -220,7 +220,7 @@ ACTION=SETUP
 
   # for get-directory-name
   setupRequired(cetpkgsupport)
-  setupRequired(root v6_22_06a -qe20:debug)
+  setupRequired(root v6_22_06a -qe20:debug:p383b)
   setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_73_0 -qe20:debug)
   setupRequired(stan_math v3_4_0 -qe20:debug)
@@ -243,7 +243,7 @@ ACTION=SETUP
 
   # for get-directory-name
   setupRequired(cetpkgsupport)
-  setupRequired(root v6_22_06a -qe20:prof)
+  setupRequired(root v6_22_06a -qe20:prof:p383b)
   setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_73_0 -qe20:prof)
 
@@ -265,7 +265,7 @@ ACTION=SETUP
 
   # for get-directory-name
   setupRequired(cetpkgsupport)
-  setupRequired(root v6_22_06a -qe20:prof)
+  setupRequired(root v6_22_06a -qe20:prof:p383b)
   setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_73_0 -qe20:prof)
   setupRequired(stan_math v3_4_0 -qe20:prof)
@@ -289,7 +289,7 @@ ACTION=SETUP
 
   # for get-directory-name
   setupRequired(cetpkgsupport)
-  setupRequired(root v6_22_06a -qc7:debug)
+  setupRequired(root v6_22_06a -qc7:debug:p383b)
   setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_73_0 -qc7:debug)
 
@@ -311,7 +311,7 @@ ACTION=SETUP
 
   # for get-directory-name
   setupRequired(cetpkgsupport)
-  setupRequired(root v6_22_06a -qc7:debug)
+  setupRequired(root v6_22_06a -qc7:debug:p383b)
   setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_73_0 -qc7:debug)
   setupRequired(stan_math v3_4_0 -qc7:debug)
@@ -334,7 +334,7 @@ ACTION=SETUP
 
   # for get-directory-name
   setupRequired(cetpkgsupport)
-  setupRequired(root v6_22_06a -qc7:prof)
+  setupRequired(root v6_22_06a -qc7:prof:p383b)
   setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_73_0 -qc7:prof)
 
@@ -356,7 +356,7 @@ ACTION=SETUP
 
   # for get-directory-name
   setupRequired(cetpkgsupport)
-  setupRequired(root v6_22_06a -qc7:prof)
+  setupRequired(root v6_22_06a -qc7:prof:p383b)
   setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_73_0 -qc7:prof)
   setupRequired(stan_math v3_4_0 -qc7:prof)
