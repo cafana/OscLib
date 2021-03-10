@@ -132,7 +132,7 @@ ACTION=SETUP
   setupRequired(root v6_22_06a -qe19:debug:p383b)
   setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_73_0 -qe19:debug)
-  setupRequired(stan_math v3_4_0 -qe19:debug)
+  setupRequired(stan_math v2_18_0 -qe19:debug)
 
   EnvSet(OSCLIB_VERSION, ${UPS_PROD_VERSION} )
   EnvSet(OSCLIB_INC, ${UPS_PROD_DIR}/include )
@@ -177,7 +177,7 @@ ACTION=SETUP
   setupRequired(root v6_22_06a -qe19:prof:p383b)
   setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_73_0 -qe19:prof)
-  setupRequired(stan_math v3_4_0 -qe19:prof)
+  setupRequired(stan_math v2_18_0 -qe19:prof)
 
   EnvSet(OSCLIB_VERSION, ${UPS_PROD_VERSION} )
   EnvSet(OSCLIB_INC, ${UPS_PROD_DIR}/include )
@@ -223,7 +223,7 @@ ACTION=SETUP
   setupRequired(root v6_22_06a -qe20:debug:p383b)
   setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_73_0 -qe20:debug)
-  setupRequired(stan_math v3_4_0 -qe20:debug)
+  setupRequired(stan_math v2_18_0 -qe20:debug)
 
   EnvSet(OSCLIB_VERSION, ${UPS_PROD_VERSION} )
   EnvSet(OSCLIB_INC, ${UPS_PROD_DIR}/include )
@@ -268,7 +268,7 @@ ACTION=SETUP
   setupRequired(root v6_22_06a -qe20:prof:p383b)
   setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_73_0 -qe20:prof)
-  setupRequired(stan_math v3_4_0 -qe20:prof)
+  setupRequired(stan_math v2_18_0 -qe20:prof)
 
   EnvSet(OSCLIB_VERSION, ${UPS_PROD_VERSION} )
   EnvSet(OSCLIB_INC, ${UPS_PROD_DIR}/include )
@@ -314,7 +314,7 @@ ACTION=SETUP
   setupRequired(root v6_22_06a -qc7:debug:p383b)
   setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_73_0 -qc7:debug)
-  setupRequired(stan_math v3_4_0 -qc7:debug)
+  setupRequired(stan_math v2_18_0 -qc7:debug)
 
   EnvSet(OSCLIB_VERSION, ${UPS_PROD_VERSION} )
   EnvSet(OSCLIB_INC, ${UPS_PROD_DIR}/include )
@@ -359,7 +359,7 @@ ACTION=SETUP
   setupRequired(root v6_22_06a -qc7:prof:p383b)
   setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_73_0 -qc7:prof)
-  setupRequired(stan_math v3_4_0 -qc7:prof)
+  setupRequired(stan_math v2_18_0 -qc7:prof)
 
   EnvSet(OSCLIB_VERSION, ${UPS_PROD_VERSION} )
   EnvSet(OSCLIB_INC, ${UPS_PROD_DIR}/include )
