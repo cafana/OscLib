@@ -393,8 +393,13 @@ T _PMNSOpt<T>::P(int flv) const
 template class osc::_PMNSOpt<double>;
 
 #ifdef OSCLIB_STAN
+#pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
-#include "stan/math/rev/scal.hpp"
+#pragma GCC diagnostic ignored "-Wpedantic"
+#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+#pragma GCC diagnostic ignored "-Wignored-qualifiers"
+#include "stan/math/rev.hpp"
+#pragma GCC diagnostic pop
 
 #ifdef __clang__
 namespace stan::math{

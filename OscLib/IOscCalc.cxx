@@ -1,10 +1,16 @@
-// std_isnan needs to precede IOscCalc
+// the Stan include needs to precede IOscCalc
 // because it injects an important Stan overload of std::isnan
-// into the std namespace that need sto be there
+// into the std namespace that needs to be there
 // BEFORE the Eigen headers are seen (due to the '#pragma once').
 // IOscCalc.h  #includes Eigen/Eigen, so /shrug
 #ifdef OSCLIB_STAN
-#include "stan/math/rev/core/std_isnan.hpp"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wpedantic"
+#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+#pragma GCC diagnostic ignored "-Wignored-qualifiers"
+#include "stan/math/rev.hpp"
+#pragma GCC diagnostic pop
 #endif
 
 #include "OscLib/IOscCalc.h"

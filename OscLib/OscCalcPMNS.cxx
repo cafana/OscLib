@@ -1,3 +1,17 @@
+// n.b. Stan sets up some type traits that need to be loaded before Eigen is.
+// Since Eigen gets dragged in via IOscCalc.h, which is required by the OscCalcPMNS.h header,
+// we have to get Stan set up before that is included.
+// (Stan also triggers a bunch of warnings in the
+#ifdef OSCLIB_STAN
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wpedantic"
+#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+#pragma GCC diagnostic ignored "-Wignored-qualifiers"
+#include "stan/math/rev.hpp"
+#pragma GCC diagnostic pop
+#endif
+
 #include "OscLib/OscCalcPMNS.h"
 
 namespace osc
@@ -67,7 +81,5 @@ namespace osc
 template class osc::_OscCalcPMNS<double>;
 
 #ifdef OSCLIB_STAN
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#include "stan/math/rev/scal.hpp"
 template class osc::_OscCalcPMNS<stan::math::var>;
 #endif

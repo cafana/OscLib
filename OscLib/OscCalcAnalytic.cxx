@@ -1,13 +1,14 @@
-#include "OscLib/OscCalcAnalytic.h"
-
-#include <array>
-#include <cassert>
-
+// n.b. Stan sets up some type traits that need to be loaded before Eigen is.
+// Since Eigen gets dragged in via IOscCalc.h, which is required by the OscCalcDMP.h header,
+// we have to get Stan set up before that is included.
+// (Stan also triggers a bunch of warnings in the
 #ifdef OSCLIB_STAN
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
-#include "stan/math/rev/scal.hpp"
-#pragma GCC diagnostic pop
+#pragma GCC diagnostic ignored "-Wpedantic"
+#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+#pragma GCC diagnostic ignored "-Wignored-qualifiers"
+#include "stan/math/rev.hpp"
 
 // Stan doesn't provide sincos()
 void sincos(const stan::math::var& x, stan::math::var* sx, stan::math::var* cx)
@@ -15,7 +16,13 @@ void sincos(const stan::math::var& x, stan::math::var* sx, stan::math::var* cx)
   *sx = sin(x);
   *cx = cos(x);
 }
+#pragma GCC diagnostic pop
 #endif
+
+#include "OscLib/OscCalcAnalytic.h"
+
+#include <array>
+#include <cassert>
 
 template<class T, class U> void sincos(T& x,
                                        Eigen::ArrayX<U>* sx,
