@@ -2,7 +2,7 @@
 
 # Record what flags were used. Can dump with
 # readelf -p .GCC.command.line libOscLib.so
-CFLAGS := -std=c++17 -I.. -I${ROOT_INC} -I${EIGEN_INC} -g -Wall -Wpedantic -Wextra -Werror -grecord-gcc-switches
+CFLAGS := -std=c++17 -I.. -I${ROOT_INC} -I${EIGEN_INC} -I${BOOST_INC} -I${GSL_INC} -g -Wall -Wpedantic -Wextra -Werror -grecord-gcc-switches
 
 CFLAGS += $(shell if [[ x${QUALIFIER} == *debug* ]]; then echo ''; else echo '-O3'; fi )
 
@@ -14,7 +14,7 @@ LDFLAGS_BINS := -L${ROOTSYS}/lib -lCore -lGraf -lGpad -lHist -lMathCore -lRIO -L
 
 # Only try to use stan if the product is set up
 ifdef STAN_MATH_INC
-CFLAGS += -DOSCLIB_STAN -D_REENTRANT -I${BOOST_INC} -I${SUNDIALS_INC} -I${GSL_INC} -I${STAN_MATH_INC} -Wno-unused-function
+CFLAGS += -DOSCLIB_STAN -D_REENTRANT -I${SUNDIALS_INC} -I${STAN_MATH_INC} -Wno-unused-function
 endif
 
 SRCS := $(wildcard *.cxx)
