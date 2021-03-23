@@ -33,6 +33,14 @@
 //
 // messier@indiana.edu
 ////////////////////////////////////////////////////////////////////////
+
+// n.b. Stan sets up some type traits that need to be loaded before Eigen is.
+// Since Eigen gets dragged in via IOscCalc.h we have to get Stan set up before
+// that is included.
+#ifdef OSCLIB_STAN
+#include "OscLib/Stan.h"
+#endif
+
 #include "OscLib/PMNS.h"
 
 #include <cstdlib>
@@ -618,9 +626,8 @@ T _PMNS<T>::P(int i, int j) const
 template class osc::_PMNS<double>;
 
 #ifdef OSCLIB_STAN
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#include "stan/math/rev/scal.hpp"
 
+// TODO is this still necessary with latest stan?
 #ifdef __clang__
 namespace stan::math{
   inline bool isinf(const stan::math::var& x){return stan::math::is_inf(x);}

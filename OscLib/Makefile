@@ -14,7 +14,8 @@ LDFLAGS_BINS := -L${ROOTSYS}/lib -lCore -lGraf -lGpad -lHist -lMathCore -lRIO -L
 
 # Only try to use stan if the product is set up
 ifdef STAN_MATH_INC
-CFLAGS += -DOSCLIB_STAN -I${STAN_MATH_INC} -Wno-unused-function
+CFLAGS += -DOSCLIB_STAN -D_REENTRANT -I${SUNDIALS_INC} -I${STAN_MATH_INC} -Wno-unused-function
+LDFLAGS_BINS += -L${TBB_LIB} -ltbb
 endif
 
 SRCS := $(wildcard *.cxx)

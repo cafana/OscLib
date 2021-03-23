@@ -64,6 +64,13 @@
 //    double Mag(const std::complex<T>& z) { return z.real() * z.real() + z.imag() * z.imag(); }
 // This was done in the zhe***3 libraries included below.
 
+// n.b. Stan sets up some type traits that need to be loaded before Eigen is.
+// Since Eigen gets dragged in via IOscCalc.h we have to get Stan set up before
+// that is included.
+#ifdef OSCLIB_STAN
+#include "OscLib/Stan.h"
+#endif
+
 #include "OscLib/PMNSOpt.h"
 
 #include "OscLib/MatrixDecomp/zhetrd3.h"
@@ -393,9 +400,8 @@ T _PMNSOpt<T>::P(int flv) const
 template class osc::_PMNSOpt<double>;
 
 #ifdef OSCLIB_STAN
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#include "stan/math/rev/scal.hpp"
 
+// TODO - check if this is still necessary with newer stan
 #ifdef __clang__
 namespace stan::math{
   inline bool isinf(const stan::math::var& x){return stan::math::is_inf(x);}
