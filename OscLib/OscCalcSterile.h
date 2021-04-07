@@ -3,10 +3,10 @@
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
-// \file OscCalcSterile.h                                         //
+// \file OscCalcSterile.h                                               //
 //                                                                      //
 // Adapt the PMNS_Sterile calculator to standard interface              //
-// <aurisaam@ucmail.uc.edu>						//
+// <aurisaam@ucmail.uc.edu>                                             //
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
