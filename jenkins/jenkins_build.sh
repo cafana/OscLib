@@ -19,7 +19,10 @@ else
     setup root v6_16_00 -q $QUALIFIER || exit 1
     setup boost v1_66_0a -q $QUALIFIER || exit 1
     setup eigen v3.3.5 || exit 1
-    if [ $STAN == stan ]; then setup stan_math v2.18.0 -q $QUALIFIER || exit 1; fi
+    if [ $STAN == stan ]; then
+        echo e17 build no longer supports stan
+        exit 1
+    fi
 fi
 
 make clean # don't trust my build system
