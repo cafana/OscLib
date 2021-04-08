@@ -231,7 +231,7 @@ namespace osc
     if (calc_trivial) return calc_trivial; 
     const OscCalcSterile* calc_sterile = dynamic_cast<const OscCalcSterile*>(calc);
     if(calc_sterile) return calc_sterile;
-    else             std::cout << "Input calculator was not of type OscCalcSterile." << std::endl;
+    std::cout << "Input calculator was not of type OscCalcSterile." << std::endl;
     return nullptr; // If the cast failed, calc_sterile should be nullptr anyway
   }
 
@@ -243,7 +243,7 @@ namespace osc
     if (calc_trivial) return calc_trivial;
     OscCalcSterile* calc_sterile = dynamic_cast<OscCalcSterile*>(calc);
     if(calc_sterile) return calc_sterile;
-    else             std::cout << "Input calculator was not of type OscCalcSterile." << std::endl;
+    std::cout << "Input calculator was not of type OscCalcSterile." << std::endl;
     return nullptr; // If the cast failed, calc_sterile should be nullptr anyway
   }
 } // namespace
