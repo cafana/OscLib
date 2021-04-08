@@ -8,9 +8,14 @@
 // Disable various pedantic warnings that stan triggers
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wunused-variable"
 #pragma GCC diagnostic ignored "-Wpedantic"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wignored-qualifiers"
+#pragma GCC diagnostic ignored "-Wsign-compare"
+#ifdef __clang__
+#pragma GCC diagnostic ignored "-Wunused-lambda-capture"
+#endif
 
 // We could just include this, but it brings in all of stan_math concerned with
 // reverse mode differentiation. We can improve compile times by about a factor
