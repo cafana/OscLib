@@ -1,10 +1,8 @@
-// std_isnan needs to precede the header
-// because it injects an important Stan overload of std::isnan
-// into the std namespace that needs to be there
-// BEFORE the Eigen headers are seen (due to the '#pragma once').
-// PMNS_DMP.h  #includes Eigen/Eigen, so /shrug
+// n.b. Stan sets up some type traits that need to be loaded before Eigen is.
+// Since Eigen gets dragged in via IOscCalc.h we have to get Stan set up before
+// that is included.
 #ifdef OSCLIB_STAN
-#include "stan/math/rev/core/std_isnan.hpp"
+#include "OscLib/Stan.h"
 #endif
 
 #include "OscLib/PMNS_DMP.h"
@@ -140,7 +138,5 @@ namespace osc
 template class osc::_PMNS_DMP<double>;
 
 #ifdef OSCLIB_STAN
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#include "stan/math/rev/scal.hpp"
 template class osc::_PMNS_DMP<stan::math::var>;
 #endif

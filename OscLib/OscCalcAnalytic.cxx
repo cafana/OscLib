@@ -1,14 +1,16 @@
+// n.b. Stan sets up some type traits that need to be loaded before Eigen is.
+// Since Eigen gets dragged in via IOscCalc.h we have to get Stan set up before
+// that is included.
+#ifdef OSCLIB_STAN
+#include "OscLib/Stan.h"
+#endif
+
 #include "OscLib/OscCalcAnalytic.h"
 
 #include <array>
 #include <cassert>
 
 #ifdef OSCLIB_STAN
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#include "stan/math/rev/scal.hpp"
-#pragma GCC diagnostic pop
-
 // Stan doesn't provide sincos()
 void sincos(const stan::math::var& x, stan::math::var* sx, stan::math::var* cx)
 {

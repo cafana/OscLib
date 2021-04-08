@@ -12,14 +12,17 @@ then
     setup root v6_22_06a -q ${QUALIFIER}:p383b || exit 1
     setup boost v1_73_0 -q $QUALIFIER || exit 1
     setup eigen v3_3_9a || exit 1
-    if [ $STAN == stan ]; then setup stan_math v2_18_0 -q $QUALIFIER || exit 1; fi
+    if [ $STAN == stan ]; then setup stan_math v4_0_1 -q $QUALIFIER || exit 1; fi
 else
     # NOvA versions
     source /cvmfs/nova.opensciencegrid.org/externals/setup || exit 1
     setup root v6_16_00 -q $QUALIFIER || exit 1
     setup boost v1_66_0a -q $QUALIFIER || exit 1
     setup eigen v3.3.5 || exit 1
-    if [ $STAN == stan ]; then setup stan_math v2.18.0 -q $QUALIFIER || exit 1; fi
+    if [ $STAN == stan ]; then
+        echo e17 build no longer supports stan
+        exit 1
+    fi
 fi
 
 make clean # don't trust my build system

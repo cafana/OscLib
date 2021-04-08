@@ -33,6 +33,14 @@
 //
 // messier@indiana.edu
 ////////////////////////////////////////////////////////////////////////
+
+// n.b. Stan sets up some type traits that need to be loaded before Eigen is.
+// Since Eigen gets dragged in via IOscCalc.h we have to get Stan set up before
+// that is included.
+#ifdef OSCLIB_STAN
+#include "OscLib/Stan.h"
+#endif
+
 #include "OscLib/PMNS.h"
 
 #include <cstdlib>
@@ -618,17 +626,5 @@ T _PMNS<T>::P(int i, int j) const
 template class osc::_PMNS<double>;
 
 #ifdef OSCLIB_STAN
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#include "stan/math/rev/scal.hpp"
-
-#ifdef __clang__
-namespace stan::math{
-  inline bool isinf(const stan::math::var& x){return stan::math::is_inf(x);}
-  inline bool isnan(const stan::math::var& x){return stan::math::is_nan(x);}
-  inline bool isfinite(const stan::math::var& x){return !stan::math::is_inf(x) && !stan::math::is_nan(x);}
-  inline stan::math::var copysign(stan::math::var x, stan::math::var y){return y > 0 ? x : -x;}
-}
-#endif
-
 template class osc::_PMNS<stan::math::var>;
 #endif
