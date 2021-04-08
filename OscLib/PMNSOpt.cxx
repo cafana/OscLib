@@ -400,23 +400,5 @@ T _PMNSOpt<T>::P(int flv) const
 template class osc::_PMNSOpt<double>;
 
 #ifdef OSCLIB_STAN
-
-// TODO - check if this is still necessary with newer stan
-#ifdef __clang__
-namespace stan::math{
-  inline bool isinf(const stan::math::var& x){return stan::math::is_inf(x);}
-  inline bool isnan(const stan::math::var& x){return stan::math::is_nan(x);}
-  inline bool isfinite(const stan::math::var& x){return !stan::math::is_inf(x) && !stan::math::is_nan(x);}
-  inline stan::math::var copysign(stan::math::var x, stan::math::var y){return y > 0 ? x : -x;}
-
-  inline std::complex<stan::math::var> operator/(const std::complex<stan::math::var>& x,
-                                                 const std::complex<stan::math::var>& y)
-  {
-    return std::complex<stan::math::var>(x.real()*y.real() + x.imag()*y.imag(),
-                                         x.imag()*y.real() - x.real()*y.imag())/(y.real()*y.real()+y.imag()*y.imag());
-  }
-}
-#endif
-
 template class osc::_PMNSOpt<stan::math::var>;
 #endif
