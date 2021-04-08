@@ -60,7 +60,7 @@ ACTION=SETUP
   # for get-directory-name
   setupRequired(cetpkgsupport)
   setupRequired(root v6_18_04d -qe19:debug)
-  setupRequired(eigen v3_3_5)
+  setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_70_0 -qe19:debug)
 
   EnvSet(OSCLIB_VERSION, ${UPS_PROD_VERSION} )
@@ -82,9 +82,9 @@ ACTION=SETUP
   # for get-directory-name
   setupRequired(cetpkgsupport)
   setupRequired(root v6_18_04d -qe19:debug)
-  setupRequired(eigen v3_3_5)
+  setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_70_0 -qe19:debug)
-  setupRequired(stan_math v2_18_0a -qe19:debug)
+  setupRequired(stan_math 4_0_1 -qe19:debug)
 
   EnvSet(OSCLIB_VERSION, ${UPS_PROD_VERSION} )
   EnvSet(OSCLIB_INC, ${UPS_PROD_DIR}/include )
@@ -105,7 +105,7 @@ ACTION=SETUP
   # for get-directory-name
   setupRequired(cetpkgsupport)
   setupRequired(root v6_18_04d -qe19:prof)
-  setupRequired(eigen v3_3_5)
+  setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_70_0 -qe19:prof)
 
   EnvSet(OSCLIB_VERSION, ${UPS_PROD_VERSION} )
@@ -127,9 +127,9 @@ ACTION=SETUP
   # for get-directory-name
   setupRequired(cetpkgsupport)
   setupRequired(root v6_18_04d -qe19:prof)
-  setupRequired(eigen v3_3_5)
+  setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_70_0 -qe19:prof)
-  setupRequired(stan_math v2_18_0a -qe19:prof)
+  setupRequired(stan_math v4_0_1 -qe19:prof)
 
   EnvSet(OSCLIB_VERSION, ${UPS_PROD_VERSION} )
   EnvSet(OSCLIB_INC, ${UPS_PROD_DIR}/include )
@@ -175,7 +175,7 @@ ACTION=SETUP
   setupRequired(root v6_22_06a -qe20:debug:p383b)
   setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_73_0 -qe20:debug)
-  setupRequired(stan_math v2_18_0a -qe20:debug)
+  setupRequired(stan_math v4_0_1 -qe20:debug)
 
   EnvSet(OSCLIB_VERSION, ${UPS_PROD_VERSION} )
   EnvSet(OSCLIB_INC, ${UPS_PROD_DIR}/include )
@@ -220,7 +220,7 @@ ACTION=SETUP
   setupRequired(root v6_22_06a -qe20:prof:p383b)
   setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_73_0 -qe20:prof)
-  setupRequired(stan_math v2_18_0a -qe20:prof)
+  setupRequired(stan_math v4_0_1 -qe20:prof)
 
   EnvSet(OSCLIB_VERSION, ${UPS_PROD_VERSION} )
   EnvSet(OSCLIB_INC, ${UPS_PROD_DIR}/include )
@@ -266,7 +266,7 @@ ACTION=SETUP
   setupRequired(root v6_22_06a -qc7:debug:p383b)
   setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_73_0 -qc7:debug)
-  setupRequired(stan_math v2_18_0a -qc7:debug)
+  setupRequired(stan_math v4_0_1 -qc7:debug)
 
   EnvSet(OSCLIB_VERSION, ${UPS_PROD_VERSION} )
   EnvSet(OSCLIB_INC, ${UPS_PROD_DIR}/include )
@@ -311,7 +311,7 @@ ACTION=SETUP
   setupRequired(root v6_22_06a -qc7:prof:p383b)
   setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_73_0 -qc7:prof)
-  setupRequired(stan_math v2_18_0a -qc7:prof)
+  setupRequired(stan_math v4_0_1 -qc7:prof)
 
   EnvSet(OSCLIB_VERSION, ${UPS_PROD_VERSION} )
   EnvSet(OSCLIB_INC, ${UPS_PROD_DIR}/include )
