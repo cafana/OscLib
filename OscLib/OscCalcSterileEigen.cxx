@@ -25,6 +25,7 @@ namespace osc
 
   //---------------------------------------------------------------------------
   OscCalcSterileEigen::OscCalcSterileEigen(const OscCalcSterileEigen& calc)
+    : fNumNus(4)
   {
     fL          = calc.fL;
     fCachedNe   = calc.fCachedNe;
@@ -66,7 +67,7 @@ namespace osc
 
     this->InitializeVectors();
 
-    if(fNumNus>2){
+    if(fNumNus>2) {
       this->SetAngle(1,2,0.6);
       this->SetAngle(1,3,0.16);
       this->SetAngle(2,3,0.7);
@@ -84,14 +85,14 @@ namespace osc
   void OscCalcSterileEigen::SetAngle(int i, int j, double th) 
   {
 
-    if(i>j){
+    if (i > j) {
       cout << "First argument should be smaller than second argument" << endl;
       cout << "Setting reverse order (Theta" << j << i << "). " << endl;
       int temp = i;
       i = j;
       j = temp;
     }
-    if(i<1 || i>fNumNus-1 || j<2 || j>fNumNus){
+    if (i < 1 || i > fNumNus - 1 || j < 2 || j > fNumNus) {
       cout << "Theta" << i << j << " not valid for " << fNumNus;
       cout << " neutrinos. Doing nothing." << endl;
       return;
@@ -396,16 +397,16 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  double OscCalcSterileEigen::P(int flv) const
+  double OscCalcSterileEigen::GetP(int flv) const
   {
-    assert(flv>=0 && flv<fNumNus);
+    assert(flv >= 0 && flv < fNumNus);
     return norm(fNuState.coeff(flv));
   }
 
   //---------------------------------------------------------------------------
   void OscCalcSterileEigen::ResetToFlavour(int flv) 
   {
-    for (int i=0; i<fNumNus; ++i){
+    for (int i = 0; i < fNumNus; ++i) {
       if (i==flv) fNuState(i) = one;
       else        fNuState(i) = zero;
     }
@@ -430,7 +431,74 @@ namespace osc
 
     ResetToFlavour(i);
     PropMatter(fL, E, fRho/2, anti);
-    if (j == 3) return P(0) + P(1) + P(2);
-    else return P(j);
+    if (j == 3) return GetP(0) + GetP(1) + GetP(2);
+    else return GetP(j);
   }
+
+  //---------------------------------------------------------------------------
+  OscCalcSterileEigenTrivial::OscCalcSterileEigenTrivial()
+    : OscCalcSterileEigen()
+  {}
+
+  //---------------------------------------------------------------------------
+  OscCalcSterileEigenTrivial::OscCalcSterileEigenTrivial(
+    const OscCalcSterileEigen& calc)
+    : OscCalcSterileEigen(calc)
+  {}
+
+  //---------------------------------------------------------------------------
+  OscCalcSterileEigenTrivial::OscCalcSterileEigenTrivial(
+    const OscCalcSterileEigenTrivial& calc)
+    : OscCalcSterileEigenTrivial()
+  {
+    fL          = calc.fL;
+    fCachedNe   = calc.fCachedNe;
+    fCachedE    = calc.fCachedE;
+    fCachedAnti = calc.fCachedAnti;
+    fDm         = calc.fDm;
+    fTheta      = calc.fTheta;
+    fDelta      = calc.fDelta;
+    fNuState    = calc.fNuState;
+    fHms        = calc.fHms;
+    fHmsMat     = calc.fHmsMat;
+  }
+
+  //---------------------------------------------------------------------------
+  IOscCalcAdjustable* OscCalcSterileEigenTrivial::Copy() const
+  {
+    return new OscCalcSterileEigenTrivial(*this);
+  }
+
+  //---------------------------------------------------------------------------
+  double OscCalcSterileEigenTrivial::P(int, int, double)
+  {
+    return 1;
+  }
+
+  //---------------------------------------------------------------------------
+  const OscCalcSterileEigen* DowncastToSterileEigen(const IOscCalc* calc)
+  {
+    const OscCalcSterileEigenTrivial* calcTrivial
+      = dynamic_cast<const OscCalcSterileEigenTrivial*>(calc);
+    if (calcTrivial) return calcTrivial; 
+    const OscCalcSterileEigen* calcSterile
+      = dynamic_cast<const OscCalcSterileEigen*>(calc);
+    if(calcSterile) return calcSterile;
+    cout << "Input calculator was not of type OscCalcSterileEigen." << endl;
+    return nullptr; // If the cast failed, calc_sterile should be nullptr anyway
+  }
+
+  //---------------------------------------------------------------------------
+  OscCalcSterileEigen* DowncastToSterileEigen(IOscCalc* calc)
+  {
+    OscCalcSterileEigenTrivial* calcTrivial
+      = dynamic_cast<OscCalcSterileEigenTrivial*>(calc);
+    if (calcTrivial) return calcTrivial;
+    OscCalcSterileEigen* calcSterile
+      = dynamic_cast<OscCalcSterileEigen*>(calc);
+    if(calcSterile) return calcSterile;
+    cout << "Input calculator was not of type OscCalcSterileEigen." << endl;
+    return nullptr; // If the cast failed, calc_sterile should be nullptr anyway
+  }
+
 } // namespace
