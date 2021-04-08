@@ -25,7 +25,7 @@ then
     # These are for nutools v3_08_00 (current nova)
     setup root v6_18_04d -q $QUALIFIER || exit 1
     setup boost v1_70_0 -q $QUALIFIER || exit 1
-    setup eigen v3_3_5 || exit 1
+    setup eigen v3_3_9a || exit 1
 
     if [ $STAN == stan ]; then setup stan_math v4_0_1 -q $QUALIFIER || exit 1; fi
 fi
