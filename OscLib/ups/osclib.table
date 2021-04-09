@@ -84,7 +84,7 @@ ACTION=SETUP
   setupRequired(root v6_18_04d -qe19:debug)
   setupRequired(eigen v3_3_9a)
   setupRequired(boost v1_70_0 -qe19:debug)
-  setupRequired(stan_math 4_0_1 -qe19:debug)
+  setupRequired(stan_math v4_0_1 -qe19:debug)
 
   EnvSet(OSCLIB_VERSION, ${UPS_PROD_VERSION} )
   EnvSet(OSCLIB_INC, ${UPS_PROD_DIR}/include )
