@@ -2,7 +2,9 @@
 #define OSC_STAN_H
 
 #ifdef EIGEN_MAJOR_VERSION
-#error "It is strongly advised to include stan_math headers before Eigen headers"
+#ifndef STAN_MATH_PRIM_FUN_EIGEN_HPP
+#error "It is strongly advised not to include Eigen headers before stan_math headers, please rearrange your includes"
+#endif
 #endif
 
 // Disable various pedantic warnings that stan triggers
