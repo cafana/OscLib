@@ -32,9 +32,9 @@ namespace osc
 
     virtual IOscCalcAdjustable* Copy() const override;
 
-    virtual void SetAngle(int i, int j, double th);
-    virtual void SetDelta(int i, int j, double delta);
-    virtual void SetDm(int i, double dm);
+    virtual void SetAngle(int i, int j, double th) override;
+    virtual void SetDelta(int i, int j, double delta) override;
+    virtual void SetDm(int i, double dm) override;
 
     virtual double GetDm(int i) const override
       { return fPMNS_Sterile->GetDm(i); }
@@ -48,7 +48,7 @@ namespace osc
 
     void SetState(std::vector<double> state);
 
-    //Getters
+    // Getters
     int GetNFlavors() const { return fPMNS_Sterile->GetNFlavors(); }
     std::vector<double> GetState() const;
     virtual TMD5* GetParamsHash() const override;
