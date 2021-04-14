@@ -70,6 +70,8 @@ namespace osc
     const Eigen::Vector3d values;
   };
 
+  void _sincos(double theta, double & s, double &c);
+
   /// \brief A re-optimized version of \ref OscCalcPMNSOpt
   ///
   /// Uses a faster caching scheme than OscCalcPMNSOpt

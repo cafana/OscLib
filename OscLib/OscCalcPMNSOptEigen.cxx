@@ -11,6 +11,15 @@
 
 namespace osc {
 
+  void _sincos(double theta, double & s, double &c)
+  {
+#ifdef __APPLE_CC__
+    __sincos(theta, &s, &c);
+#else
+    sincos(theta, &s, &c);
+#endif
+  }
+
   TMD5* 
   OscCalcPMNSOptEigen::GetParamsHash() const
   {
@@ -43,15 +52,6 @@ namespace osc {
     fLastParams.th13 = fTh13;
     fLastParams.th23 = fTh23;
     fLastParams.deltacp = fdCP;
-  }
-
-  void _sincos(double theta, double & s, double &c)
-  {
-#ifdef __APPLE_CC__
-    __sincos(theta, &s, &c);
-#else
-    sincos(theta, &s, &c);
-#endif
   }
 
   IOscCalcAdjustable * 
