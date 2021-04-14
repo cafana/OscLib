@@ -14,6 +14,11 @@
 
 namespace osc
 {
+  /// \brief base class for sterile oscillation calculators
+  /// In the context of a sterile oscillation calculator, a PDG code
+  /// of zero corresponds to the survival probability for an active
+  /// neutrino, ie. the sum of the oscillation probabilities for the
+  /// three active neutrino states.
   class IOscCalcSterile: public IOscCalcAdjustable
   {
   public:
@@ -46,6 +51,7 @@ namespace osc
 
   };
 
+  /// \brief version of OscCalcSterile that always returns probability of 1
   class OscCalcSterileTrivial: public IOscCalcSterile
   {
   public:
@@ -66,10 +72,8 @@ namespace osc
     virtual double GetDelta(int, int) const override { return 0; };
   };
 
-  /// \brief version of OscCalcSterile that always returns probability of 1
-
-  const IOscCalcSterile* DowncastToSterile(const IOscCalc* calc);
-  IOscCalcSterile* DowncastToSterile(IOscCalc* calc);
+  const IOscCalcSterile* DowncastToSterile(const IOscCalc* calc, bool quiet=false);
+  IOscCalcSterile* DowncastToSterile(IOscCalc* calc, bool quiet=false);
 
 } // namespace
 

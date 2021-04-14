@@ -59,22 +59,24 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  const IOscCalcSterile* DowncastToSterile(const IOscCalc* calc)
+  const IOscCalcSterile* DowncastToSterile(const IOscCalc* calc, bool quiet)
   {
     const IOscCalcSterile* calc_sterile
             = dynamic_cast<const IOscCalcSterile*>(calc);
     if(calc_sterile) return calc_sterile;
-    std::cout << "Input calculator was not of type IOscCalcSterile." << std::endl;
+    if (!quiet)
+      std::cout << "Input calculator was not of type IOscCalcSterile." << std::endl;
     return nullptr; // If the cast failed, calc_sterile should be nullptr anyway
   }
 
   //---------------------------------------------------------------------------
-  IOscCalcSterile* DowncastToSterile(IOscCalc* calc)
+  IOscCalcSterile* DowncastToSterile(IOscCalc* calc, bool quiet)
   {
     IOscCalcSterile* calc_sterile
             = dynamic_cast<IOscCalcSterile*>(calc);
     if (calc_sterile) return calc_sterile;
-    std::cout << "Input calculator was not of type OscCalcSterile." << std::endl;
+    if (!quiet)
+      std::cout << "Input calculator was not of type OscCalcSterile." << std::endl;
     return nullptr; // If the cast failed, calc_sterile should be nullptr anyway
   }
 
