@@ -25,7 +25,6 @@ do
     mv $newdir/OscLib/lib $newdir/$lib
     # will overwrite each other but should all be identical
     mv $newdir/OscLib/ups $TAG/
-    sed -i s/vXX.YY/$TAG/g ${TAG}/ups/osclib.table
     for k in `find $newdir/OscLib -name '*.h'`
     do
         fname=${k/$newdir/}
