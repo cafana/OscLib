@@ -17,6 +17,7 @@ do
             for STAN in stan stanfree
             do
                 if [[ $EXPT == n308 && $COMPILER != e19 ]]; then continue; fi
+                if [[ $EXPT == n309 && $COMPILER == e19 ]]; then continue; fi
 
                 echo FLAVOR=ANY
                 echo QUALIFIERS=\"${OPT}:${COMPILER}:${EXPT}:${STAN}\"
