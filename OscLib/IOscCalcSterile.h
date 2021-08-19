@@ -37,6 +37,15 @@ namespace osc
     virtual double GetAngle(int i, int j) const = 0;
     virtual double GetDelta(int i, int j) const = 0;
 
+    // Provide convenience methods for parameters that overlap with the
+    // traditional 3 flavour parameters.
+    virtual double GetDmsq21() const override { return GetDm(2)-GetDm(1); }
+    virtual double GetDmsq32() const override { return GetDm(3)-GetDm(2); }
+    virtual double GetTh12  () const override { return GetAngle(1, 2); }
+    virtual double GetTh13  () const override { return GetAngle(1, 3); }
+    virtual double GetTh23  () const override { return GetAngle(2, 3); }
+    virtual double GetdCP   () const override { return GetDelta(1, 3); }
+
   protected:
 
     virtual void SetDmsq21(const double& dmsq21) override;
