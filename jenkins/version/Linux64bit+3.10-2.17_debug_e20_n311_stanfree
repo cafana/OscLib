@@ -3,7 +3,7 @@ PRODUCT = osclib
 VERSION = vXX.YY
 
 FLAVOR = Linux64bit+3.10-2.17
-QUALIFIERS = "prof:c7:n309:stanfree"
+QUALIFIERS = "debug:e20:n311:stanfree"
   PROD_DIR = osclib/vXX.YY/
   UPS_DIR = ups
   TABLE_FILE = osclib.table

@@ -14,7 +14,13 @@ LDFLAGS_BINS := -L${ROOTSYS}/lib -lCore -lGraf -lGpad -lHist -lMathCore -lRIO -L
 
 # Only try to use stan if the product is set up
 ifdef STAN_MATH_INC
-CFLAGS += -DOSCLIB_STAN -D_REENTRANT -I${SUNDIALS_INC} -I${STAN_MATH_INC} -Wno-unused-function
+CFLAGS += -DOSCLIB_STAN -D_REENTRANT -I${SUNDIALS_INC} -I${STAN_MATH_INC} -I${TBB_INC} -Wno-unused-function
+
+# If we can't find "2019" in the version, ie it's newer than that
+ifeq (,$(findstring v2019,${TBB_UPS_VERSION}))
+CFLAGS += -DTBB_INTERFACE_NEW
+endif
+
 LDFLAGS_BINS += -L${TBB_LIB} -ltbb
 endif
 
