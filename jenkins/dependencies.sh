@@ -32,11 +32,4 @@ echo eigen v3_3_9a
 if [ $WANTSTAN == yes ]
 then
     echo stan_math v4_0_1 -q$QUAL
-
-    if [[ $NQUAL == n308 ]]
-    then
-        echo tbb v2019_3 -q${QUAL}
-    else
-        echo tbb v2021_1_1 -q${QUAL}
-    fi
 fi
