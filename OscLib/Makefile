@@ -1,3 +1,6 @@
+# BASH-isms are used in shell directives so set the shell to be bash
+SHELL = bash
+
 # Extremely crude stop-gap makefile
 
 # Record what flags were used. Can dump with
