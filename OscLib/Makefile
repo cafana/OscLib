@@ -1,10 +1,18 @@
 # BASH-isms are used in shell directives so set the shell to be bash
 SHELL = bash
 
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+    DSOEXT = so
+endif
+ifeq ($(UNAME_S),Darwin)
+    DSOEXT = dylib
+endif
+
 # Extremely crude stop-gap makefile
 
 # Record what flags were used. Can dump with
-# readelf -p .GCC.command.line libOscLib.so
+# readelf -p .GCC.command.line libOscLib.$(DSOEXT)
 CFLAGS := -std=c++17 -I.. -I${ROOT_INC} -I${EIGEN_INC} -I${BOOST_INC} -I${GSL_INC} -g -Wall -Wpedantic -Wextra -Werror -grecord-gcc-switches -fvisibility=default
 
 CFLAGS += $(shell if [[ x${QUALIFIER} == *debug* ]]; then echo ''; else echo '-O3'; fi )
@@ -34,15 +42,15 @@ OBJS := $(patsubst %.cxx,tmp/%.o,$(SRCS))
 BIN_SRCS := $(wildcard test/test*.cc)
 BINS := $(patsubst test/test%.cc,bin/test%,$(BIN_SRCS))
 
-all: prereqs ${OBJS} ${BINS} lib/libOscLib.so
+all: prereqs ${OBJS} ${BINS} lib/libOscLib.$(DSOEXT)
 
 tmp/%.o: %.cxx ${HDRS}
 	${CXX} $< ${CFLAGS} -c -fpic -o $@
 
-bin/test%: test/test%.cc ${HDRS} lib/libOscLib.so
+bin/test%: test/test%.cc ${HDRS} lib/libOscLib.$(DSOEXT)
 	${CXX} $< ${CFLAGS} ${LDFLAGS_BINS} -o $@
 
-lib/libOscLib.so: ${OBJS}
+lib/libOscLib.$(DSOEXT): ${OBJS}
 	${CXX} -shared -o $@ tmp/*.o ${LDFLAGS}
 
 prereqs:
@@ -59,4 +67,4 @@ prereqs:
 	mkdir -p bin
 
 clean:
-	rm tmp/*.o lib/*.so bin/*
+	rm tmp/*.o lib/*.$(DSOEXT) bin/*
