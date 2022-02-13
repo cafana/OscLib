@@ -1,19 +1,11 @@
 # BASH-isms are used in shell directives so set the shell to be bash
 SHELL = bash
 
-UNAME_S := $(shell uname -s)
-ifeq ($(UNAME_S),Linux)
-    DSOEXT = so
-endif
-ifeq ($(UNAME_S),Darwin)
-    DSOEXT = dylib
-endif
-
 # Extremely crude stop-gap makefile
 
 # Record what flags were used. Can dump with
 # readelf -p .GCC.command.line libOscLib.$(DSOEXT)
-CFLAGS := -std=c++17 -I.. -I${ROOT_INC} -I${EIGEN_INC} -I${BOOST_INC} -I${GSL_INC} -g -Wall -Wpedantic -Wextra -Werror -grecord-gcc-switches -fvisibility=default
+CFLAGS := -std=c++17 -I.. -I${ROOT_INC} -I${EIGEN_INC} -I${BOOST_INC} -I${GSL_INC} -g -Wall -Wpedantic -Wextra -Werror -grecord-gcc-switches
 
 CFLAGS += $(shell if [[ x${QUALIFIER} == *debug* ]]; then echo ''; else echo '-O3'; fi )
 
@@ -36,6 +28,14 @@ LDFLAGS += -L${TBB_LIB} -ltbb
 LDFLAGS_BINS += -L${TBB_LIB} -ltbb
 endif
 
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+    DSOEXT = so
+endif
+ifeq ($(UNAME_S),Darwin)
+    DSOEXT = dylib
+endif
+
 SRCS := $(wildcard *.cxx)
 HDRS := $(wildcard *.h)
 OBJS := $(patsubst %.cxx,tmp/%.o,$(SRCS))
@@ -51,7 +51,12 @@ bin/test%: test/test%.cc ${HDRS} lib/libOscLib.$(DSOEXT)
 	${CXX} $< ${CFLAGS} ${LDFLAGS_BINS} -o $@
 
 lib/libOscLib.$(DSOEXT): ${OBJS}
-	${CXX} -shared -o $@ tmp/*.o ${LDFLAGS}
+ifeq ($(UNAME_S),Linux)
+	${CXX} -shared -o $@ $^ ${LDFLAGS}
+endif
+ifeq ($(UNAME_S),Darwin)
+	${CXX} -dynamiclib -o $@ $^ ${LDFLAGS} -install_name "@rpath/libOscLib.$(DSOEXT)"
+endif
 
 prereqs:
 	@echo Checking all necessary env vars are set
