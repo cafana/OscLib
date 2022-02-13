@@ -5,15 +5,15 @@ SHELL = bash
 
 # Record what flags were used. Can dump with
 # readelf -p .GCC.command.line libOscLib.so
-CFLAGS := -std=c++17 -I.. -I${ROOT_INC} -I${EIGEN_INC} -I${BOOST_INC} -I${GSL_INC} -g -Wall -Wpedantic -Wextra -Werror -grecord-gcc-switches
+CFLAGS := -std=c++17 -I.. -I${ROOT_INC} -I${EIGEN_INC} -I${BOOST_INC} -I${GSL_INC} -g -Wall -Wpedantic -Wextra -Werror -grecord-gcc-switches -fvisibility=default
 
 CFLAGS += $(shell if [[ x${QUALIFIER} == *debug* ]]; then echo ''; else echo '-O3'; fi )
 
 CXX := $(shell if [[ x${QUALIFIER} == *c7* ]]; then echo 'clang++'; else echo 'g++'; fi )
 
-LDFLAGS := -L${ROOTSYS}/lib -lCore -L${GSL_LIB} -lgsl -lgslcblas
+LDFLAGS := -L${ROOT_LIB} -lCore -lHist -L${GSL_LIB} -lgsl -lgslcblas
 
-LDFLAGS_BINS := -lOscLib -L${ROOTSYS}/lib -lCore -lGraf -lGpad -lHist -lMathCore -lRIO -Llib
+LDFLAGS_BINS := -lOscLib -L${ROOT_LIB} -lCore -lGraf -lGpad -lHist -lMathCore -lRIO -Llib
 
 # Only try to use stan if the product is set up
 ifdef STAN_MATH_INC
@@ -24,6 +24,7 @@ ifeq (,$(findstring v2019,${TBB_UPS_VERSION}))
 CFLAGS += -DTBB_INTERFACE_NEW
 endif
 
+LDFLAGS += -L${TBB_LIB} -ltbb
 LDFLAGS_BINS += -L${TBB_LIB} -ltbb
 endif
 
@@ -52,6 +53,7 @@ prereqs:
 	test ${GSL_INC} # GSL_INC
 	test ${ROOTSYS} # ROOTSYS
 	test ${GSL_LIB} # GSL_LIB
+	test ${ROOT_LIB} # ROOT_LIB
 	mkdir -p tmp
 	mkdir -p lib
 	mkdir -p bin
