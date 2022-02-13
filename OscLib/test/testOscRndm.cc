@@ -25,7 +25,9 @@ double GetMin(double array[],int Nentries);
 
 int main()
 {
+#ifndef __APPLE_CC__ //This doesn't work on OS X
   feenableexcept(FE_INVALID); // Spot any infs or nans early
+#endif
 
   TRandom3 rnd;
   rnd.SetSeed(0);
