@@ -12,21 +12,31 @@
 
 #ifdef OSCLIB_STAN
 // Stan doesn't provide sincos()
-void sincos(const stan::math::var& x, stan::math::var* sx, stan::math::var* cx)
+void _sincos(const stan::math::var& x, stan::math::var* sx, stan::math::var* cx)
 {
   *sx = sin(x);
   *cx = cos(x);
 }
 #endif
 
-template<class T, class U> void sincos(T& x,
+void _sincos(double const theta, double *s, double *c)
+{
+#ifdef __APPLE_CC__
+  __sincos(theta, s, c);
+#else
+  sincos(theta, s, c);
+#endif
+}
+
+template<class T, class U> void _sincos(T& x,
                                        Eigen::ArrayX<U>* sx,
                                        Eigen::ArrayX<U>* cx)
 {
   // Presumably this is faster than the commented out version below
   sx->resize(x.size());
   cx->resize(x.size());
-  for(int i = 0; i < x.size(); ++i) sincos(x[i], &(*sx)[i], &(*cx)[i]);
+
+  for(int i = 0; i < x.size(); ++i) _sincos(x[i], &(*sx)[i], &(*cx)[i]);
 
   //  *sx = sin(x);
   //  *cx = cos(x);

@@ -14,6 +14,8 @@
 #include "features.h"
 #if __GNUC_PREREQ(9,0)
 #pragma GCC diagnostic ignored "-Wdeprecated-copy"
+#else
+#pragma clang diagnostic ignored "-Wdeprecated-copy"
 #endif
 #endif
 #include <boost/numeric/ublas/vector.hpp>
