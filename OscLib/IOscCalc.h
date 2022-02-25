@@ -1,8 +1,6 @@
 #ifndef IOSCCALCULATOR_H
 #define IOSCCALCULATOR_H
 
-#include "TMD5.h"
-#include <Eigen/Eigen>
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
 // \file    IOscCalc.h                                                  //
@@ -11,6 +9,10 @@
 // \author  Christopher Backhouse - c.backhouse@ucl.ac.uk               //
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
+
+#include <Eigen/Eigen>
+
+class TMD5;
 
 /// Oscillation probability calculators
 namespace osc
@@ -23,6 +25,8 @@ namespace osc
     virtual ~_IOscCalc() {}
 
     virtual _IOscCalc* Copy() const = 0;
+
+    virtual void Print(const std::string& prefix = "") const = 0;
 
     /// E in GeV; flavors as PDG codes (so, neg==>antinu)
     virtual T P(int flavBefore, int flavAfter, double E) = 0;
@@ -45,24 +49,14 @@ namespace osc
   class _NoOscillations: public _IOscCalc<T>
   {
   public:
-    using _IOscCalc<T>::P;
-    virtual _IOscCalc<T>* Copy() const override {return new _NoOscillations<T>;}
-    
-    virtual T P(int from, int to, double /*E*/) override
-    {
-      if(from == to || to == 0) return 1;
-      return 0;
-    }
+    virtual _IOscCalc<T>* Copy() const override;
 
-    /// Always compare equal to self
-    virtual TMD5* GetParamsHash() const override
-    {
-      TMD5* ret = new TMD5;
-      const char* txt = "NoOscillations";
-      ret->Update((unsigned char*)txt, strlen(txt));
-      ret->Final();
-      return ret;
-    }
+    virtual void Print(const std::string& prefix = "") const override;
+
+    using _IOscCalc<T>::P;    
+    virtual T P(int from, int to, double /*E*/) override;
+
+    virtual TMD5* GetParamsHash() const override;
   };
   typedef _NoOscillations<double> NoOscillations;
 
@@ -94,12 +88,15 @@ namespace osc
       virtual T      GetTh23  () const { return fTh23   ; }
       virtual T      GetdCP   () const { return fdCP    ; }
 
+      /// Default implementation, prints all the parameters included here
+      virtual void Print(const std::string& prefix = "") const override;
+
       /// \brief Invalidate any caching used internally by the calculator.
       ///
       /// Some calculators use a cache that can become stale in ways
       /// that the calculator may not know about (e.g., Stan var clearing).
       /// Default implementation does nothing.
-      virtual void InvalidateCache()  {};
+      virtual void InvalidateCache() {}
 
     protected:
       /// \brief This is only a safe implementation if your calculator only

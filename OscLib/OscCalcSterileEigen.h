@@ -42,6 +42,12 @@ namespace osc
       { return fDelta(i-1, j-1); }
 
     virtual double P(int flavBefore, int flavAfter, double E) override;
+
+    virtual void Print(const std::string& prefix = "") override
+    {
+      PrintImpl(4, prefix);
+    }
+
     
     /// Set standard 3-flavor parameters
     virtual void SetStdPars();

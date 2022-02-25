@@ -47,6 +47,29 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
+  void IOscCalcSterile::PrintImpl(int nNus, const std::string& prefix) const
+  {
+    for(int i = 2; i <= nNus; ++i){
+      std::cout << prefix << "dmsq" << i << "1 = " << GetDm(i) << " eV^2\n";
+    }
+
+    for(int i = 1; i < nNus; ++i){
+      for(int j = i+1; j <= nNus; ++j){
+        std::cout << prefix << "theta" << i << j << " = " << GetAngle(i, j) << "\n";
+      }
+    }
+
+    for(int i = 1; i < nNus; ++i){
+      for(int j = i+1; j <= nNus; ++j){
+        std::cout << prefix << "delta" << i << j << " = " << GetDelta(i, j) << "\n";
+      }
+    }
+
+    std::cout << prefix << "L = " << GetL() << " km\n"
+              << prefix << "rho = " << GetRho() << " g/cm^3" << std::endl;
+  }
+
+  //---------------------------------------------------------------------------
   double OscCalcSterileTrivial::P(int, int, double)
   {
     return 1;
@@ -56,6 +79,12 @@ namespace osc
   IOscCalcAdjustable* OscCalcSterileTrivial::Copy() const
   {
     return new OscCalcSterileTrivial();
+  }
+
+  //---------------------------------------------------------------------------
+  void OscCalcSterileTrivial::Print(const std::string& prefix)
+  {
+    std::cout << prefix << "Trivial sterile osc" << std::endl;
   }
 
   //---------------------------------------------------------------------------
