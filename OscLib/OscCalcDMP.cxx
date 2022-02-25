@@ -41,15 +41,6 @@ namespace osc
     this->fLastParams.deltacp = this->fdCP;
   }
 
-  inline void _sincos(double theta, double &s, double &c)
-  {
-#ifdef __APPLE_CC__
-    __sincos(theta, &s, &c);
-#else
-    sincos(theta, &s, &c);
-#endif
-  }
-
   template<typename T>
   _IOscCalcAdjustable<T> *
   _OscCalcDMP<T>::Copy() const

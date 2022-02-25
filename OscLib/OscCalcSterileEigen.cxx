@@ -1,3 +1,5 @@
+#include "OscLib/SinCos.h"
+
 #include "OscLib/OscCalcSterileEigen.h"
 #include "OscLib/OscCalcPMNSOptEigen.h"
 
@@ -150,7 +152,7 @@ namespace osc
     if(fTheta(i,j)==0) return;
 
     double fSinBuffer(0), fCosBuffer(0);
-    _sincos(fTheta(i,j), fSinBuffer, fCosBuffer);
+    sincos(fTheta(i,j), &fSinBuffer, &fCosBuffer);
     
     double  fHmsBufferD;
     complex fHmsBufferC;
@@ -158,7 +160,7 @@ namespace osc
     // With Delta
     if(i+1<j){
       double fSinDelta(0), fCosDelta(0);
-      _sincos(fDelta(i,j),fSinDelta, fCosDelta);
+      sincos(fDelta(i,j),&fSinDelta, &fCosDelta);
       complex fExpBuffer = complex(fCosDelta, -fSinDelta);
 
       // General case
@@ -335,7 +337,7 @@ namespace osc
     this->SolveHam(E, Ne, anti);
 
     fNuState = fEig.eigenvectors()*(
-  				  fEig.eigenvalues().unaryExpr([L] (double x) { double sinx(0), cosx(0); _sincos(-kKm2eV*L*x,sinx,cosx); return complex(cosx, sinx);}
+                                 fEig.eigenvalues().unaryExpr([L] (double x) { double sinx(0), cosx(0); sincos(-kKm2eV*L*x,&sinx,&cosx); return complex(cosx, sinx);}
   				  ).asDiagonal())*fEig.eigenvectors().adjoint()*fNuState;
   }
 
