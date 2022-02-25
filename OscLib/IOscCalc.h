@@ -66,7 +66,7 @@ namespace osc
   {
     public:
       virtual ~_IOscCalcAdjustable();
-      virtual _IOscCalcAdjustable<T>* Copy() const = 0;
+      virtual _IOscCalcAdjustable<T>* Copy() const override = 0;
 
       // These setters are left unimplemented here, since calculators may want
       // to compute additional values when these are set.

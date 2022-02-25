@@ -48,7 +48,7 @@ namespace osc
 
     // Delete the default Print() implementation from IOscCalcAdjustable,
     // because it won't print any of the extra sterile parameters.
-    virtual void Print(const std::string& prefix = "") = 0;
+    virtual void Print(const std::string& prefix = "") const override = 0;
 
   protected:
     // Default implementation of Print() for derived classes to use. Can't
