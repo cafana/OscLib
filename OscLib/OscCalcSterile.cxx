@@ -1,5 +1,7 @@
 #include "OscLib/OscCalcSterile.h"
 
+#include "TMD5.h"
+
 #include <cassert>
 
 namespace osc

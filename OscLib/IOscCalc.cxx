@@ -19,8 +19,11 @@ namespace{
 
 #include <Eigen/Dense>
 
+#include "TMD5.h"
+
 namespace osc
 {
+  //---------------------------------------------------------------------------
   template<class T> Eigen::Array<T, Eigen::Dynamic, 1> _IOscCalc<T>::
   P(int flavBefore, int flavAfter, const std::vector<double>& E)
   {
@@ -31,10 +34,35 @@ namespace osc
     return ret.array().isNaN().select(0, ret);
   }
 
+  //---------------------------------------------------------------------------
   template<class T> Eigen::Array<T, Eigen::Dynamic, 1> _IOscCalc<T>::
   P(int flavBefore, int flavAfter, const Eigen::ArrayXd& E)
   {
     return P(flavBefore, flavAfter, std::vector<double>(&E[0], &E[0]+E.size()));
+  }
+
+  //---------------------------------------------------------------------------
+  template<class T> _IOscCalc<T>* _NoOscillations<T>::Copy() const
+  {
+    return new _NoOscillations<T>;
+  }
+    
+  //---------------------------------------------------------------------------
+  template<class T> T _NoOscillations<T>::P(int from, int to, double /*E*/)
+  {
+    if(from == to || to == 0) return 1;
+    return 0;
+  }
+
+  //---------------------------------------------------------------------------
+  template<class T> TMD5* _NoOscillations<T>::GetParamsHash() const
+  {
+    // Always compare equal to self
+    TMD5* ret = new TMD5;
+    const char* txt = "NoOscillations";
+    ret->Update((unsigned char*)txt, strlen(txt));
+    ret->Final();
+    return ret;
   }
 
   //---------------------------------------------------------------------------

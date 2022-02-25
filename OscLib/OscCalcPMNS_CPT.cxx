@@ -6,6 +6,8 @@
 /////////////////////////////////////////////////////////////////////////////
 #include "OscLib/OscCalcPMNS_CPT.h"
 
+#include "TMD5.h"
+
 #include <cassert>
 #include <cstdlib>
 #include <iostream>
@@ -99,6 +101,7 @@ namespace osc
         return fPMNS.P(i, j);
     }
   }
+
   TMD5* OscCalcPMNS_CPT::GetParamsHashDefaultBar() const
   {
     const std::string& txt = "PMNSBar";

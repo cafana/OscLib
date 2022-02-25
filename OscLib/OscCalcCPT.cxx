@@ -3,6 +3,8 @@
 #include <cassert>
 #include <cstdlib>
 
+#include "TMD5.h"
+
 namespace osc
 {
 
@@ -14,8 +16,8 @@ namespace osc
   }
 
   OscCalcCPT::OscCalcCPT(IOscCalcAdjustable* calc,
-                                     IOscCalcAdjustable* barcalc,
-                                     SDMap sigdel)
+                         IOscCalcAdjustable* barcalc,
+                         SDMap sigdel)
   {
     fCalc    = calc;
     fBarCalc = barcalc;

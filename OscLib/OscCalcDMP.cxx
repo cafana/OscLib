@@ -8,6 +8,8 @@
 #include "OscLib/OscCalcDMP.h"
 #include "OscLib/PMNS_DMP.h"
 
+#include "TMD5.h"
+
 #include <cmath>
 
 namespace osc
