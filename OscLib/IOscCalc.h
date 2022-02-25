@@ -26,6 +26,8 @@ namespace osc
 
     virtual _IOscCalc* Copy() const = 0;
 
+    virtual void Print(const std::string& prefix = "") const = 0;
+
     /// E in GeV; flavors as PDG codes (so, neg==>antinu)
     virtual T P(int flavBefore, int flavAfter, double E) = 0;
     /// Default implementation forwards to non-vector version using a simple
@@ -48,6 +50,8 @@ namespace osc
   {
   public:
     virtual _IOscCalc<T>* Copy() const override;
+
+    virtual void Print(const std::string& prefix = "") const override;
 
     using _IOscCalc<T>::P;    
     virtual T P(int from, int to, double /*E*/) override;
@@ -83,6 +87,9 @@ namespace osc
       virtual T      GetTh13  () const { return fTh13   ; }
       virtual T      GetTh23  () const { return fTh23   ; }
       virtual T      GetdCP   () const { return fdCP    ; }
+
+      /// Default implementation, prints all the parameters included here
+      virtual void Print(const std::string& prefix = "") const override;
 
       /// \brief Invalidate any caching used internally by the calculator.
       ///

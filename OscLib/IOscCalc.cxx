@@ -21,6 +21,8 @@ namespace{
 
 #include "TMD5.h"
 
+#include <iostream>
+
 namespace osc
 {
   //---------------------------------------------------------------------------
@@ -66,6 +68,12 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
+  template<class T> void _NoOscillations<T>::Print(const std::string& prefix) const
+  {
+    std::cout << prefix << "No oscillations" << std::endl;
+  }
+
+  //---------------------------------------------------------------------------
   template<class T> _IOscCalcAdjustable<T>::~_IOscCalcAdjustable()
   {
   }
@@ -84,6 +92,20 @@ namespace osc
     return ret;
   }
 
+  //---------------------------------------------------------------------------
+  template<class T> void _IOscCalcAdjustable<T>::Print(const std::string& prefix) const
+  {
+    std::cout << prefix << "dmsq21 = " << fDmsq21 << " eV^2\n"
+              << prefix << "dmsq32 = " << fDmsq32 << " eV^2\n"
+              << prefix << "th12 = " << fTh12 << "\n"
+              << prefix << "th13 = " << fTh13 << "\n"
+              << prefix << "th23 = " << fTh23 << "\n"
+              << prefix << "dCP = " << fdCP << "\n"
+              << prefix << "L = " << fL << " km\n"
+              << prefix << "rho = " << fRho << " g/cm^3" << std::endl;
+  }
+
+  //---------------------------------------------------------------------------
   template <typename T, typename U>
   void CopyParams(const osc::_IOscCalcAdjustable<T> * inCalc,
                   osc::_IOscCalcAdjustable<U> * outCalc)

@@ -22,7 +22,7 @@ namespace osc
   class IOscCalcSterile: public IOscCalcAdjustable
   {
   public:
-    virtual ~IOscCalcSterile() {};
+    virtual ~IOscCalcSterile() {}
 
     virtual void SetL  (double L  ) override {fDirty = true; fL   = L;}
     virtual void SetRho(double rho) override {fDirty = true; fRho = rho;}
@@ -46,7 +46,15 @@ namespace osc
     virtual double GetTh23  () const override { return GetAngle(2, 3); }
     virtual double GetdCP   () const override { return GetDelta(1, 3); }
 
+    // Delete the default Print() implementation from IOscCalcAdjustable,
+    // because it won't print any of the extra sterile parameters.
+    virtual void Print(const std::string& prefix = "") = 0;
+
   protected:
+    // Default implementation of Print() for derived classes to use. Can't
+    // override underlying Print() because this interface doesn't know the
+    // number of generations.
+    void PrintImpl(int nNus, const std::string& prefix= "") const;
 
     virtual void SetDmsq21(const double& dmsq21) override;
     virtual void SetDmsq32(const double& dmsq32) override;
@@ -68,6 +76,8 @@ namespace osc
     OscCalcSterileTrivial() {};
     virtual ~OscCalcSterileTrivial() {};
     virtual double P(int, int, double) override;
+
+    virtual void Print(const std::string& prefix = "") override;
 
   private:
     virtual IOscCalcAdjustable* Copy() const override;

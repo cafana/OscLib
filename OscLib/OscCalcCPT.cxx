@@ -229,6 +229,12 @@ namespace osc
     return ret;
   } 
 
+  void OscCalcCPT::Print(const std::string& prefix) const
+  {
+    fCalc   ->Print(prefix+"nu:    ");
+    fBarCalc->Print(prefix+"nubar: ");
+  }
+
   //---------------------------------------------------------------------------
 
   const OscCalcCPT* DowncastToCPT(const IOscCalcAdjustable* osc)

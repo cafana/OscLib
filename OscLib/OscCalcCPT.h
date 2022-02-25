@@ -108,6 +108,8 @@ namespace osc
 
     TMD5* GetParamsHash() const override;
 
+    virtual void Print(const std::string& prefix = "") const override;
+
   protected:
 
     // one calc for neutrinos, one for anti-neutrinos
