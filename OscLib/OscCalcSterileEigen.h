@@ -43,7 +43,7 @@ namespace osc
 
     virtual double P(int flavBefore, int flavAfter, double E) override;
 
-    virtual void Print(const std::string& prefix = "") override
+    virtual void Print(const std::string& prefix = "") const override
     {
       PrintImpl(4, prefix);
     }

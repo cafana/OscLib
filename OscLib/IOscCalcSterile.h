@@ -54,7 +54,7 @@ namespace osc
     // Default implementation of Print() for derived classes to use. Can't
     // override underlying Print() because this interface doesn't know the
     // number of generations.
-    void PrintImpl(int nNus, const std::string& prefix= "") const;
+    void PrintImpl(int nNus, const std::string& prefix = "") const;
 
     virtual void SetDmsq21(const double& dmsq21) override;
     virtual void SetDmsq32(const double& dmsq32) override;
@@ -77,7 +77,7 @@ namespace osc
     virtual ~OscCalcSterileTrivial() {};
     virtual double P(int, int, double) override;
 
-    virtual void Print(const std::string& prefix = "") override;
+    virtual void Print(const std::string& prefix = "") const override;
 
   private:
     virtual IOscCalcAdjustable* Copy() const override;
