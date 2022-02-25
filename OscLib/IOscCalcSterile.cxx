@@ -82,7 +82,7 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  void OscCalcSterileTrivial::Print(const std::string& prefix)
+  void OscCalcSterileTrivial::Print(const std::string& prefix) const
   {
     std::cout << prefix << "Trivial sterile osc" << std::endl;
   }
