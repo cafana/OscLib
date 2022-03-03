@@ -127,10 +127,13 @@ namespace osc
   //---------------------------------------------------------------------------
   template class _IOscCalcAdjustable<double>;
   template class _IOscCalc<double>;
+  template class _NoOscillations<double>;
 
 #ifdef OSCLIB_STAN
   template class _IOscCalcAdjustable<stan::math::var>;
   template class _IOscCalc<stan::math::var>;
+  template class _NoOscillations<stan::math::var>;
+
   template void CopyParams(const osc::_IOscCalcAdjustable<double> * inCalc,
                            osc::_IOscCalcAdjustable<stan::math::var> * outCalc);
   template void CopyParams(const osc::_IOscCalcAdjustable<stan::math::var> * inCalc,
