@@ -14,6 +14,7 @@
 #include "OscLib/PMNSOpt.h"
 
 #include <cassert>
+#include <memory>
 #include <unordered_map>
 
 namespace osc
@@ -48,6 +49,8 @@ namespace osc
       }
 
     protected:
+      _OscCalcPMNSOpt(const _OscCalcPMNSOpt<T>& calc);
+
       // How many times the mixing parameters and splittings have been set
       long fMixIdx;
       long fDmIdx;
@@ -55,7 +58,7 @@ namespace osc
 
       struct Val_t
       {
-        Val_t() : mixIdx(-1), dmIdx(-1), lrIdx(-1), pmns(0) {}
+        Val_t() : mixIdx(-1), dmIdx(-1), lrIdx(-1) {}
 
         // How many times the mixing parameters and splittings had been set when
         // 'pmns' was last updated. If too small then 'pmns' must be updated
@@ -64,7 +67,7 @@ namespace osc
         long dmIdx;
         long lrIdx;
         T    P[3][3]; ///< Cache of oscillation probabilities
-        _PMNSOpt<T>* pmns;  ///< The calculator itself
+        std::unique_ptr<_PMNSOpt<T>> pmns;  ///< The calculator itself
       };
 
     std::unordered_map<double, Val_t> fPMNSOpt[2]; // [anti][E]

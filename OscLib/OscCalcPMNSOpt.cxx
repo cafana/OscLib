@@ -18,26 +18,23 @@ namespace osc
 
   //---------------------------------------------------------------------------
   template <typename T>
+  _OscCalcPMNSOpt<T>::_OscCalcPMNSOpt(const osc::_OscCalcPMNSOpt<T>& calc)
+    : _IOscCalcAdjustable<T>(calc), fMixIdx(0), fDmIdx(0), fLRIdx(0)
+  {
+    // NB we don't copy any of the cache entries over
+  }
+
+  //---------------------------------------------------------------------------
+  template <typename T>
   _OscCalcPMNSOpt<T>::~_OscCalcPMNSOpt()
   {
-    for(int i = 0; i < 2; ++i)
-      for(auto it: fPMNSOpt[i])
-        delete it.second.pmns;
   }
 
   //---------------------------------------------------------------------------
   template <typename T>
   _IOscCalcAdjustable<T>* _OscCalcPMNSOpt<T>::Copy() const
   {
-    _OscCalcPMNSOpt<T>* ret = new _OscCalcPMNSOpt<T>(*this);
-    // Raw pointers were blindly copied, so we'd be in trouble when the
-    // destructors are called. More importantly, having two calculators sharing
-    // one PMNS object will lead to both of them getting confused as to whether
-    // they're up-to-date or not. Just clear out the cache entirely in the copy
-    // and let it be repopulated.
-    ret->fPMNSOpt[0].clear();
-    ret->fPMNSOpt[1].clear();
-    return ret;
+    return new _OscCalcPMNSOpt<T>(*this);
   }
 
   //---------------------------------------------------------------------------
@@ -61,7 +58,6 @@ namespace osc
     // the precise energy of each event?
     for(int i = 0; i < 2; ++i){
       if(fPMNSOpt[i].size() > 10000){
-        for(auto it: fPMNSOpt[i]) delete it.second.pmns;
         fPMNSOpt[i].clear();
       }
     }
@@ -70,7 +66,7 @@ namespace osc
     assert(flavAfter/anti > 0);
 
     Val_t& calc = fPMNSOpt[(1+anti)/2][E];
-    if(!calc.pmns) calc.pmns = new _PMNSOpt<T>;
+    if(!calc.pmns) calc.pmns.reset(new _PMNSOpt<T>);
 
     int i = -1, j = -1;
     if(abs(flavBefore) == 12) i = 0;
