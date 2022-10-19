@@ -46,6 +46,11 @@ namespace osc
     // if flavAfter == 0, give the active fraction
     virtual double P(int flavBefore, int flavAfter, double E) override;
 
+    virtual void Print(const std::string& prefix = "") const override
+    {
+      PrintImpl(GetNFlavors(), prefix);
+    }
+
     void SetState(std::vector<double> state);
 
     // Getters

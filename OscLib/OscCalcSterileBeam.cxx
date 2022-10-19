@@ -1,6 +1,8 @@
 #include "OscLib/OscCalcSterile.h"
 #include "OscLib/OscCalcSterileBeam.h"
 
+#include "TMD5.h"
+
 #include <cassert>
 #include <cstdlib>
 #include <iostream>

@@ -3,6 +3,8 @@
 #include <cassert>
 #include <cstdlib>
 
+#include "TMD5.h"
+
 namespace osc
 {
 
@@ -14,8 +16,8 @@ namespace osc
   }
 
   OscCalcCPT::OscCalcCPT(IOscCalcAdjustable* calc,
-                                     IOscCalcAdjustable* barcalc,
-                                     SDMap sigdel)
+                         IOscCalcAdjustable* barcalc,
+                         SDMap sigdel)
   {
     fCalc    = calc;
     fBarCalc = barcalc;
@@ -226,6 +228,12 @@ namespace osc
     ret->Final();
     return ret;
   } 
+
+  void OscCalcCPT::Print(const std::string& prefix) const
+  {
+    fCalc   ->Print(prefix+"nu:    ");
+    fBarCalc->Print(prefix+"nubar: ");
+  }
 
   //---------------------------------------------------------------------------
 

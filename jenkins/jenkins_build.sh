@@ -27,12 +27,7 @@ then
     exit 1
 fi
 
-if [[ $EXPERIMENT == *n308* ]]
-then
-    source /cvmfs/nova.opensciencegrid.org/externals/setup || exit 1
-else
-    source /cvmfs/dune.opensciencegrid.org/products/dune/setup_dune.sh || exit 1
-fi
+source /cvmfs/dune.opensciencegrid.org/products/dune/setup_dune.sh || exit 1
 
 
 # Looping over lines is a total pain in bash. Easier to just send it to a file

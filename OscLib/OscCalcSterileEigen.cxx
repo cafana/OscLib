@@ -27,6 +27,7 @@ namespace osc
   OscCalcSterileEigen::OscCalcSterileEigen(const OscCalcSterileEigen& calc)
     : fNumNus(4)
   {
+    fRho        = calc.fRho;
     fL          = calc.fL;
     fCachedNe   = calc.fCachedNe;
     fCachedE    = calc.fCachedE;
