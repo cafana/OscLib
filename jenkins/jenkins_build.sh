@@ -3,9 +3,9 @@
 set +ex
 env
 
-if [[ $QUALIFIER != *:n308* && $QUALIFIER != *:n311* ]]
+if [[ $QUALIFIER != *:n313* && $QUALIFIER != *:n315* ]]
 then
-    echo Unspecified nutools version in qualifier $QUALIFIER -- must be n308 or n311
+    echo Unspecified nutools version in qualifier $QUALIFIER -- must be n313 or n315
     exit 1
 fi
 
