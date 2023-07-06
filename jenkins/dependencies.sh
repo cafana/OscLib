@@ -10,21 +10,21 @@ fi
 
 QUAL=$1
 
-if [[ $QUAL == *:n308* ]]; then NQUAL=n308; QUAL=${QUAL/:n308/}; fi
-if [[ $QUAL == *:n311* ]]; then NQUAL=n311; QUAL=${QUAL/:n311/}; fi
+if [[ $QUAL == *:n313* ]]; then NQUAL=n313; QUAL=${QUAL/:n313/}; fi
+if [[ $QUAL == *:n315* ]]; then NQUAL=n315; QUAL=${QUAL/:n315/}; fi
 
 WANTSTAN=yes
 if [[ $QUAL == *:stanfree ]]; then WANTSTAN=no; QUAL=${QUAL/:stanfree/}; else QUAL=${QUAL/:stan/}; fi
 
-if [[ $NQUAL == n308 ]]
+if [[ $NQUAL == n313 ]]
 then
-    # These are the current (Apr 2021) nova versions (nutools v3_08_00)
-    echo root v6_18_04d -q$QUAL
-    echo boost v1_70_0 -q$QUAL
-else
-    # These are the current (October 2021) sbn versions (nutools v3_11_05)
+    # These are the current (May 2023) nova versions (nutools v3_13_04b)
     echo root v6_22_08d -q${QUAL}:p392
     echo boost v1_75_0 -q$QUAL
+else
+    # These are the current (July 2023) sbn versions (nutools v3_15_03)
+    echo root v6_26_06b -q${QUAL}:p3913
+    echo boost v1_80_0 -q$QUAL
 fi
 
 echo eigen v3_3_9a
