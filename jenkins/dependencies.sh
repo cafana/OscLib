@@ -27,9 +27,9 @@ else
     echo boost v1_80_0 -q$QUAL
 fi
 
-echo eigen v3_3_9a
+echo eigen v3_4_0
 
 if [ $WANTSTAN == yes ]
 then
-    echo stan_math v4_0_1 -q$QUAL
+    echo stan_math v4_5_0a -q$QUAL
 fi
