@@ -31,5 +31,5 @@ echo eigen v3_4_0
 
 if [ $WANTSTAN == yes ]
 then
-    echo stan_math v4_2_1 -q$QUAL
+    echo stan_math v4_5_0a -q$QUAL
 fi
