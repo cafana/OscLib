@@ -7,30 +7,10 @@
 
 #include "OscLib/OscCalcAnalytic.h"
 
+#include "OscLib/SinCos.h"
+
 #include <array>
 #include <cassert>
-
-#ifdef OSCLIB_STAN
-// Stan doesn't provide sincos()
-void sincos(const stan::math::var& x, stan::math::var* sx, stan::math::var* cx)
-{
-  *sx = sin(x);
-  *cx = cos(x);
-}
-#endif
-
-template<class T, class U> void sincos(T& x,
-                                       Eigen::ArrayX<U>* sx,
-                                       Eigen::ArrayX<U>* cx)
-{
-  // Presumably this is faster than the commented out version below
-  sx->resize(x.size());
-  cx->resize(x.size());
-  for(int i = 0; i < x.size(); ++i) sincos(x[i], &(*sx)[i], &(*cx)[i]);
-
-  //  *sx = sin(x);
-  //  *cx = cos(x);
-}
 
 namespace osc::analytic
 {

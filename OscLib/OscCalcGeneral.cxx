@@ -15,6 +15,8 @@
 #if __GNUC_PREREQ(9,0)
 #pragma GCC diagnostic ignored "-Wdeprecated-copy"
 #endif
+#else
+#pragma clang diagnostic ignored "-Wdeprecated-copy"
 #endif
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/matrix.hpp>

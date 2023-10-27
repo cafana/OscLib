@@ -15,7 +15,9 @@
 
 int main()
 {
+#ifndef __APPLE_CC__ //This doesn't work on OS X
   feenableexcept(FE_INVALID); // Spot any infs or nans early
+#endif
 
   osc::OscCalc osc1;
   osc::OscCalcGeneral osc2;

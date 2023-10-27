@@ -1,3 +1,5 @@
+#include "OscLib/SinCos.h"
+
 #include "OscLib/OscCalcPMNSOptEigen.h"
 
 #include <cmath>
@@ -12,15 +14,6 @@
 //#include "zheevq3.cxx"
 
 namespace osc {
-
-  void _sincos(double theta, double & s, double &c)
-  {
-#ifdef __APPLE_CC__
-    __sincos(theta, &s, &c);
-#else
-    sincos(theta, &s, &c);
-#endif
-  }
 
   TMD5* 
   OscCalcPMNSOptEigen::GetParamsHash() const
@@ -439,7 +432,7 @@ namespace osc {
     h11 = params.dmsq21 / params.Dmsq31();
   
     // Rotate over theta12
-    _sincos(params.th12, sij, cij);
+    sincos(params.th12, &sij, &cij);
 
     // There are 3 non-zero entries after rephasing so that h22 = 0
     h00 = h11 * sij * sij - 1;
@@ -447,10 +440,10 @@ namespace osc {
     h11 = h11 * cij * cij - 1;
 
     // Rotate over theta13 with deltaCP
-    _sincos(params.deltacp, sij, cij);
+    sincos(params.deltacp, &sij, &cij);
     expCP = std::complex<double>(cij, -sij);
 
-    _sincos(params.th13, sij, cij);
+    sincos(params.th13, &sij, &cij);
 
 
     // There are 5 non-zero entries after rephasing so that h22 = 0
@@ -461,7 +454,7 @@ namespace osc {
     h01 *= cij;
 
     // Finally, rotate over theta23
-    _sincos(params.th23, sij, cij);
+    sincos(params.th23, &sij, &cij);
 
 
     // Fill the Hamiltonian rephased so that h22 = -h11
