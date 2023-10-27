@@ -19,7 +19,9 @@
 
 int main(int argc, char* argv[])
 {
+#ifndef __APPLE_CC__ //This doesn't work on OS X
   feenableexcept(FE_INVALID); // Spot any infs or nans early
+#endif
 
   osc::OscCalcSterile oscStd;
   osc::OscCalcSterile oscSterile;

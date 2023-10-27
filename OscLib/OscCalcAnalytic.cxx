@@ -12,21 +12,31 @@
 
 #ifdef OSCLIB_STAN
 // Stan doesn't provide sincos()
-void sincos(const stan::math::var& x, stan::math::var* sx, stan::math::var* cx)
+void _sincos(const stan::math::var& x, stan::math::var* sx, stan::math::var* cx)
 {
   *sx = sin(x);
   *cx = cos(x);
 }
 #endif
 
-template<class T, class U> void sincos(T& x,
+void _sincos(double const theta, double *s, double *c)
+{
+#ifdef __APPLE_CC__
+  __sincos(theta, s, c);
+#else
+  sincos(theta, s, c);
+#endif
+}
+
+template<class T, class U> void _sincos(T& x,
                                        Eigen::ArrayX<U>* sx,
                                        Eigen::ArrayX<U>* cx)
 {
   // Presumably this is faster than the commented out version below
   sx->resize(x.size());
   cx->resize(x.size());
-  for(int i = 0; i < x.size(); ++i) sincos(x[i], &(*sx)[i], &(*cx)[i]);
+
+  for(int i = 0; i < x.size(); ++i) _sincos(x[i], &(*sx)[i], &(*cx)[i]);
 
   //  *sx = sin(x);
   //  *cx = cos(x);
@@ -245,7 +255,7 @@ namespace osc::analytic
 
     // Use cos(a+b) = cosa*cosb - sina*sinb to save one trig operation
     T sinr, cosr;
-    sincos(r, &sinr, &cosr);
+    _sincos(r, &sinr, &cosr);
 
     const T t0 = 2*s*cosr;
     const T t1 = s*(sqrt3*sinr - cosr);
@@ -278,8 +288,8 @@ namespace osc::analytic
 
     // Overall phase doesn't matter, which allows us to save one exponentiation
     T c10, s10, c20, s20;
-    sincos(xs[1]-xs[0], &s10, &c10);
-    sincos(xs[2]-xs[0], &s20, &c20);
+    _sincos(xs[1]-xs[0], &s10, &c10);
+    _sincos(xs[2]-xs[0], &s20, &c20);
 
     const T ei0 = 1/(3*sqr(xs[0]) + 2*b*xs[0] + c);
     const cmplx<T> ei1 = cmplx(c10, s10)/(3*sqr(xs[1]) + 2*b*xs[1] + c);
@@ -360,10 +370,10 @@ namespace osc::analytic
     const bool dirtyAngles = fDirty12 || fDirty13 || fDirty23 || fDirtyCP;
 
     if(dirtyAngles){
-      if(fDirty12) sincos(this->fTh12, &s12, &c12);
-      if(fDirty13) sincos(this->fTh13, &s13, &c13);
-      if(fDirty23) sincos(this->fTh23, &s23, &c23);
-      if(fDirtyCP) sincos(this->fdCP,  &sCP, &cCP);
+      if(fDirty12) _sincos(this->fTh12, &s12, &c12);
+      if(fDirty13) _sincos(this->fTh13, &s13, &c13);
+      if(fDirty23) _sincos(this->fTh23, &s23, &c23);
+      if(fDirtyCP) _sincos(this->fdCP,  &sCP, &cCP);
       UpdatePMNS();
       UpdateHamiltonian();
     }
