@@ -5,11 +5,11 @@ SHELL = bash
 
 # Record what flags were used. Can dump with
 # readelf -p .GCC.command.line libOscLib.so
-CFLAGS := -std=c++17 -I.. -I${ROOT_INC} -I${EIGEN_INC} -I${BOOST_INC} -I${GSL_INC} -g -Wall -Wpedantic -Wextra -Werror -grecord-gcc-switches
+CFLAGS := -std=c++17 -I.. -I${ROOT_INC} -I${EIGEN_INC} -I${BOOST_INC} -I${GSL_INC} -g -Wall -Wpedantic -Wextra -Werror -Wno-error=deprecated-declarations -Wno-error=maybe-uninitialized -grecord-gcc-switches
 
 CFLAGS += $(shell if [[ x${QUALIFIER} == *debug* ]]; then echo ''; else echo '-O3'; fi )
 
-CXX := $(shell if [[ x${QUALIFIER} == *c7* ]]; then echo 'clang++'; else echo 'g++'; fi )
+CXX := $(shell if [[ x${QUALIFIER} == *c7* || x${QUALIFIER} == *c14* ]]; then echo 'clang++'; else echo 'g++'; fi )
 
 LDFLAGS := -L${ROOTSYS}/lib -lCore -L${GSL_LIB} -lgsl -lgslcblas
 
