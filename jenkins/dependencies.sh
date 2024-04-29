@@ -22,18 +22,19 @@ then
     # These are the current (May 2023) nova versions (nutools v3_13_04b)
     echo root v6_22_08d -q${QUAL}:p392
     echo boost v1_75_0 -q$QUAL
+    echo eigen v3_4_0
 elif [[ $NQUAL == n315 ]]
 then
     # These are the current (July 2023) sbn versions (nutools v3_15_03)
     echo root v6_26_06b -q${QUAL}:p3913
     echo boost v1_80_0 -q$QUAL
+    echo eigen v3_4_0
 else
-    # nulite v3_16_04a
-    echo root v6_28_10b -q${QUAL}:p3915
+    # nulite v3_16_6
+    echo root v6_28_12 -q${QUAL}:p3915
     echo boost v1_82_0 -q$QUAL
+    echo eigen v23_08_01_66e8f
 fi
-
-echo eigen v3_4_0
 
 if [ $WANTSTAN == yes ]
 then
