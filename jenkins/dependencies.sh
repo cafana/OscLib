@@ -33,7 +33,7 @@ else
     # nulite v3_16_6
     echo root v6_28_12 -q${QUAL}:p3915
     echo boost v1_82_0 -q$QUAL
-    echo eigen v23_08_01_66e8f
+    echo eigen v3_4_0
 fi
 
 if [ $WANTSTAN == yes ]
