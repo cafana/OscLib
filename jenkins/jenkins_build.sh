@@ -9,7 +9,7 @@ then
     exit 1
 fi
 
-if [[ $QUALIFIER != *e20* && $QUALIFIER != *e26* && $QUALIFIER != *c7* $QUALIFIER != *c14* ]]
+if [[ $QUALIFIER != *e20* && $QUALIFIER != *e26* && $QUALIFIER != *c7* && $QUALIFIER != *c14* ]]
 then
     echo Unknown compiler in qualifier $QUALIFIER -- must be e20, e26, c7, or c14
     exit 1
