@@ -140,6 +140,10 @@ namespace osc {
     //this->fPre.Jmatter = 8 * this->fPre.Jrr * (1-this->fPre.s13sq) * this->fPre.sind;
     //#undef Ut2sq
     //#undef Um2sq
+    this->fPre.c13sqxs12sq = (1-this->fPre.s13sq) * this->fPre.s12sq;
+    this->fPre.c13sqxs23sq = (1-this->fPre.s13sq) * this->fPre.s23sq;
+    this->fPre.c12sqxc23sq = (1-this->fPre.s12sq) * (1-this->fPre.s23sq);
+    this->fPre.s13sqxs12sqxs23sq = this->fPre.s13sq * this->fPre.s12sq * this->fPre.s23sq;
     this->fDirty = false;
   }
   
@@ -179,6 +183,10 @@ namespace osc {
     #define probs_returned this->fCurrProbs
     
     // Aggressive precomputation. For terms that don't depend on energy, refer to the cached precomputations.
+    #define c13sqxs12sq this->fPre.c13sqxs12sq
+    #define c13sqxs23sq this->fPre.c13sqxs23sq
+    #define c12sqxc23sq this->fPre.c12sqxc23sq
+    #define s13sqxs12sqxs23sq this->fPre.s13sqxs12sqxs23sq
     #define Jrr this->fPre.Jrr
     #define Jmatter this->fPre.Jmatter
     
@@ -199,32 +207,23 @@ namespace osc {
     // --------------------------------------------------------------------- //
     //c13sq = 1 - s13sq;
     
-    // Ueisq's
-    Ue2sq = c13sq * s12sq;
-    Ue3sq = s13sq;
+    //T c13sqxs12sq = c13sq * s12sq;
+    //T c13sqxs23sq = c13sq * s23sq;
+    //T c12sqxc23sq = c12sq * c23sq;
+    //T s13sqxs12sqxs23sq = s13sq * s12sq * s23sq;
     
-    // Umisq's, Utisq's and Jvac	 
-    Um3sq = c13sq * s23sq;
+    Jrr = sqrt(c12sqxc23sq * s13sqxs12sqxs23sq);
     
-    // Um2sq and Ut2sq are used here as temporary variables, will be properly defined later	 
-    Ut2sq = s13sq * s12sq * s23sq;
-    //Um2sq = (1 - s12sq) * (1 - s23sq);
-    Um2sq = c12sq * c23sq;
-    
-    Jrr = sqrt(Um2sq * Ut2sq);
-    //sind = sin(delta); // These got precomputed.
-    //cosd = cos(delta);
-    
-    Um2sq = Um2sq + Ut2sq - 2 * Jrr * cosd;
+    Um2sq = c12sqxc23sq + s13sqxs12sqxs23sq - 2 * Jrr * cosd;
     Jmatter = 8 * Jrr * c13sq * sind;
     Amatter = Ye * rho * E * YerhoE2a;
     Dmsqee = Dmsq31 - s12sq * Dmsq21;
     
     // calculate A, B, C, See, Tee, and part of Tmm
     A = Dmsq21 + Dmsq31; // temporary variable
-    See = A - Dmsq21 * Ue2sq - Dmsq31 * s13sq;
+    See = A - Dmsq21 * c13sqxs12sq - Dmsq31 * s13sq;
     Tmm = Dmsq21 * Dmsq31; // using Tmm as a temporary variable	  
-    Tee = Tmm * (1 - s13sq - Ue2sq);
+    Tee = Tmm * (1 - s13sq - c13sqxs12sq);
     C = Amatter * Tee;
     A = A + Amatter;
     
@@ -264,8 +263,8 @@ namespace osc {
     Ue3sq = (lambda3 * (lambda3 - See) + Tee) * Xp3;
     Ue2sq = (lambda2 * (lambda2 - See) + Tee) * Xp2;
     
-    Smm = A - Dmsq21 * Um2sq - Dmsq31 * Um3sq;
-    Tmm = Tmm * (1 - Um3sq - Um2sq) + Amatter * (See + Smm - A);
+    Smm = A - Dmsq21 * Um2sq - Dmsq31 * c13sqxs23sq;
+    Tmm = Tmm * (1 - c13sqxs23sq - Um2sq) + Amatter * (See + Smm - A);
     
     Um3sq = (lambda3 * (lambda3 - Smm) + Tmm) * Xp3;
     Um2sq = (lambda2 * (lambda2 - Smm) + Tmm) * Xp2;
@@ -351,9 +350,11 @@ namespace osc {
     #undef Ye
     #undef N_Newton
     #undef probs_returned
-    
-    #undef Ue3sq
-    #undef Ue2sq
+		
+    #undef c13sqxs12sq
+		#undef c13sqxs23sq
+		#undef c12sqxc23sq
+		#undef s13sqxs12sqxs23sq
     #undef Jrr
     #undef Jmatter
   }
