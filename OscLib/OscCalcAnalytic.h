@@ -1,10 +1,11 @@
 #ifndef OSCCALCANALYTIC_H
 #define OSCCALCANALYTIC_H
 
+#include "OscLib/Cache.h"
 #include "OscLib/IOscCalc.h"
 
 #include <functional>
-#include <unordered_map>
+//#include <unordered_map>
 
 namespace Eigen
 {
@@ -12,7 +13,7 @@ namespace Eigen
   template<class T> using ArrayX = Eigen::Array<T, Eigen::Dynamic, 1>;
 }
 
-// We want to put ArrayXd into an unordered_map, so define hash and equality
+/*// We want to put ArrayXd into an unordered_map, so define hash and equality
 namespace std
 {
   template<> struct hash<Eigen::ArrayXd>
@@ -37,7 +38,7 @@ namespace std
       return (a == b).all();
     }
   };
-}
+}*/
 
 namespace osc::analytic
 {
@@ -81,7 +82,7 @@ namespace osc::analytic
     /*cmplx<T> te;   cmplx<T> tm;*/ T         tt;
   };
 
-  template<class T> class Probs
+  /*template<class T> class Probs
   {
   public:
     Probs(T ee, T me, T em, T mm)
@@ -96,7 +97,7 @@ namespace osc::analytic
   };
 
   template<class KT, class VT> class ProbCache : public std::unordered_map<KT, Probs<VT>> {};
-
+*/
   template<class T> class _OscCalc: public _IOscCalcAdjustable<T>,
                                     protected ProbCache<double, T>,
                                     protected ProbCache<Eigen::ArrayXd, Eigen::ArrayX<T>>
