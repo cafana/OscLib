@@ -228,16 +228,17 @@ namespace osc {
     // First calculate useful simple functions of the oscillation parameters //
     // --------------------------------------------------------------------- //
     
-    const VT Amatter = (Ye*rho*YerhoE2a) * E;
+    const VT
+    Amatter = (Ye*rho*YerhoE2a) * E,
     
     // calculate A, B, C, See, Tee, and part of Tmm
-    const VT C = Amatter * Tee;
-    const VT A = Dmsq21+Dmsq31 + Amatter;
+    C = Amatter * Tee,
+    A = Dmsq21+Dmsq31 + Amatter,
     
     // ---------------------------------- //
     // Get lambda3 from lambda+ of MP/DMP //
     // ---------------------------------- //
-    const VT xmat = Amatter / Dmsqee;
+    xmat = Amatter / Dmsqee;
     VT lambda3 = Dmsq31 + (0.5 * Dmsqee) * (xmat - 1 + sqrt((1-xmat) * (1-xmat) + (4*s13sq) * xmat));
     
     // ---------------------------------------------------------------------------- //
@@ -251,77 +252,78 @@ namespace osc {
     // ------------------- //
     // Get  Delta lambda's //
     // ------------------- //
-    const VT Dlambda21 = sqrt((A - lambda3) * (A - lambda3) - 4 * C / lambda3);
-    const VT lambda2 = 0.5 * (A - lambda3 + Dlambda21);
-    const VT Dlambda32 = lambda3 - lambda2;
-    const VT Dlambda31 = Dlambda32 + Dlambda21;
+    const VT
+    Dlambda21 = sqrt((A - lambda3) * (A - lambda3) - 4 * C / lambda3),
+    lambda2 = 0.5 * (A - lambda3 + Dlambda21),
+    Dlambda32 = lambda3 - lambda2,
+    Dlambda31 = Dlambda32 + Dlambda21,
     
     // ----------------------- //
     // Use Rosetta for Veisq's //
     // ----------------------- //
     // denominators	  
-    const VT PiDlambdaInv = 1 / (Dlambda31 * Dlambda32 * Dlambda21);
-    const VT Xp3 = PiDlambdaInv * Dlambda21;
-    const VT Xp2 = -PiDlambdaInv * Dlambda31;
+    PiDlambdaInv = 1 / (Dlambda31 * Dlambda32 * Dlambda21),
+    Xp3 = PiDlambdaInv * Dlambda21,
+    Xp2 = -PiDlambdaInv * Dlambda31,
     
     // numerators
-    const VT Ue3sq = (lambda3 * (lambda3 - See) + Tee) * Xp3;
-    const VT Ue2sq = (lambda2 * (lambda2 - See) + Tee) * Xp2;
+    Ue3sq = (lambda3 * (lambda3 - See) + Tee) * Xp3,
+    Ue2sq = (lambda2 * (lambda2 - See) + Tee) * Xp2,
     
-    const VT Smm = A - Dmsq21 * Um2sq_first - Dmsq31 * c13sqxs23sq;
-    const VT Tmm = Dmsq21*Dmsq31 * (1 - c13sqxs23sq - Um2sq_first) + Amatter * (See + Smm - A);
+    Smm = A - Dmsq21 * Um2sq_first - Dmsq31 * c13sqxs23sq,
+    Tmm = Dmsq21*Dmsq31 * (1 - c13sqxs23sq - Um2sq_first) + Amatter * (See + Smm - A),
     
-    const VT Um3sq = (lambda3 * (lambda3 - Smm) + Tmm) * Xp3;
-    const VT Um2sq = (lambda2 * (lambda2 - Smm) + Tmm) * Xp2;
+    Um3sq = (lambda3 * (lambda3 - Smm) + Tmm) * Xp3,
+    Um2sq = (lambda2 * (lambda2 - Smm) + Tmm) * Xp2,
     
     // ------------- //
     // Use NHS for J //
     // ------------- //
-    const VT Jmatter = Jmatter_first * PiDlambdaInv;
+    Jmatter = Jmatter_first * PiDlambdaInv,
     
     // ----------------------- //
     // Get all elements of Usq //
     // ----------------------- //
-    const VT Ue1sq = 1 - Ue3sq - Ue2sq;
-    const VT Um1sq = 1 - Um3sq - Um2sq;
+    Ue1sq = 1 - Ue3sq - Ue2sq,
+    Um1sq = 1 - Um3sq - Um2sq,
     
-    const VT Ut3sq = 1 - Um3sq - Ue3sq;
-    const VT Ut2sq = 1 - Um2sq - Ue2sq;
-    const VT Ut1sq = 1 - Um1sq - Ue1sq;
+    Ut3sq = 1 - Um3sq - Ue3sq,
+    Ut2sq = 1 - Um2sq - Ue2sq,
+    Ut1sq = 1 - Um1sq - Ue1sq,
     
     // ----------------------- //
     // Get the kinematic terms //
     // ----------------------- //
-    const VT Lover4E = (eVsqkm_to_GeV_over4 * L) / E;
+    Lover4E = (eVsqkm_to_GeV_over4 * L) / E,
     
-    const VT D21 = Dlambda21 * Lover4E;
-    const VT D32 = Dlambda32 * Lover4E;
+    D21 = Dlambda21 * Lover4E,
+    D32 = Dlambda32 * Lover4E,
 	  
-    const VT sinD21 = sin(D21);
-    const VT sinD31 = sin(D32 + D21);
-    const VT sinD32 = sin(D32);
+    sinD21 = sin(D21),
+    sinD31 = sin(D32 + D21),
+    sinD32 = sin(D32),
     
-    const VT triple_sin = sinD21 * sinD31 * sinD32;
+    triple_sin = sinD21 * sinD31 * sinD32,
     
-    const VT sinsqD21_2 = 2 * sinD21 * sinD21;
-    const VT sinsqD31_2 = 2 * sinD31 * sinD31;
-    const VT sinsqD32_2 = 2 * sinD32 * sinD32;
+    sinsqD21_2 = 2 * sinD21 * sinD21,
+    sinsqD31_2 = 2 * sinD31 * sinD31,
+    sinsqD32_2 = 2 * sinD32 * sinD32,
     
     // ------------------------------------------------------------------- //
     // Calculate the three necessary probabilities, separating CPC and CPV //
     // ------------------------------------------------------------------- //
-    const VT Pme_CPC = (Ut3sq - Um2sq * Ue1sq - Um1sq * Ue2sq) * sinsqD21_2
-                     + (Ut2sq - Um3sq * Ue1sq - Um1sq * Ue3sq) * sinsqD31_2
-	                   + (Ut1sq - Um3sq * Ue2sq - Um2sq * Ue3sq) * sinsqD32_2;
-    const VT Pme_CPV = -Jmatter * triple_sin;
+    Pme_CPC = (Ut3sq - Um2sq * Ue1sq - Um1sq * Ue2sq) * sinsqD21_2
+            + (Ut2sq - Um3sq * Ue1sq - Um1sq * Ue3sq) * sinsqD31_2
+	          + (Ut1sq - Um3sq * Ue2sq - Um2sq * Ue3sq) * sinsqD32_2,
+    Pme_CPV = -Jmatter * triple_sin,
     
-    const VT Pmm = 1 - 2 * (Um2sq * Um1sq * sinsqD21_2
-                 + Um3sq * Um1sq * sinsqD31_2
-                 + Um3sq * Um2sq * sinsqD32_2);
+    Pmm = 1 - 2 * (Um2sq * Um1sq * sinsqD21_2
+        + Um3sq * Um1sq * sinsqD31_2
+        + Um3sq * Um2sq * sinsqD32_2),
     
-    const VT Pee = 1 - 2 * (Ue2sq * Ue1sq * sinsqD21_2
-                 + Ue3sq * Ue1sq * sinsqD31_2
-                 + Ue3sq * Ue2sq * sinsqD32_2);
+    Pee = 1 - 2 * (Ue2sq * Ue1sq * sinsqD21_2
+        + Ue3sq * Ue1sq * sinsqD31_2
+        + Ue3sq * Ue2sq * sinsqD32_2);
     
     // ---------------------------- //
     // Assign all the probabilities //
