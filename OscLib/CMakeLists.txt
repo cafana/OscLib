@@ -1,3 +1,8 @@
+# optional stan dependency
+if (STAN)
+  set (STAN_TARGETS stan_math::stan_math TBB::tbb)
+endif (STAN)
+
 cet_make_library(LIBRARY_NAME OscLib
   SOURCE
   EarthModel.cxx
@@ -26,8 +31,7 @@ cet_make_library(LIBRARY_NAME OscLib
   GSL::gsl
   ROOT::Core
   ROOT::Hist
-  stan_math::stan_math
-  TBB::tbb
+  ${STAN_TARGETS}
 )
 
 install_headers()
