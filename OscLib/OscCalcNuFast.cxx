@@ -13,6 +13,7 @@
 #include <vector>
 
 namespace osc {
+  
   template<typename T>
   _OscCalcNuFast<T>::_OscCalcNuFast(void) :
     fYe(0.5), fNNewton(1), fIsAggressive(true), fIsDirty(true)
@@ -36,6 +37,7 @@ namespace osc {
     // Precomute sine squared of th12.
     this->fPre.s12 = sin(th12);
     this->fPre.s12sq = this->fPre.s12*this->fPre.s12;
+    this->fPre.c12sq = 1-this->fPre.s12sq;
   }
   
   template<typename T>
@@ -44,6 +46,7 @@ namespace osc {
     this->fTh13 = th13;
     this->fPre.s13 = sin(th13);
     this->fPre.s13sq = this->fPre.s13*this->fPre.s13;
+    this->fPre.c13sq = 1-this->fPre.s13sq;
   }
   
   template<typename T>
@@ -52,6 +55,7 @@ namespace osc {
     this->fTh23 = th23;
     this->fPre.s23 = sin(th23);
     this->fPre.s23sq = this->fPre.s23*this->fPre.s23;
+    this->fPre.c23sq = 1-this->fPre.s23sq;
   }
   
   template<typename T>
@@ -63,32 +67,12 @@ namespace osc {
     this->fPre.cosd = cos(dCP);
   }
   
-  // The following code is a copy of the NuFast oscillation calculator (Probability_Matter_LBL) except pointing to class members.
-  
-  // Probability_Matter_LBL calculates all nine oscillation probabilities including
-  // the matter effect in an optimized, fast, and efficient way. The precision can
-  // be controlled with N_Newton. For many applications N_Newton=0 may be enough,
-  // but many years of DUNE or HK-LBL may require N_Newton=1. This code may be
-  // suitable for atmospheric neutrinos. The code is standalone.
-  //
-  // Inputs:
-  //   mixing angles (usual parameterization)
-  //   phase (usual parameterization) make Dmsq31 positive/negative for the NO/IO
-  //   Delta msq's (eV^2)
-  //   L (km)
-  //   E (GeV) positive for neutrinos, negative for antineutrinos
-  //   rho (g/cc)
-  //   Ye: electron fraction, typically around 0.5
-  //   N_Newton: number of Newton's method iterations to do. should be zero, one, two (or higher)
-  // Outputs:
-  //   probs_returned is all nine oscillation probabilities: e.g. probs_returned[1][0] is mu->e
-  
-  // The following is the function signature out-of-the-box from NuFast.
+  // The following code is adapted from the NuFast oscillation calculator (Probability_Matter_LBL).
+  // This is the function signature out-of-the-box from NuFast.
   //void Probability_Matter_LBL(double s12sq, double s13sq, double s23sq,
   //                            double delta, double Dmsq21, double Dmsq31,
   //                            double L, double E, double rho,
   //                            double Ye, int N_Newton, double (*probs_returned)[3][3])
-  //{
   template<typename T> template<class VT, class KVT>
   VT _OscCalcNuFast<T>::_P(int from, int to, KVT E) {
     // First, make sure the PDG codes have the same sign.
@@ -112,36 +96,6 @@ namespace osc {
     // Need to do energy-dependent computation.
     //std::cout << "NuFast: Recomputing probability matrix and returning result." << std::endl;
     return this->RecomputeProbabilityMatrix<VT,KVT>(from,to,E);
-    
-    // Recompute the probability matrix if necessary (either a parameter has been updated or we used a different energy before).
-    //std::cout << "E = " << E << ", currE = " << this->fCurrEnergy << ", diff = " << this->fCurrEnergy - (isAnti ? -E : E) << std::endl;
-    /*
-    if ( std::abs(this->fCurrEnergy - (isAnti ? -E : E)) > std::numeric_limits<double>::epsilon() ) {
-    //  std::cout << "Nufast info: Recomputing probability matrix..." << std::endl;
-      this->RecomputeProbabilityMatrix(E,isAnti);
-    }
-    */
-    
-    // We have good PDG codes. Now return the corresponding element of the probability matrix.
-    /*
-    unsigned int indexBefore = -1, indexAfter = -1;
-    // I'd use std::unordered_map for pdg->index, but this should be faster.
-    if ( flavBefore == +12 || flavBefore == -12 ) { indexBefore = 0; }
-    if ( flavBefore == +14 || flavBefore == -14 ) { indexBefore = 1; }
-    if ( flavBefore == +16 || flavBefore == -16 ) { indexBefore = 2; }
-    if ( flavAfter  == +12 || flavAfter  == -12 ) { indexAfter  = 0; }
-    if ( flavAfter  == +14 || flavAfter  == -14 ) { indexAfter  = 1; }
-    if ( flavAfter  == +16 || flavAfter  == -16 ) { indexAfter  = 2; }
-    assert( indexBefore != -1 && indexAfter != -1 ); // This checks that we got PDG codes that are actually neutrinos.
-    */
-    // Probability matrix:
-    //std::cout << "E = " << E << ", isAnti = " << isAnti << std::endl;
-    //std::cout << this->fCurrProbs[0][0] << " " << this->fCurrProbs[0][1] << " " << this->fCurrProbs[0][2] << std::endl
-    //          << this->fCurrProbs[1][0] << " " << this->fCurrProbs[1][1] << " " << this->fCurrProbs[1][2] << std::endl
-    //          << this->fCurrProbs[2][0] << " " << this->fCurrProbs[2][1] << " " << this->fCurrProbs[2][2] << std::endl;
-    //std::cout << "Returning prob " << indexBefore << " -> " << indexAfter << ": " << this->fCurrProbs[indexBefore][indexAfter] << std::endl;
-    
-    //return this->fCurrProbs[indexBefore][indexAfter];
   }
   
   template<typename T> T _OscCalcNuFast<T>::P(int from, int to, double E) {
@@ -166,16 +120,16 @@ namespace osc {
     // NOvA doesn't use dmsq31 by convention, but we can compute it if we know dmsq32 and dmsq21.
     this->fPre.Dmsq31 = this->fDmsq32 + this->fDmsq21; // dmsq31 = msq3 - msq1 = (msq3-msq2) + (msq2-msq1) = dmsq32 + dmsq21.
     this->fPre.Dmsqee = this->fPre.Dmsq31 - this->fPre.s12sq * this->fDmsq21;
-    this->fPre.c13sqxs12sq = (1-this->fPre.s13sq) * this->fPre.s12sq;
-    this->fPre.c13sqxs23sq = (1-this->fPre.s13sq) * this->fPre.s23sq;
-    this->fPre.c12sqxc23sq = (1-this->fPre.s12sq) * (1-this->fPre.s23sq);
+    this->fPre.c13sqxs12sq = this->fPre.c13sq * this->fPre.s12sq;
+    this->fPre.c13sqxs23sq = this->fPre.c13sq * this->fPre.s23sq;
+    this->fPre.c12sqxc23sq = this->fPre.c12sq * this->fPre.c23sq;
     this->fPre.s13sqxs12sqxs23sq = this->fPre.s13sq * this->fPre.s12sq * this->fPre.s23sq;
     this->fPre.Jrr = sqrt(this->fPre.c12sqxc23sq * this->fPre.s13sqxs12sqxs23sq);
-    this->fPre.Jmatter_first = 8 * this->fPre.Jrr * (1-this->fPre.s13sq) * this->fPre.sind 
+    this->fPre.Jmatter_first = 8 * this->fPre.Jrr * this->fPre.c13sq * this->fPre.sind 
                                  * this->fDmsq21 * this->fPre.Dmsq31 * (this->fPre.Dmsq31 - this->fDmsq21);
     this->fPre.Um2sq_first = this->fPre.c12sqxc23sq + this->fPre.s13sqxs12sqxs23sq - 2 * this->fPre.Jrr * this->fPre.cosd;
     this->fPre.See = this->fDmsq21+this->fPre.Dmsq31 - this->fDmsq21 * this->fPre.c13sqxs12sq - this->fPre.Dmsq31 * this->fPre.s13sq;
-    this->fPre.Tee = this->fDmsq21 * this->fPre.Dmsq31 * (1 - this->fPre.s13sq - this->fPre.c13sqxs12sq);
+    this->fPre.Tee = this->fDmsq21 * this->fPre.Dmsq31 * (this->fPre.c13sq - this->fPre.c13sqxs12sq);
     ClearProbCaches(); // The caches were invalidated if this step was necessary.
     this->fIsDirty = false;
   }

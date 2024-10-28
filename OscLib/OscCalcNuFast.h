@@ -82,6 +82,7 @@ namespace osc {
       T Dmsqee;
       T s12, s13, s23; // Sines of mixing angles.
       T s12sq, s13sq, s23sq; // Sine squared of mixing angles. Immediately updated on reset of relevant angle.
+      T c12sq, c13sq, c23sq; // Cosine squared of mixing angles. Immediately updated on reset of relevant angle.
       T sind, cosd; // Sine and cosine of delta CP. Immediately updated on reset of dCP.
       T c13sqxs12sq, c13sqxs23sq, c12sqxc23sq; // This is cos(th13)^2 * sin(th12)^2, etc.
 		  T s13sqxs12sqxs23sq;
