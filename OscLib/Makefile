@@ -2,14 +2,24 @@
 SHELL = bash
 
 # Extremely crude stop-gap makefile
+CXX := $(shell if [[ x${QUALIFIER} == *c7* || x${QUALIFIER} == *c14* ]]; then echo 'clang++'; else echo 'g++'; fi )
+
 
 # Record what flags were used. Can dump with
 # readelf -p .GCC.command.line libOscLib.so
-CFLAGS := -std=c++17 -I.. -I${ROOT_INC} -I${EIGEN_INC} -I${BOOST_INC} -I${GSL_INC} -g -Wall -Wpedantic -Wextra -Werror -grecord-gcc-switches
-
+CFLAGS := -std=c++17 -I.. -I${ROOT_INC} -I${EIGEN_INC} -I${BOOST_INC} -I${GSL_INC} -g -Wall -Wpedantic -Wextra -Werror -Wno-error=deprecated-declarations -grecord-gcc-switches
 CFLAGS += $(shell if [[ x${QUALIFIER} == *debug* ]]; then echo ''; else echo '-O3'; fi )
 
-CXX := $(shell if [[ x${QUALIFIER} == *c7* ]]; then echo 'clang++'; else echo 'g++'; fi )
+GCC_CFLAGS := -Wno-error=maybe-uninitialized
+CLANG_CFLAGS := -Wno-error=uninitialized -Wno-error=deprecated-copy-with-user-provided-copy
+
+ifeq ($(CXX),g++)
+  CFLAGS += $(GCC_CFLAGS)
+else ifeq ($(CXX),clang++)
+  CFLAGS += $(CLANG_CFLAGS)
+else
+  $(error "Unknown compiler")
+endif
 
 LDFLAGS := -L${ROOTSYS}/lib -lCore -L${GSL_LIB} -lgsl -lgslcblas
 
