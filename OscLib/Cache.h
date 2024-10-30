@@ -3,6 +3,7 @@
 #define OSCLIBCACHE_H
 
 #include <unordered_map>
+#include <Eigen/Eigen>
 
 // We want to put ArrayXd into an unordered_map, so define hash and equality
 namespace std
