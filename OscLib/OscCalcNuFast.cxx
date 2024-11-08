@@ -15,16 +15,13 @@ namespace osc {
   
   template<typename T>
   _OscCalcNuFast<T>::_OscCalcNuFast(void) :
-    fYe(0.5), fNNewton(1), fIsDirty(true)
+    fYe(0.5), fNNewton(0), fIsDirty(true)
     {}
   
   template<typename T>
   _OscCalcNuFast<T>::_OscCalcNuFast(const _OscCalcNuFast<T>& other) :
     _IOscCalcAdjustable<T>(other), fYe(other.GetYe()), fNNewton(other.GetNNewton()), fIsDirty(true)
     {}
-  
-  template<typename T>
-  _OscCalcNuFast<T>::~_OscCalcNuFast(void) {}
   
   template<typename T>
   _OscCalcNuFast<T>* _OscCalcNuFast<T>::Copy(void) const { return new _OscCalcNuFast<T>(*this); }
@@ -168,9 +165,11 @@ namespace osc {
     // ---------------------------------------------------------------------------- //
     // Newton iterations to improve lambda3 arbitrarily, if needed, (B needed here) //
     // ---------------------------------------------------------------------------- //
-    const VT B = Dmsq21*Dmsq31 + Amatter * See; // B is only needed for N_Newton >= 1
-    for (int i = 0; i < N_Newton; i++) {
-      lambda3 = (lambda3 * lambda3 * (lambda3 + lambda3 - A) + C) / (lambda3 * (2 * (lambda3 - A) + lambda3) + B); // this strange form prefers additions to multiplications
+    if ( N_Newton > 0 ) {
+      const VT B = Dmsq21*Dmsq31 + Amatter * See; // B is only needed for N_Newton >= 1
+      for ( int i = 0 ; i < N_Newton ; i++ ) {
+        lambda3 = (lambda3 * lambda3 * (lambda3 + lambda3 - A) + C) / (lambda3 * (2 * (lambda3 - A) + lambda3) + B); // this strange form prefers additions to multiplications
+      }
     }
     
     // ------------------- //
