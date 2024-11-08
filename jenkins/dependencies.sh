@@ -33,11 +33,11 @@ else
     # nulite v3_16_6
     echo root v6_28_12 -q${QUAL}:p3915
     echo boost v1_82_0 -q$QUAL
-    echo eigen v3_4_0
+    echo eigen v23_08_01_66e8f
 fi
 
 if [ $WANTSTAN == yes ]
 then
-    echo stan_math v4_5_0a
-    echo sundials v6_5_0
+    echo stan_math v4_9_0a
+    echo sundials v7_1_1
 fi
