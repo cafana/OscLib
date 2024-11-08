@@ -21,7 +21,7 @@ namespace osc {
                          protected analytic::ProbCache<Eigen::ArrayXd, Eigen::ArrayX<T>> {
   public:
     _OscCalcNuFast(void);
-    virtual ~_OscCalcNuFast(void);
+    virtual ~_OscCalcNuFast(void) = default;
     
     virtual _OscCalcNuFast<T>* Copy(void) const override;
     
@@ -71,7 +71,7 @@ namespace osc {
     /// Electron density in matter. NuFast recommends 0.5, and this choice matches other calcs.
     double fYe;
     /// Number of Newton steps to use to improve eigen{value}{vector} slns. Increase me for more accuracy and worse runtime.
-    double fNNewton;
+    unsigned int fNNewton;
     /// Store some precomputations that don't depend on energy.
     struct {
       T s12, s13, s23; // Sines of mixing angles.
