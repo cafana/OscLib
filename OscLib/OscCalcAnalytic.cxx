@@ -324,7 +324,7 @@ namespace osc::analytic
   }
 
   //---------------------------------------------------------------------------
-  template<class T> T Probs<T>::P(int from, int to) const
+/*  template<class T> T Probs<T>::P(int from, int to) const
   {
     // convert flavours to indices into matrix
     const int i0 = (from-12)/2;
@@ -344,7 +344,7 @@ namespace osc::analytic
     default: abort();
     }
   }
-
+*/
   //---------------------------------------------------------------------------
   template<class T> template<class VT, class KVT> VT _OscCalc<T>::
   _P(int from, int to, const KVT& E)
