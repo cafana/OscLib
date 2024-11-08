@@ -64,9 +64,9 @@ namespace osc {
     /// Copy constructor.
     _OscCalcNuFast(const _OscCalcNuFast<T>& other);
     /// from and to aren't necessary for computing the matrix but are used for the return (so the cache doesn't need to be searched for the result).
-    template<class VT, class KVT> inline __attribute__((always_inline)) VT RecomputeProbabilityMatrix(int from, int to, KVT E);
+    template<class VT, class KVT> VT RecomputeProbabilityMatrix(int from, int to, KVT E);
     // Master probability function called with some combination of primitives, stan::math::vars, and Eigen objects.
-    template<class VT, class KVT> inline __attribute__((always_inline)) VT _P(int from, int to, KVT E);
+    template<class VT, class KVT> VT _P(int from, int to, KVT E);
     
     /// Electron density in matter. NuFast recommends 0.5, and this choice matches other calcs.
     double fYe;
