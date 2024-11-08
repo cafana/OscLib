@@ -5,40 +5,12 @@
 #include "OscLib/IOscCalc.h"
 
 #include <functional>
-//#include <unordered_map>
 
 namespace Eigen
 {
   // Seems like an oversight to me...
   template<class T> using ArrayX = Eigen::Array<T, Eigen::Dynamic, 1>;
 }
-
-/*// We want to put ArrayXd into an unordered_map, so define hash and equality
-namespace std
-{
-  template<> struct hash<Eigen::ArrayXd>
-  {
-    size_t operator()(const Eigen::ArrayXd& x) const
-    {
-      // Adapted from the boost `hash_combine` function
-      // http://www.boost.org/doc/libs/1_55_0/doc/html/hash/reference.html#boost.hash_combine
-
-      size_t seed = 0;
-      for(int i = 0; i < x.size(); ++i) {
-        seed ^= std::hash<double>()(x[i] + 0x9e3779b9 + (seed << 6) + (seed >> 2));
-      }
-      return seed;
-    }
-  };
-
-  template<> struct equal_to<Eigen::ArrayXd>
-  {
-    bool operator()(const Eigen::ArrayXd& a, const Eigen::ArrayXd& b) const
-    {
-      return (a == b).all();
-    }
-  };
-}*/
 
 namespace osc::analytic
 {
@@ -82,22 +54,6 @@ namespace osc::analytic
     /*cmplx<T> te;   cmplx<T> tm;*/ T         tt;
   };
 
-  /*template<class T> class Probs
-  {
-  public:
-    Probs(T ee, T me, T em, T mm)
-      : Pee(ee), Pme(me), Pem(em), Pmm(mm)
-    {
-    }
-
-    inline __attribute__((always_inline)) T P(int from, int to) const;
-
-  protected:
-    T Pee, Pme, Pem, Pmm;
-  };
-
-  template<class KT, class VT> class ProbCache : public std::unordered_map<KT, Probs<VT>> {};
-*/
   template<class T> class _OscCalc: public _IOscCalcAdjustable<T>,
                                     protected ProbCache<double, T>,
                                     protected ProbCache<Eigen::ArrayXd, Eigen::ArrayX<T>>
