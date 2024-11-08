@@ -29,6 +29,7 @@ namespace osc {
     virtual void SetL     (double L       ) override { this->fIsDirty = true; this->fL = L; }
     virtual void SetRho   (double rho     ) override { this->fIsDirty = true; this->fRho = rho; }
     virtual void SetDmsq21(const T& dmsq21) override { this->fIsDirty = true; this->fDmsq21 = dmsq21; }
+    // Like other calculators, indicate normal [inverted] mass ordering with positive [negative] dmsq32.
     virtual void SetDmsq32(const T& dmsq32) override { this->fIsDirty = true; this->fDmsq32 = dmsq32; }
     virtual void SetTh12  (const T& th12  ) override;
     virtual void SetTh13  (const T& th13  ) override;

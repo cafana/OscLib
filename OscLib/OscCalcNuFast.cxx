@@ -133,6 +133,8 @@ namespace osc {
     // --------------------------------------------------------------------- //
     
     // NOvA doesn't use dmsq31 by convention, but we can compute it if we know dmsq32 and dmsq21.
+    // This works for both mass orderings because we indicate NO [IO] with positive [negative] dmsq32.
+    // Therefore dmsq32 and dmsq21 will have the same [opposite] sign for NO [IO].
     const T
     Dmsq31 = Dmsq32 + Dmsq21, // dmsq31 = msq3 - msq1 = (msq3-msq2) + (msq2-msq1) = dmsq32 + dmsq21.
     Dmsqee = Dmsq31 - s12sq * Dmsq21,
