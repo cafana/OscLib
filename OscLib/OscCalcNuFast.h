@@ -19,12 +19,16 @@ namespace Eigen {
 	template<class T> using ArrayX = Eigen::Array<T, Eigen::Dynamic, 1>;
 }
 
-namespace osc {  
+namespace osc {
   /// This class is an OscLib adapter for the NuFast algorithm (arXiv:2405.02400v1).
   template<typename T>
   class _OscCalcNuFast : public _IOscCalcAdjustable<T>,
                          protected analytic::ProbCache<double, T>,
                          protected analytic::ProbCache<Eigen::ArrayXd, Eigen::ArrayX<T>> {
+  // Warning: The cache for Stan-templated calculators is dangerous to use because Stan uses its own cache internally,
+  // and the Stan cache can be cleared without warning. To avoid the issue, CAFAna's StanFitter forcibly clears
+  // this cache for calculatos between proposed steps. We leave it to the user to use the cache for Stan types safely.
+  
   public:
     _OscCalcNuFast(void);
     virtual ~_OscCalcNuFast(void) = default;
