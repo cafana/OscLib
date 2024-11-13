@@ -2,6 +2,12 @@
 #ifndef OSCLIBCALCNUFAST_H
 #define OSCLIBCALCNUFAST_H
 
+// \file OscCalcNuFast.h
+// \brief Implementation of the NuFast algorithm by P. Denton (BNL) and S. Parke (FNAL).
+//        The algorithm makes a few approximations specific to LBL matter effects to make probability computations faster.
+//        See arXiv:2405.02400.
+// \author <cullenms@fnal.gov>
+
 #include <string>
 
 #include "OscLib/Cache.h"
