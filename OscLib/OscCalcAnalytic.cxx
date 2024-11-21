@@ -324,28 +324,6 @@ namespace osc::analytic
   }
 
   //---------------------------------------------------------------------------
-  template<class T> T Probs<T>::P(int from, int to) const
-  {
-    // convert flavours to indices into matrix
-    const int i0 = (from-12)/2;
-    const int i1 = (to-12)/2;
-
-    // Exploit unitarity
-    switch(i0*3+i1){
-    case 0: return Pee;
-    case 1: return Pme;
-    case 2: return 1-Pee-Pme; // Pte
-    case 3: return Pem;
-    case 4: return Pmm;
-    case 5: return 1-Pem-Pmm; // Ptm
-    case 6: return 1-Pee-Pem; // Pet
-    case 7: return 1-Pme-Pmm; // Pmt
-    case 8: return Pee+Pem+Pme+Pmm-1; // Ptt
-    default: abort();
-    }
-  }
-
-  //---------------------------------------------------------------------------
   template<class T> template<class VT, class KVT> VT _OscCalc<T>::
   _P(int from, int to, const KVT& E)
   {
