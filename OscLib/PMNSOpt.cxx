@@ -218,8 +218,8 @@ void _PMNSOpt<T>::SolveHam(double E, double Ne, int anti)
   }
   else return;
 
-  auto lv = 2 * kGeV2eV*E / fDm31;  // Osc. length in eV^-1
-  auto kr2GNe = kK2*M_SQRT2*kGf*Ne; // Matter potential in eV
+  auto lv = 2 * constants::kGeVToeV * E / fDm31;
+  auto kr2GNe = constants::kMatterDensityToEffect * Ne;
 
   // Finish building Hamiltonian in matter with dimension of eV
   complex A[3][3];
@@ -266,8 +266,8 @@ void _PMNSOpt<T>::PropMatter(double L, double E, double Ne, int anti)
 
   // Propagate neutrino state
   for(int j=0;j<3;j++){
-    auto s = sin(-fEval[j] * kKm2eV * L);
-    auto c = cos(-fEval[j] * kKm2eV * L);
+    auto s = sin(-fEval[j] / constants::kInversemToeV * constants::kkmTom * L);
+    auto c = cos(-fEval[j] / constants::kInversemToeV * constants::kkmTom * L);
 
     complex jPart = complex(c, s) * nuComp[j];
     for(int i=0;i<3;i++){
@@ -329,9 +329,9 @@ void _PMNSOpt<T>::SetVacuumEigensystem(double E, int anti)
   fEvec[2][2] =  complex(c23*c13, 0);
 
   fEval[0] = 0;
-  fEval[1] = fDm21 / (2 * kGeV2eV*E);
-  fEval[2] = fDm31 / (2 * kGeV2eV*E);
 
+  fEval[1] = fDm21 / (2 * constants::kGeVToeV * E);
+  fEval[2] = fDm31 / (2 * constants::kGeVToeV * E);
 }
 
 ///.....................................................................
@@ -355,7 +355,7 @@ void _PMNSOpt<T>::PropVacuum(double L, double E, int anti)
     }
   }
 
-  const T km2EvL = kKm2eV*L;  // needed for the templated multiplication below to work
+  const T km2EvL = constants::kkmTom / constants::kInversemToeV * L; // needed for the templated multiplication below to work
   for(int i=0;i<3;i++){
     fNuState[i] = 0;
     for(int j=0;j<3;j++){
