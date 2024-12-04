@@ -151,7 +151,7 @@ namespace osc {
     // Compute the matter effect using the Fermi Constant and make sure Amatter is in eV^2.
     // The extra 1e9 here converts E in GeV to eV.
     const VT
-    Amatter = (Ye*rho*constants::kMatterDensityToEffect*1e9)*E,
+    Amatter = (Ye*rho*2*constants::kMatterDensityToEffect*1e9)*E,
     
     // calculate A, B, C, See, Tee, and part of Tmm
     C = Amatter * Tee,
