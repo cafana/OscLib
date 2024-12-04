@@ -151,7 +151,7 @@ namespace osc {
     // Compute the matter effect using the Fermi Constant and make sure Amatter is in eV^2.
     // The extra 1e9 here converts E in GeV to eV.
     const VT
-    Amatter = (Ye*rho*2*constants::kMatterDensityToEffect*1e9)*E,
+    Amatter = (Ye*rho*2*constants::kMatterDensityToEffect*constants::kGeVToeV)*E,
     
     // calculate A, B, C, See, Tee, and part of Tmm
     C = Amatter * Tee,
@@ -218,8 +218,8 @@ namespace osc {
     // ----------------------- //
     // Get the kinematic terms //
     // ----------------------- //
-    // 1e-6 converts L/E in km/GeV to m/eV, then we convert m to eV-1.
-    Lover4E = ( 1e-6 / constants::kInversemToeV / 4) * (L/E),
+    // Convert L/E in km/GeV to m/eV, then we convert m to eV-1.
+    Lover4E = ( constants::kkmTom / constants::kGeVToeV / constants::kInversemToeV / 4) * (L/E),
     
     // DlambdaXY have units of eV^2.
     D21 = Dlambda21 * Lover4E,

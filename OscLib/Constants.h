@@ -40,6 +40,12 @@ const double kMatterDensityToEffect =
   * kAvogadroConstant                    // 1 mol = 1 AvogadroConstant.
   * pow(kInversemToeV*100,3);
 
+/// Unit conversion: GeV to eV.
+const double kGeVToeV = 1e9;
+
+/// Unit conversion: km to m.
+const double kkmTom = 1e3;
+
 }
 }
 
