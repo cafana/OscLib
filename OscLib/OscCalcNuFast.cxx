@@ -6,7 +6,6 @@
 #include "OscLib/OscCalcNuFast.h"
 
 #include <cassert>
-#include <cmath>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -149,8 +148,10 @@ namespace osc {
     See = Dmsq21+Dmsq31 - Dmsq21 * c13sqxs12sq - Dmsq31 * s13sq,
     Tee = Dmsq21 * Dmsq31 * (c13sq - c13sqxs12sq);
     
+    // Compute the matter effect using the Fermi Constant and make sure Amatter is in eV^2.
+    // The extra 1e9 here converts E in GeV to eV.
     const VT
-    Amatter = (Ye*rho*YerhoE2a) * E,
+    Amatter = (Ye*rho*constants::kMatterDensityToEffect*1e9)*E,
     
     // calculate A, B, C, See, Tee, and part of Tmm
     C = Amatter * Tee,
@@ -217,8 +218,10 @@ namespace osc {
     // ----------------------- //
     // Get the kinematic terms //
     // ----------------------- //
-    Lover4E = (eVsqkm_to_GeV_over4 * L) / E,
+    // 1e-6 converts L/E in km/GeV to m/eV, then we convert m to eV-1.
+    Lover4E = ( 1e-6 / constants::kInversemToeV / 4) * (L/E),
     
+    // DlambdaXY have units of eV^2.
     D21 = Dlambda21 * Lover4E,
     D32 = Dlambda32 * Lover4E,
 	  
