@@ -7,26 +7,26 @@
 // \file Constants.h
 // \brief Keep important physical constants and unit conversions in one place.
 //        All values use the natural units system such that hbar = c = 1.
-//        All values are taken from PDG, Physical Constants Table 1.1, 2014.
+//        All values are taken from PDG, Physical Constants 1.1, 2024.
 // \author <cullenms@fnal.gov>
 
 namespace osc {
 namespace constants {
 
 /// G_F, the Fermi Constant in GeV^-2.
-const double kFermiConstant = 1.1663787e-5;
+const double kFermiConstant = 1.1663788e-5;
 
 /// N_A, Avogadro's number in mol^-1 (or if you prefer, electrons/mol when thinking about the matter effect).
-const double kAvogadroConstant = 6.02214129e23;
+const double kAvogadroConstant = 6.02214076e23;
 
 /// c, the speed of light (unitless). Multiply by c in natural units to convert s to m.
 const double kSpeedOfLight = 299792458;
 
 /// hbar, reduced Planck's constant (unitless). Multiply by hbar in natural units to convert invese seconds to joules.
-const double kReducedPlanckConstant = 1.054571726e-34;
+const double kReducedPlanckConstant = 1.054571817e-34;
 
 /// e, the elementary charge (J/eV).
-const double kElementaryCharge = 1.602176565e-19;
+const double kElementaryCharge = 1.602176364e-19;
 
 /// Unit conversion: m^-1 to eV.
 const double kInversemToeV =
