@@ -8,9 +8,11 @@
 //        See arXiv:2405.02400.
 // \author <cullenms@fnal.gov>
 
+#include <cmath>
 #include <string>
 
 #include "OscLib/Cache.h"
+#include "OscLib/Constants.h"
 #include "OscLib/IOscCalc.h"
 
 #include "TMD5.h"
@@ -92,10 +94,6 @@ namespace osc {
     
     /// Do we need to recompute the nontrivial energy-independent terms?
     mutable bool fIsDirty;
-    
-    // Constants for unit conversions, using Fermi constant for matter effect.
-    double const eVsqkm_to_GeV_over4 = 1e-9 / 1.97327e-7 * 1e3 / 4;
-    double const YerhoE2a = 1.52e-4;
   };
   
   typedef _OscCalcNuFast<double> OscCalcNuFast;
