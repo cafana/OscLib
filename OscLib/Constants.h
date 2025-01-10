@@ -42,7 +42,7 @@ const double kInversemToeV =
 
 /// Given a matter density, rho in mol/cm^3, multiply by 2*sqrt(2)*FermiConstant and convert units to eV.
 const double kMatterDensityToEffect =
-    sqrt(2) * kFermiConstant * pow(kGeVToeV,2) // The 1e-18 converts the Fermi constant from GeV^-2 to eV^-2.
+    sqrt(2) * kFermiConstant * pow(kGeVToeV,-2)
   * kAvogadroConstant                          // 1 mol = 1 AvogadroConstant.
   * pow(kInversemToeV*100,3);
 
