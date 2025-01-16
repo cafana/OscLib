@@ -28,14 +28,14 @@ const double kAvogadroConstant = 6.02214076e23;
 /// c, the speed of light (m/s = unitless). Multiply by c in natural units to convert s to m.
 const double kSpeedOfLight = 299792458;
 
-/// hbar, reduced Planck's constant (GeV*s = unitless). Multiply by hbar in natural units to convert 
+/// hbar, reduced Planck's constant (GeV*s = unitless). Multiply by hbar in natural units to convert s^-1 to GeV.
 const double kReducedPlanckConstant = 6.582119569e-25;
 
 /// Unit conversion: m^-1 to eV.
 const double kInversemToeV =
     kSpeedOfLight          // 1 m^-1 = SpeedOfLight s^-1.
-  * kReducedPlanckConstant // 1 s^-1 = ReducedPlanckConstant J.
-  / kGeVToeV;              // Finally convert GeV to eV.
+  * kReducedPlanckConstant // 1 s^-1 = ReducedPlanckConstant GeV.
+  * kGeVToeV;              // Finally convert GeV to eV.
 
 /// Given a matter density, rho in mol/cm^3, multiply by 2*sqrt(2)*FermiConstant and convert units to eV.
 const double kMatterDensityToEffect =
