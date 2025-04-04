@@ -12,6 +12,8 @@
 #include <iostream>
 #include <cmath>
 
+#include "OscLib/Constants.h"
+
 #include "TF1.h"
 #include "TMath.h"
 
@@ -154,10 +156,8 @@ namespace osc {
     fcos_sq_2th23 = fcos_2th23*fcos_2th23;
 
     static const double ZperA = 0.5; // e- per nucleon
-    static const double G_F = 1.16637E-23; // eV^-2
-    static const double hbar_c_eV_cm = 1.97326938E-5; // eV-cm
 
-    fV = TMath::Sqrt2()*G_F*fRho*ZperA*TMath::Na()*hbar_c_eV_cm*hbar_c_eV_cm*hbar_c_eV_cm;
+    fV = constants::kMatterDensityToEffect*fRho*ZperA;
 
     fUpdated = true;
   }
@@ -165,14 +165,11 @@ namespace osc {
   // --------------------------------------------
   void OscCalc::UpdateEDep(double E, bool antinu, bool fliptime)
   {
-    static const double hbar_c_eV_km = 1.97326938E-10; // eV-km
-    static const double eVPerGeV = 1E9;
-
     int s = (antinu)?-1:1;
     int t = (fliptime)?-1:1;
 
-    fA = s*2*fV*E*eVPerGeV/fDmsq31;
-    fD = fDmsq31*fL/(4*E*eVPerGeV*hbar_c_eV_km);
+    fA = s*2*fV*E*constants::kGeVToeV/fDmsq31;
+    fD = fDmsq31*fL*constants::kkmTom/(4*constants::kInversemToeV*constants::kGeVToeV*E);
 
     fdCPproxy = s*t*fdCP;
     fsin_dCPproxy = sin(fdCPproxy);

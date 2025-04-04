@@ -22,6 +22,8 @@
 #include <cassert>
 #include <stdlib.h>
 
+#include "OscLib/Constants.h"
+
 #include <gsl/gsl_complex.h>
 #include <gsl/gsl_complex_math.h>
 #include <gsl/gsl_matrix.h>
@@ -78,14 +80,6 @@ namespace osc
 // Some useful complex numbers
 static std::complex<double> zero(0.0,0.0);
 static std::complex<double> one (1.0,0.0);
-
-// Unit conversion constants
-static const double kKm2eV  = 5.06773103202e+09; ///< km to eV^-1
-static const double kK2     = 4.62711492217e-09; ///< mole/GeV^2/cm^3 to eV
-static const double kGeV2eV = 1.0e+09;           ///< GeV to eV
-
-//G_F in units of GeV^-2
-static const double kGf     = 1.166371E-5;
 
 using namespace std;
 
@@ -401,8 +395,8 @@ void PMNS_Sterile::SolveHam(double E, double Ne, int anti)
   }
   else return;
 
-  double lv = 2 * kGeV2eV*E;          // 2E in eV 
-  double kr2GNe = kK2*M_SQRT2*kGf*Ne; // Matter potential in eV
+  double lv = 2 * constants::kGeVToeV * E;
+  double kr2GNe = constants::kMatterDensityToEffect * Ne;
 
   // Finish building Hamiltonian in matter with dimension of eV
 
@@ -460,7 +454,7 @@ void PMNS_Sterile::PropMatter(double L, double E, double Ne, int anti)
       gsl_complex buf = gsl_matrix_complex_get(d->fEvec,i,j);
       complex evecij = complex( GSL_REAL(buf), GSL_IMAG(buf) );
       complex iEval(0.0,gsl_vector_get(d->fEval,j));
-      fNuState[i] +=  exp(-iEval * kKm2eV*L) * nuComp[j] * evecij;
+      fNuState[i] +=  exp(-iEval * constants::kkmTom / constants::kInversemToeV * L) * nuComp[j] * evecij;
     }
   }
 

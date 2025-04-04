@@ -10,6 +10,8 @@
 #include <array>
 #include <cassert>
 
+#include "OscLib/Constants.h"
+
 #ifdef OSCLIB_STAN
 // Stan doesn't provide sincos()
 void sincos(const stan::math::var& x, stan::math::var* sx, stan::math::var* cx)
@@ -203,14 +205,9 @@ namespace osc::analytic
   //---------------------------------------------------------------------------
   template<class T> double _OscCalc<T>::Hmat()
   {
-    // Need to convert avogadro's constant so that the total term comes out in
-    // units of inverse distance. Note that Ne will be specified in g/cm^-3
-    // I put the following into Wolfram Alpha:
-    // (fermi coupling constant)*((avogadro number)/cm^3)*(reduced planck constant)^2*(speed of light)^2
-    // And then multiplied by 1000 because we specify L in km not m.
-    const double GF = 1.368e-4;
-    const double Ne = this->fRho;
-    return sqrt(2)*GF*Ne;
+    // Perform unit conversions, including the Fermi constant, and divide by 2 because
+    //   the density of electrons is 0.5 the density of matter (in mol/cm^3).
+    return constants::kMatterDensityToEffect*this->fRho/2;
   }
 
   //---------------------------------------------------------------------------
@@ -357,9 +354,10 @@ namespace osc::analytic
 
     fDirty12 = fDirty13 = fDirty23 = fDirtyCP = fDirtyMasses = false;
 
-    const KVT k = -this->fL * 2*1.267 / E;
+    // Convert L/E in km/GeV to 1/eV^2 and sneak in a factor of 2.
+    const KVT k = (constants::kkmTom / (constants::kInversemToeV * constants::kGeVToeV * 2) * -this->fL) / E;
     Hermitian<VT> M;
-    M.ee = Hee * k  - this->fL * Hmat();
+    M.ee = Hee * k  - this->fL * constants::kkmTom / constants::kInversemToeV * Hmat();
     M.em = Hem * k;
     M.mm = Hmm * k;
     M.et = Het * k;
