@@ -15,6 +15,7 @@ do
     newdir=$TAG/${olddir/OscLib/}
     newdir=${newdir/OS=SLF6/slf6.x86_64}
     newdir=${newdir/OS=SLF7/slf7.x86_64}
+    newdir=${newdir/OS=ALMA9/slf7.x86_64}
     newdir=${newdir/QUALIFIER=/}
     newdir=${newdir/STAN=/}
     newdir=${newdir//,/.}
