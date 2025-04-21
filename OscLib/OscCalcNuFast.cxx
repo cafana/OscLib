@@ -168,7 +168,7 @@ namespace osc {
     // ---------------------------------------------------------------------------- //
     if ( N_Newton > 0 ) {
       const VT B = Dmsq21*Dmsq31 + Amatter * See; // B is only needed for N_Newton >= 1
-      for ( int i = 0 ; i < N_Newton ; i++ ) {
+      for ( unsigned int i = 0 ; i < N_Newton ; i++ ) {
         lambda3 = (lambda3 * lambda3 * (lambda3 + lambda3 - A) + C) / (lambda3 * (2 * (lambda3 - A) + lambda3) + B); // this strange form prefers additions to multiplications
       }
     }

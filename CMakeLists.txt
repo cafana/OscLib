@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.20 FATAL_ERROR)
 
 find_package(cetmodules REQUIRED)
-project(osclib VERSION 0.23)
+project(osclib VERSION 0.27)
 
 include(CetCMakeEnv)
 cet_cmake_env()
@@ -23,6 +23,9 @@ find_package(GSL REQUIRED)
 
 if(STAN)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DOSCLIB_STAN -D_REENTRANT")
+  if(TBB_ONEAPI)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTBB_INTERFACE_NEW")
+  endif()
   list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
   find_package(stan_math REQUIRED)
   find_package(TBB REQUIRED)
