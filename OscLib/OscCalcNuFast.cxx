@@ -14,7 +14,7 @@ namespace osc {
   
   template<typename T>
   _OscCalcNuFast<T>::_OscCalcNuFast(void) :
-    fYe(0.5), fNNewton(0), fIsDirty(true)
+    fYe(0.5), fNNewton(1), fIsDirty(true)
     {}
   
   template<typename T>
