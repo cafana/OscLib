@@ -7,7 +7,7 @@ CXX := $(shell if [[ x${QUALIFIER} == *c7* || x${QUALIFIER} == *c14* ]]; then ec
 
 # Record what flags were used. Can dump with
 # readelf -p .GCC.command.line libOscLib.so
-CFLAGS := -std=c++17 -I.. -I${ROOT_INC} -I${EIGEN_INC} -I${BOOST_INC} -I${GSL_INC} -g -Wall -Wpedantic -Wextra -Werror -Wno-error=deprecated-declarations -grecord-gcc-switches
+CFLAGS := -std=c++17 -DSTAN_THREADS -I.. -I${ROOT_INC} -I${EIGEN_INC} -I${BOOST_INC} -I${GSL_INC} -g -Wall -Wpedantic -Wextra -Werror -Wno-error=deprecated-declarations -grecord-gcc-switches
 CFLAGS += $(shell if [[ x${QUALIFIER} == *debug* ]]; then echo ''; else echo '-O3'; fi )
 
 GCC_CFLAGS := -Wno-error=maybe-uninitialized
@@ -27,7 +27,11 @@ LDFLAGS_BINS := -lOscLib -L${ROOTSYS}/lib -lCore -lGraf -lGpad -lHist -lMathCore
 
 # Only try to use stan if the product is set up
 ifdef STAN_MATH_INC
-CFLAGS += -DOSCLIB_STAN -D_REENTRANT -I${SUNDIALS_INC} -I${STAN_MATH_INC} -I${TBB_INC} -Wno-unused-function
+CFLAGS += -D_REENTRANT -I${SUNDIALS_INC} -I${STAN_MATH_INC} -I${TBB_INC} -Wno-unused-function
+
+ifdef USE_STAN_THREADS
+CFLAGS += -DSTAN_THREADS
+endif
 
 # If we can't find "2019" in the version, ie it's newer than that
 ifeq (,$(findstring v2019,${TBB_UPS_VERSION}))
