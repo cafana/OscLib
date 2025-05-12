@@ -40,5 +40,5 @@ fi
 if [ $WANTSTAN == yes ]
 then
     echo stan_math v4_9_0a
-    echo sundials v7_1_1
+    echo sundials v6_1_1
 fi
