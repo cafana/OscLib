@@ -8,7 +8,7 @@ echo VERSION=$TAG
 echo
 echo
 
-for EXPT in n313 n315 n316
+for EXPT in n313 n315 n316 n319
 do
     for OPT in debug prof
     do
