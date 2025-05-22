@@ -27,7 +27,7 @@ LDFLAGS_BINS := -lOscLib -L${ROOTSYS}/lib -lCore -lGraf -lGpad -lHist -lMathCore
 
 # Only try to use stan if the product is set up
 ifdef STAN_MATH_INC
-CFLAGS += -D_REENTRANT -I${SUNDIALS_INC} -I${STAN_MATH_INC} -I${TBB_INC} -Wno-unused-function
+CFLAGS += -DOSCLIB_STAN -D_REENTRANT -I${SUNDIALS_INC} -I${STAN_MATH_INC} -I${TBB_INC} -Wno-unused-function
 
 ifdef USE_STAN_THREADS
 CFLAGS += -DSTAN_THREADS
