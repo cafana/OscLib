@@ -14,7 +14,7 @@ do
     do
         for COMPILER in e20 e26 c7 c14
         do
-            for STAN in stan stanfree
+            for STAN in stan stanfree stanthread
             do
 
                 echo FLAVOR=ANY

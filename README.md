@@ -3,7 +3,7 @@
 ## How to build and and test your changes locally
 
 - `export QUALIFIER=e20:prof` or `c7:debug`, etc
-- `export STAN=stan` or `export STAN=stanfree`
+- `export STAN=stan` or `export STAN=stanfree` or `export STAN=stanthread`
 - `jenkins/jenkins_build.sh` (or paste parts of it into your terminal)
 - set `OSCLIB_LIB` and `OSCLIB_INC` manually to point to what you just built
 - rebuild your test release

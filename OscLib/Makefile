@@ -29,7 +29,7 @@ LDFLAGS_BINS := -lOscLib -L${ROOTSYS}/lib -lCore -lGraf -lGpad -lHist -lMathCore
 ifdef STAN_MATH_INC
 CFLAGS += -DOSCLIB_STAN -D_REENTRANT -I${SUNDIALS_INC} -I${STAN_MATH_INC} -I${TBB_INC} -Wno-unused-function
 
-ifdef USE_STAN_THREADS
+ifeq ($(STAN),stanthread)
 CFLAGS += -DSTAN_THREADS
 endif
 
