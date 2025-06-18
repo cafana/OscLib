@@ -8,13 +8,13 @@ echo VERSION=$TAG
 echo
 echo
 
-for EXPT in n313 n315 n316
+for EXPT in n313 n315 n316 n319
 do
     for OPT in debug prof
     do
         for COMPILER in e20 e26 c7 c14
         do
-            for STAN in stan stanfree
+            for STAN in stan stanfree stanthread
             do
 
                 echo FLAVOR=ANY
