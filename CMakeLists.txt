@@ -15,6 +15,7 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
 cet_report_compiler_flags(REPORT_THRESHOLD VERBOSE)
 
 option(STAN "Build with Stan dependency")
+option(USE_STAN_THREADS "Use threading with Stan?" True)
 
 find_package(ROOT REQUIRED)
 find_package(Eigen3 REQUIRED)
@@ -26,6 +27,9 @@ if(STAN)
   if(TBB_ONEAPI)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTBB_INTERFACE_NEW")
   endif()
+  if(USE_STAN_THREADS)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DSTAN_THREADS")
+  endif
   list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
   find_package(stan_math REQUIRED)
   find_package(TBB REQUIRED)

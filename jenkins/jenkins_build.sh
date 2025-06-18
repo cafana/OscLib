@@ -23,7 +23,7 @@ fi
 
 if [[ x$STAN != *stan* ]]
 then
-    echo Must specify stan or stanfree in STAN variable $STAN
+    echo Must specify stan or stanfree or stanthread in STAN variable $STAN
     exit 1
 fi
 

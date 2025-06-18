@@ -29,6 +29,10 @@ LDFLAGS_BINS := -lOscLib -L${ROOTSYS}/lib -lCore -lGraf -lGpad -lHist -lMathCore
 ifdef STAN_MATH_INC
 CFLAGS += -DOSCLIB_STAN -D_REENTRANT -I${SUNDIALS_INC} -I${STAN_MATH_INC} -I${TBB_INC} -Wno-unused-function
 
+ifeq ($(STAN),stanthread)
+CFLAGS += -DSTAN_THREADS
+endif
+
 # If we can't find "2019" in the version, ie it's newer than that
 ifeq (,$(findstring v2019,${TBB_UPS_VERSION}))
 CFLAGS += -DTBB_INTERFACE_NEW
