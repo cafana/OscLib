@@ -7,6 +7,8 @@
 
 #include "OscLib/OscCalcPMNS.h"
 
+#include "OscLib/Constants.h"
+
 namespace osc
 {
   // --------------------------------------------------------------------------
@@ -57,8 +59,7 @@ namespace osc
 
     if(fPropDirty || E != fPrevE){
       fPMNS.Reset();
-      // Assume Z/A=0.5
-      const double Ne = this->fRho/2;
+      const double Ne = this->fRho * constants::kZPerA;
       fPMNS.PropMatter(this->fL, E, Ne, anti);
 
       fPropDirty = false;

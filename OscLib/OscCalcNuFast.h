@@ -47,7 +47,7 @@ namespace osc {
     virtual void SetTh13  (const T& th13  ) override;
     virtual void SetTh23  (const T& th23  ) override;
     virtual void SetdCP   (const T& dCP   ) override;
-    /// Electron density in matter used by NuFast (default = 0.5).
+    /// Electron density in matter used by NuFast (default = constants::kZPerA).
     virtual void SetYe    (double Ye      ) { this->fIsDirty = true; this->fYe = Ye; }
     /// Number of Newton steps to improve eigen{value}{vector} convergence (default = 0 seems fine, use 1 or 2 if you need super accuracy).
     virtual void SetNNewton(double nNewton) { this->fIsDirty = true; this->fNNewton = nNewton; }

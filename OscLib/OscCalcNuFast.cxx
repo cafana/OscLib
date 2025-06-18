@@ -14,7 +14,7 @@ namespace osc {
   
   template<typename T>
   _OscCalcNuFast<T>::_OscCalcNuFast(void) :
-    fYe(0.5), fNNewton(1), fIsDirty(true)
+    fYe(constants::kZPerA), fNNewton(1), fIsDirty(true)
     {}
   
   template<typename T>
@@ -87,19 +87,14 @@ namespace osc {
   }
   
   template<typename T> T _OscCalcNuFast<T>::P(int from, int to, double E) {
-    //std::cout << "NuFast: Calling double overload." << std::endl;
     return _P<T>(from,to,E);
   }
   
-  template<typename T> Eigen::ArrayX<T> _OscCalcNuFast<T>::P(int from, int to, const Eigen::ArrayXd& E)
-  {
-    //std::cout << "NuFast: Calling Eigen::ArrayXd overload." << std::endl;
+  template<typename T> Eigen::ArrayX<T> _OscCalcNuFast<T>::P(int from, int to, const Eigen::ArrayXd& E) {
     return _P<Eigen::ArrayX<T>>(from,to,E);
   }
   
-  template<typename T> Eigen::ArrayX<T> _OscCalcNuFast<T>::P(int from, int to, const std::vector<double>& E)
-  {
-    //std::cout << "NuFast: Calling std::vector<double> overload (size = " << E.size() << ")." << std::endl;
+  template<typename T> Eigen::ArrayX<T> _OscCalcNuFast<T>::P(int from, int to, const std::vector<double>& E) {
     return P(from,to,Eigen::Map<const Eigen::ArrayXd>(E.data(),E.size()));
   }
   

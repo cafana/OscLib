@@ -155,9 +155,7 @@ namespace osc {
     fcos_sq_2th13 = fcos_2th13*fcos_2th13;
     fcos_sq_2th23 = fcos_2th23*fcos_2th23;
 
-    static const double ZperA = 0.5; // e- per nucleon
-
-    fV = constants::kMatterDensityToEffect*fRho*ZperA;
+    fV = constants::kMatterDensityToEffect*fRho*constants::kZPerA;
 
     fUpdated = true;
   }

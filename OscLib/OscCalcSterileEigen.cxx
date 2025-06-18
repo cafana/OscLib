@@ -390,7 +390,7 @@ namespace osc
     assert(i >= 0 && j >= 0);
 
     ResetToFlavour(i);
-    PropMatter(fL, E, fRho/2, anti);
+    PropMatter(fL, E, fRho*constants::kZPerA, anti);
     if (j == 3) return GetP(0) + GetP(1) + GetP(2);
     else return GetP(j);
   }

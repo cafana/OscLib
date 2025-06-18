@@ -511,8 +511,7 @@ void _PMNS<T>::PropVacuum(double L, double E, int anti)
 template <typename T>
 void _PMNS<T>::PropMatter(double L, double E, double Ne, int anti)
 {
-//  static const double  Gf = 1.166371E-5; // G_F in units of GeV^-2
-static const double  Gf = constants::kFermiConstant;
+  static const double  Gf = constants::kFermiConstant;
   int i, j;
   complex twoEH[3][3];
   complex X[3][3];

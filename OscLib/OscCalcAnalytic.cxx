@@ -205,9 +205,8 @@ namespace osc::analytic
   //---------------------------------------------------------------------------
   template<class T> double _OscCalc<T>::Hmat()
   {
-    // Perform unit conversions, including the Fermi constant, and divide by 2 because
-    //   the density of electrons is 0.5 the density of matter (in mol/cm^3).
-    return constants::kMatterDensityToEffect*this->fRho/2;
+    // Perform unit conversions, including the Fermi constant, and convert density of nucleons to electrons.
+    return constants::kMatterDensityToEffect*this->fRho*constants::kZPerA;
   }
 
   //---------------------------------------------------------------------------

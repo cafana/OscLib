@@ -348,7 +348,7 @@ namespace osc {
 					   const OscParameters & params) const
   {
     auto lv = 2 * constants::kGeVToeV * E / params.Dmsq31();
-    auto kr2GNe = constants::kMatterDensityToEffect * params.rho/2;
+    auto kr2GNe = constants::kMatterDensityToEffect * params.rho * constants::kZPerA;
 
     Eigen::Matrix3cd green_eggs(ham);
     green_eggs.triangularView<Eigen::Upper>()/=lv;

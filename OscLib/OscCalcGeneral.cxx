@@ -187,7 +187,7 @@ namespace osc
   {
     ComplexMat H = kZeroMat;
 
-    const double k = constants::kMatterDensityToEffect / constants::kInversemToeV * constants::kkmTom / 2;
+    const double k = constants::kMatterDensityToEffect / constants::kInversemToeV * constants::kkmTom * constants::kZPerA;
 
     H(0, 0) = k * Ne;
 

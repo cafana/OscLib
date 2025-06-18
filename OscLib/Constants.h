@@ -31,13 +31,16 @@ const double kSpeedOfLight = 299792458;
 /// hbar, reduced Planck's constant (GeV*s = unitless). Multiply by hbar in natural units to convert s^-1 to GeV.
 const double kReducedPlanckConstant = 6.582119569e-25;
 
+/// Number of electrons per nucleon in a typical atom. Used for computing the matter effect.
+const double kZPerA = 0.5;
+
 /// Unit conversion: m^-1 to eV.
 const double kInversemToeV =
     kSpeedOfLight          // 1 m^-1 = SpeedOfLight s^-1.
   * kReducedPlanckConstant // 1 s^-1 = ReducedPlanckConstant GeV.
   * kGeVToeV;              // Finally convert GeV to eV.
 
-/// Given a matter density, rho in mol/cm^3, multiply by 2*sqrt(2)*FermiConstant and convert units to eV.
+/// Given a matter density of electrons, rho in mol/cm^3, multiply by 2*sqrt(2)*FermiConstant and convert units to eV.
 const double kMatterDensityToEffect =
     sqrt(2) * kFermiConstant * pow(kGeVToeV,-2)
   * kAvogadroConstant                          // 1 mol = 1 AvogadroConstant.
