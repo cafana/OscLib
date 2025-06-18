@@ -4,6 +4,8 @@
 
 #include "TMD5.h"
 
+#include "OscLib/Constants.h"
+
 //#include "OscLib/PMNSOpt.cxx"
 
 //#include "zhetrd3.cxx"
@@ -266,7 +268,7 @@ namespace osc {
 				     Eigen::Vector3d const & evals,
 				     const OscParameters & params) const
   {
-    const Eigen::Array3d temp = evals.array()*kKm2eV*(-1)*params.L;
+    const Eigen::Array3d temp = evals.array()*constants::kkmTom/constants::kInversemToeV*(-1)*params.L;
     //Eigen::Array3d temp(evals.array());
 
     //// propagation phase
@@ -345,9 +347,9 @@ namespace osc {
 					   const int & anti,
 					   const OscParameters & params) const
   {
-    double lv = 2 * kGeV2eV*E / params.Dmsq31();  // Osc. length in eV^-1
-    double kr2GNe = kK2*M_SQRT2*kGf * params.rho/2; // Matter potential in eV
-    
+    auto lv = 2 * constants::kGeVToeV * E / params.Dmsq31();
+    auto kr2GNe = constants::kMatterDensityToEffect * params.rho * constants::kZPerA;
+
     Eigen::Matrix3cd green_eggs(ham);
     green_eggs.triangularView<Eigen::Upper>()/=lv;
 
@@ -369,8 +371,8 @@ namespace osc {
 					       const double & E,
 					       const OscParameters & params) const
   {
-    double lv = 2 * kGeV2eV*E / params.Dmsq31();  // Osc. length in eV^-1
-    double kr2GNe = kK2*M_SQRT2*kGf * params.rho/2; // Matter potential in eV
+    auto lv = 2 * constants::kGeVToeV * E / params.Dmsq31();
+    auto kr2GNe = constants::kMatterDensityToEffect * params.rho/2;
     
     Eigen::Matrix3cd green_eggs(ham);
     green_eggs.triangularView<Eigen::Upper>()/=lv;
@@ -387,8 +389,8 @@ namespace osc {
 					   const double & E,
 					   const OscParameters & params) const
   {
-    double lv = 2 * kGeV2eV*E / params.Dmsq31();  // Osc. length in eV^-1
-    double kr2GNe = kK2*M_SQRT2*kGf * params.rho/2; // Matter potential in eV
+    auto lv = 2 * constants::kGeVToeV * E / params.Dmsq31();
+    auto kr2GNe = constants::kMatterDensityToEffect * params.rho/2;
     
     Eigen::Matrix3cd green_eggs(ham);
     green_eggs.triangularView<Eigen::Upper>()/=lv;
@@ -410,8 +412,8 @@ namespace osc {
 					    const int & anti,
 					    const OscParameters & params) const
   {
-    double lv = 2 * kGeV2eV*E / params.Dmsq31();  // Osc. length in eV^-1
-    double kr2GNe = kK2*M_SQRT2*kGf * params.rho/2; // Matter potential in eV
+    auto lv = 2 * constants::kGeVToeV * E / params.Dmsq31();
+    auto kr2GNe = constants::kMatterDensityToEffect * params.rho/2;
 
     auto HLV = BuildHam(params);
     HLV.triangularView<Eigen::Upper>()/=lv;

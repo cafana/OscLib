@@ -85,8 +85,8 @@ void PMNS_NSI::SolveHam(double E, double Ne, int anti)
   }
   else return;
 
-  double lv = 2 * kGeV2eV*E / fDm31;  // Osc. length in eV^-1 
-  double kr2GNe = kK2*M_SQRT2*kGf*Ne; // Matter potential in eV
+  double lv = 2 * constants::kGeVToeV * E / fDm31;  // Osc. length in eV^-1 
+  double kr2GNe = constants::kMatterDensityToEffect * Ne; // Matter potential in eV
 
   // Finish build Hamiltonian in matter with dimension of eV
   complex A[3][3];

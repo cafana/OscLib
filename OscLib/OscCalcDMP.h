@@ -11,16 +11,6 @@
 
 using namespace Eigen;
 
-  // Unit conversion constants
-  //static const double kKm2eV  = 5.06773103202e+09; ///< km to eV^-1
-  //static const double kK2     = 4.62711492217e-09; ///< mole/GeV^2/cm^3 to eV
-  //static const double kGeV2eV = 1.0e+09;           ///< GeV to eV
-  //static const double kGf     = 1.166371e-5; //G_F in units of GeV^-2
-  //static const double eVsqkm_to_GeV = 1e-9 / 1.973269681602260e-7 * 1e3; // HS this is more like value in OscLib
-  //static const double YerhoE2a = 1.52e-4;
-
-
-
 namespace osc
 {
   /// \brief Helper struct for the cache. Might not need this

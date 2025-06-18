@@ -1,6 +1,7 @@
 #ifndef PMNSDMP_H
 #define PMNSDMP_H
 
+#include "OscLib/Constants.h"
 #include "OscLib/OscParameters.h"
 #include <Eigen/Eigen>
 using namespace Eigen;
@@ -8,11 +9,6 @@ using namespace Eigen;
 
 namespace osc 
 {
-
-    //static double eVsqkm_to_GeV = 1e-9 / 1.97327e-7 * 1e3;
-    static double eVsqkm_to_GeV = 1e-9 / 1.973269681602260e-7 * 1e3; // HS this is more like value in OscLib
-    static double YerhoE2a = 1.52e-4;
-
     //struct OscParameters;
 
 
@@ -29,8 +25,8 @@ namespace osc
                   double const rho,
                   double const L) :
         _ENERGIES(energies),
-        _AA(0.5 * rho * YerhoE2a * energies),
-        _L4E(eVsqkm_to_GeV * L / (4*energies)),
+        _AA(rho * constants::kMatterDensityToEffect * constants::kGeVToeV * energies),
+        _L4E((constants::kkmTom / constants::kGeVToeV / constants::kInversemToeV) * L / (4*energies)),
         _ONE(ArrayXd::Ones(energies.rows())),
         _Dmsqee(0), _Dmsq21(0), _Dmsq31(0), _c13(0), _s13(0), _c23(0), _s23(0),
         _c213(0), _s213(0), _c212(0), _s212(0),

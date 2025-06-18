@@ -41,6 +41,7 @@
 #include "OscLib/Stan.h"
 #endif
 
+#include "OscLib/Constants.h"
 #include "OscLib/PMNS.h"
 
 #include <cstdlib>
@@ -57,9 +58,8 @@ template<typename T>
 auto one()  { return std::complex<T>(1.0,0.0); }
 
 // Unit conversion constants
-static const double kK1     = 2.53386551601e-00; ///< (1/2)*(1000/hbarc)
-static const double kK2     = 4.62711492217e-09; ///< mole/GeV^2/cm^3 to eV
-static const double kGeV2eV = 1.0E9;             ///< GeV to eV
+static const double kK1 = constants::kkmTom / constants::kGeVToeV / constants::kInversemToeV / 2;
+static const double kK2 = constants::kAvogadroConstant * pow(constants::kInversemToeV*100,3) / pow(constants::kGeVToeV,2);
 
 //......................................................................
 
@@ -279,7 +279,7 @@ void _PMNS<T>::EvalEqn5(complex       twoEH[][3],
 		   double        Ne)
 {
   int j, k;
-  T         k2r2GNeE = kK2*2.0*M_SQRT2*Gf*Ne*(kGeV2eV*E);
+  T         k2r2GNeE = kK2*2.0*M_SQRT2*Gf*Ne*(constants::kGeVToeV*E);
   for (k=0; k<3; ++k) {
     for (j=0; j<3; ++j) {
       twoEH[k][j] = zero<T>();
@@ -429,7 +429,7 @@ void _PMNS<T>::EvalEqn22(T& alpha,
                          const complex U[][3])
 {
   // 2*sqrt(2)*Gf*Ne*E in units of eV^2
-  auto k2r2EGNe = kK2*2.0*M_SQRT2*Gf*Ne*(kGeV2eV*E);
+  auto k2r2EGNe = kK2*2.0*M_SQRT2*Gf*Ne*(constants::kGeVToeV*E);
   
   alpha = k2r2EGNe + dmsqr[0][1] + dmsqr[0][2];
   
@@ -511,7 +511,7 @@ void _PMNS<T>::PropVacuum(double L, double E, int anti)
 template <typename T>
 void _PMNS<T>::PropMatter(double L, double E, double Ne, int anti)
 {
-  static const double  Gf = 1.166371E-5; // G_F in units of GeV^-2
+  static const double  Gf = constants::kFermiConstant;
   int i, j;
   complex twoEH[3][3];
   complex X[3][3];

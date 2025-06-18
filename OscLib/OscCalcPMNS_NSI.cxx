@@ -1,5 +1,7 @@
 #include "OscLib/OscCalcPMNS_NSI.h"
 
+#include "OscLib/Constants.h"
+
 #include <cassert>
 #include <cstdlib>
 #include <iostream>
@@ -101,8 +103,7 @@ namespace osc
 
 
     fPMNS_NSI.ResetToFlavour(i);
-    // Assume Z/A=0.5
-    const double Ne = fRho/2;
+    const double Ne = fRho * constants::kZPerA;
     fPMNS_NSI.PropMatter(fL, E, Ne, anti);
     return fPMNS_NSI.P(j);
   }

@@ -1,5 +1,6 @@
 #include "OscLib/OscCalcSterileEigen.h"
 #include "OscLib/OscCalcPMNSOptEigen.h"
+#include "OscLib/Constants.h"
 
 #include <iostream>
 #include <cassert>
@@ -309,8 +310,8 @@ namespace osc
     }
     else return;
 
-    double lv = 2 * kGeV2eV*E;          // 2E in eV 
-    double kr2GNe = kK2*M_SQRT2*kGf*Ne; // Matter potential in eV
+    double lv = 2 * constants::kGeVToeV * E;
+    double kr2GNe = constants::kMatterDensityToEffect * Ne;
 
     fHmsMat = fHms;
     
@@ -336,7 +337,7 @@ namespace osc
     this->SolveHam(E, Ne, anti);
 
     fNuState = fEig.eigenvectors()*(
-  				  fEig.eigenvalues().unaryExpr([L] (double x) { double sinx(0), cosx(0); _sincos(-kKm2eV*L*x,sinx,cosx); return complex(cosx, sinx);}
+  				  fEig.eigenvalues().unaryExpr([L] (double x) { double sinx(0), cosx(0); _sincos(-constants::kkmTom/constants::kInversemToeV*L*x,sinx,cosx); return complex(cosx, sinx);}
   				  ).asDiagonal())*fEig.eigenvectors().adjoint()*fNuState;
   }
 
@@ -389,7 +390,7 @@ namespace osc
     assert(i >= 0 && j >= 0);
 
     ResetToFlavour(i);
-    PropMatter(fL, E, fRho/2, anti);
+    PropMatter(fL, E, fRho*constants::kZPerA, anti);
     if (j == 3) return GetP(0) + GetP(1) + GetP(2);
     else return GetP(j);
   }

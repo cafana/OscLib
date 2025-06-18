@@ -1,5 +1,7 @@
 #include "OscLib/OscCalcSterile.h"
 
+#include "OscLib/Constants.h"
+
 #include "TMD5.h"
 
 #include <cassert>
@@ -136,8 +138,7 @@ namespace osc
 
     if (fDirty) {
       fPMNS_Sterile->ResetToFlavour(i);      
-      // Assume Z/A=0.5
-      const double Ne = fRho/2;
+      const double Ne = fRho * constants::kZPerA;
       fPMNS_Sterile->PropMatter(fL, E, Ne, anti);
     }
     
