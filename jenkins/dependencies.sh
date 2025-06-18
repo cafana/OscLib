@@ -9,25 +9,30 @@ then
 fi
 
 QUAL=$1
+WANTSTAN=x
 
 if [[ $QUAL == *:n313* ]]; then NQUAL=n313; QUAL=${QUAL/:n313/}; fi
 if [[ $QUAL == *:n316* ]]; then NQUAL=n316; QUAL=${QUAL/:n316/}; fi
 if [[ $QUAL == *:n319* ]]; then NQUAL=n319; QUAL=${QUAL/:n319/}; fi
 
-
-WANTSTAN=yes
-if [[ $QUAL == *:stanfree ]]
-then
-  WANTSTAN=no
-  QUAL=${QUAL/:stanfree/}
-else
-  if [[ $QUAL == *:stanthread ]]
-  then
-    QUAL=${QUAL/:stanthread/}
-  else
+case $QUAL in
+  *:stan)
+    WANTSTAN=yes
     QUAL=${QUAL/:stan/}
-  fi
-fi
+    ;;
+  *:stanthread)
+    WANTSTAN=yes
+    QUAL=${QUAL/:stanthread/}
+    ;;
+  *:stanfree)
+    WANTSTAN=no
+    QUAL=${QUAL/:stanfree/}
+    ;;
+  *)
+    echo Must specify either \*:stan or \*:stanfree or \*:stanthread in QUALIFIER option
+    exit 1
+    ;;
+esac
 
 if [[ $NQUAL == n313 ]]
 then
