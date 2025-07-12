@@ -4,11 +4,11 @@
 
 #include <cmath>
 
-// \file Constants.h
-// \brief Keep important physical constants and unit conversions in one place.
-//        All values use the natural units system such that hbar = c = 1.
-//        All values are taken from PDG, Physical Constants 1.1, 2024.
-// \author <cullenms@fnal.gov>
+/// \file Constants.h
+/// \brief Keep important physical constants and unit conversions in one place.
+///        All values use the natural units system such that hbar = c = 1.
+///        All values are taken from PDG, Physical Constants 1.1, 2024.
+/// \author <cullenms@fnal.gov>
 
 namespace osc {
 namespace constants {
