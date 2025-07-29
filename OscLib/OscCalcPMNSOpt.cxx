@@ -7,6 +7,8 @@
 
 #include "OscLib/OscCalcPMNSOpt.h"
 
+#include "OscLib/Constants.h"
+
 namespace osc
 {
   //---------------------------------------------------------------------------
@@ -95,8 +97,7 @@ namespace osc
       // Cache results for all nine flavour combinations
       for(int ii = 0; ii < 3; ++ii){
         calc.pmns->ResetToFlavour(ii);
-        // Assume Z/A=0.5
-        const double Ne = this->fRho/2;
+        const double Ne = this->fRho * constants::kZPerA;
         calc.pmns->PropMatter(this->fL, E, Ne, anti);
         for(int jj = 0; jj < 3; ++jj){
           calc.P[ii][jj] = calc.pmns->P(jj);

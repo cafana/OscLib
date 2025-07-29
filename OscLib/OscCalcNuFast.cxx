@@ -6,7 +6,6 @@
 #include "OscLib/OscCalcNuFast.h"
 
 #include <cassert>
-#include <cmath>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -15,7 +14,7 @@ namespace osc {
   
   template<typename T>
   _OscCalcNuFast<T>::_OscCalcNuFast(void) :
-    fYe(0.5), fNNewton(0), fIsDirty(true)
+    fYe(constants::kZPerA), fNNewton(1), fIsDirty(true)
     {}
   
   template<typename T>
@@ -88,19 +87,14 @@ namespace osc {
   }
   
   template<typename T> T _OscCalcNuFast<T>::P(int from, int to, double E) {
-    //std::cout << "NuFast: Calling double overload." << std::endl;
     return _P<T>(from,to,E);
   }
   
-  template<typename T> Eigen::ArrayX<T> _OscCalcNuFast<T>::P(int from, int to, const Eigen::ArrayXd& E)
-  {
-    //std::cout << "NuFast: Calling Eigen::ArrayXd overload." << std::endl;
+  template<typename T> Eigen::ArrayX<T> _OscCalcNuFast<T>::P(int from, int to, const Eigen::ArrayXd& E) {
     return _P<Eigen::ArrayX<T>>(from,to,E);
   }
   
-  template<typename T> Eigen::ArrayX<T> _OscCalcNuFast<T>::P(int from, int to, const std::vector<double>& E)
-  {
-    //std::cout << "NuFast: Calling std::vector<double> overload (size = " << E.size() << ")." << std::endl;
+  template<typename T> Eigen::ArrayX<T> _OscCalcNuFast<T>::P(int from, int to, const std::vector<double>& E) {
     return P(from,to,Eigen::Map<const Eigen::ArrayXd>(E.data(),E.size()));
   }
   
@@ -149,8 +143,10 @@ namespace osc {
     See = Dmsq21+Dmsq31 - Dmsq21 * c13sqxs12sq - Dmsq31 * s13sq,
     Tee = Dmsq21 * Dmsq31 * (c13sq - c13sqxs12sq);
     
+    // Compute the matter effect using the Fermi Constant and make sure Amatter is in eV^2.
+    // The extra 1e9 here converts E in GeV to eV.
     const VT
-    Amatter = (Ye*rho*YerhoE2a) * E,
+    Amatter = (Ye*rho*2*constants::kMatterDensityToEffect*constants::kGeVToeV)*E,
     
     // calculate A, B, C, See, Tee, and part of Tmm
     C = Amatter * Tee,
@@ -217,8 +213,10 @@ namespace osc {
     // ----------------------- //
     // Get the kinematic terms //
     // ----------------------- //
-    Lover4E = (eVsqkm_to_GeV_over4 * L) / E,
+    // Convert L/E in km/GeV to m/eV, then we convert m to eV-1.
+    Lover4E = ( constants::kkmTom / constants::kGeVToeV / constants::kInversemToeV / 4) * (L/E),
     
+    // DlambdaXY have units of eV^2.
     D21 = Dlambda21 * Lover4E,
     D32 = Dlambda32 * Lover4E,
 	  

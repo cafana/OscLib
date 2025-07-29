@@ -25,6 +25,8 @@
 #include <cassert>
 #include <complex>
 
+#include "OscLib/Constants.h"
+
 namespace osc
 {
   const unsigned int kNumFlavours = 3;
@@ -159,8 +161,7 @@ namespace osc
                                const std::vector<long double>& mSq,
                                long double E)
   {
-    // Conversion factor for units
-    E /= 4*1.267;
+    E /= (constants::kkmTom / (constants::kInversemToeV * constants::kGeVToeV));
 
     assert(mSq.size() == kNumFlavours);
 
@@ -184,19 +185,14 @@ namespace osc
   // converted to antineutrinos by taking a minus sign.
   ComplexMat MatterHamiltonianComponent(long double Ne, long double emutau)
   {
-    // Need to convert avogadro's constant so that the total term comes out in
-    // units of inverse distance. Note that Ne will be specified in g/cm^-3
-    // I put the following into Wolfram Alpha:
-    // (fermi coupling constant)*((avogadro number)/cm^3)*(reduced planck constant)^2*(speed of light)^2
-    // And then multiplied by 1000 because we specify L in km not m.
-    const long double GF = 1.368e-4;
-
     ComplexMat H = kZeroMat;
 
-    H(0, 0) = sqrt(2)*GF*Ne;
+    const double k = constants::kMatterDensityToEffect / constants::kInversemToeV * constants::kkmTom * constants::kZPerA;
+
+    H(0, 0) = k * Ne;
 
     // Ignoring conjugates here because we assume e_mutau is real
-    H(1, 2) = H(2, 1) = emutau*sqrt(2)*GF*Ne;
+    H(1, 2) = H(2, 1) = emutau * k * Ne;
 
     return H;
   }

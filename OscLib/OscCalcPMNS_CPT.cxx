@@ -6,6 +6,8 @@
 /////////////////////////////////////////////////////////////////////////////
 #include "OscLib/OscCalcPMNS_CPT.h"
 
+#include "OscLib/Constants.h"
+
 #include "TMD5.h"
 
 #include <cassert>
@@ -56,8 +58,7 @@ namespace osc
     
         if(fPropDirty_bar || E != fPrevE_bar){
           fPMNS_bar.Reset();
-          // Assume Z/A=0.5
-          const double Ne = fRho/2;
+          const double Ne = fRho * constants::kZPerA;
           fPMNS_bar.PropMatter(fL, E, Ne, anti);
     
           fPropDirty_bar = false;
@@ -89,8 +90,7 @@ namespace osc
     
         if(fPropDirty || E != fPrevE){
           fPMNS.Reset();
-          // Assume Z/A=0.5
-          const double Ne = fRho/2;
+          const double Ne = fRho * constants::kZPerA;
           fPMNS.PropMatter(fL, E, Ne, anti);
     
           fPropDirty = false;
