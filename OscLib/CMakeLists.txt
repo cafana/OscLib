@@ -1,6 +1,6 @@
 # optional stan dependency
 if (STAN)
-  set (STAN_TARGETS stan_math::stan_math TBB::tbb)
+  set (STAN_TARGETS stan_math::stan_math SUNDIALS::kinsol_shared TBB::tbb)
 endif (STAN)
 
 cet_make_library(LIBRARY_NAME OscLib
