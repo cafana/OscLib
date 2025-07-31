@@ -29,9 +29,10 @@ if(STAN)
   endif()
   if(USE_STAN_THREADS)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DSTAN_THREADS")
-  endif
+  endif()
   list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
   find_package(stan_math REQUIRED)
+  find_package(SUNDIALS REQUIRED)
   find_package(TBB REQUIRED)
 endif()
 
