@@ -10,7 +10,10 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
 #include <Eigen/Eigen>
+#pragma GCC diagnostic pop
 
 class TMD5;
 
