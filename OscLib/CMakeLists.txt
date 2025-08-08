@@ -14,6 +14,7 @@ cet_make_library(LIBRARY_NAME OscLib
   OscCalcDMP.cxx
   OscCalcDumb.cxx
   OscCalcGeneral.cxx
+  OscCalcNuFast.cxx
   OscCalcPMNS_CPT.cxx
   OscCalcPMNS_NSI.cxx
   OscCalcPMNS.cxx
