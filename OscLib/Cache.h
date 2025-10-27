@@ -65,7 +65,7 @@ namespace analytic {
     inline __attribute__((always_inline)) T P(int from, int to) const {
       // convert flavours to indices into matrix
       const int i0 = (from-12)/2;
-      const int i1 = to = 0 ? 4 : (to-12)/2;
+      const int i1 = to == 0 ? 4 : (to-12)/2;
 
       switch(i0*3+i1){
       case 0: return Pee;
