@@ -1,7 +1,6 @@
 #include "OscLib/OscCalcSterileEigen.h"
 #include "OscLib/OscCalcPMNSOptEigen.h"
 #include "OscLib/Constants.h"
-#include "OscLib/Cache.h"
 
 #include <iostream>
 #include <cassert>
@@ -66,7 +65,6 @@ namespace osc
   //---------------------------------------------------------------------------
   void OscCalcSterileEigen::SetStdPars()
   {
-
     this->InitializeVectors();
 
     if(fNumNus>2) {
@@ -80,13 +78,11 @@ namespace osc
       this->SetAngle(1,2,0.7);
       this->SetDm(2,2.4e-3);
     }
-   
   }
 
   //--------------------------------------------------------------------------- 
   void OscCalcSterileEigen::SetAngle(int i, int j, double th) 
   {
-
     if (i > j) {
       cout << "First argument should be smaller than second argument" << endl;
       cout << "Setting reverse order (Theta" << j << i << "). " << endl;
@@ -103,12 +99,12 @@ namespace osc
     fTheta(i-1,j-1) = th;
 
     fBuiltHms = false;
+    ClearProbCaches();
   }
 
   //---------------------------------------------------------------------------
   void OscCalcSterileEigen::SetDelta(int i, int j, double delta) 
   {
-
     if(i>j){
       cout << "First argument should be smaller than second argument" << endl;
       cout << "Setting reverse order (Delta" << j << i << "). " << endl;
@@ -129,6 +125,7 @@ namespace osc
     fDelta(i-1,j-1) = delta;
 
     fBuiltHms = false;
+    ClearProbCaches();
   }
 
   //---------------------------------------------------------------------------
@@ -143,6 +140,7 @@ namespace osc
     fDm(i-1) = dm;
 
     fBuiltHms = false;
+    ClearProbCaches();
   }
 
   //---------------------------------------------------------------------------
@@ -300,7 +298,6 @@ namespace osc
   //---------------------------------------------------------------------------
   void OscCalcSterileEigen::SolveHam(double E, double Ne, int anti)
   {
-
     // Check if anything has changed before recalculating
     if(Ne!=fCachedNe || E!=fCachedE || anti!=fCachedAnti || !fBuiltHms ){
       fCachedNe = Ne;
@@ -333,6 +330,12 @@ namespace osc
   //---------------------------------------------------------------------------
   void OscCalcSterileEigen::PropMatter(double L, double E, double Ne, int anti) 
   {
+    // reset neutrino states to pure nue, numu, nutau
+    fNuState.setZero();
+    fNuState(0,0) = 1;
+    fNuState(1,1) = 1;
+    fNuState(2,2) = 1;
+
     // Solve Hamiltonian
     this->SolveHam(E, Ne, anti);
 
@@ -355,6 +358,7 @@ namespace osc
     for (; Li!=Lend; ++Li, ++Ni) {
       this->PropMatter(*Li, E, *Ni, anti);
     }
+
   }
 
   //---------------------------------------------------------------------------
@@ -365,35 +369,46 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
+  void OscCalcSterileEigen::CacheProbs(long key){
+    const Probs<double> ps(
+        GetP(0,0), GetP(1,0), GetP(2,0),
+        GetP(0,1), GetP(1,1), GetP(2,1),
+        GetP(0,2), GetP(1,2), GetP(2,2));
+
+    fCache.emplace(key, ps);
+  }
+
+  //---------------------------------------------------------------------------
   double OscCalcSterileEigen::P(int flavBefore, int flavAfter, double E)
   {
     const int anti = (flavBefore > 0) ? +1 : -1;
     //anti must be +/- 1 but flavAfter can be zero
     assert(flavAfter/anti >= 0);
-    
-    int i = -1, j = -1;
-    if(abs(flavBefore) == 12) i = 0;
-    if(abs(flavBefore) == 14) i = 1;
-    if(abs(flavBefore) == 16) i = 2;
-    if(abs(flavAfter) == 12) j = 0;
-    if(abs(flavAfter) == 14) j = 1;
-    if(abs(flavAfter) == 16) j = 2;
-    if(abs(flavAfter) == 0)  j = 3;
-    assert(i >= 0 && j >= 0);
 
-    // if anything has changed, we need to redo all the calcs
-    if(fRho*constants::kZPerA!=fCachedNe || E!=fCachedE || anti!=fCachedAnti || !fBuiltHms ){
-      // set numu, nue, nutau as start neutrinos to keep generic
-      fNuState.setZero();
-      fNuState(0,0) = 1;
-      fNuState(1,1) = 1;
-      fNuState(2,2) = 1;
-
-      PropMatter(fL, E, fRho*constants::kZPerA, anti);
+    // check if a set of probabilities has already been cached for
+    // this set of parameters
+    auto it = fCache.find(ToKey(E*anti));
+    if(it != fCache.end()) {
+      return it->second.P(abs(flavBefore),abs(flavAfter));
     }
 
-    if (j == 3) return GetP(i,0) + GetP(i,1) + GetP(i,2);
-    else return GetP(i,j);
+    // ... else go ahead and calculate, and cache new probs
+    PropMatter(fL, E, fRho*constants::kZPerA, anti);
+    CacheProbs(ToKey(E*anti));
+
+    // now the cache should really have probs for this set of
+    // parameters, but double check to be sure
+    it = fCache.find(ToKey(E*anti));
+    if (it == fCache.end()){
+      std::cout << "could not find cache for key " << ToKey(E*anti) 
+                << "\n ... checking cache ..." << std::endl;
+      for (it = fCache.begin(); it != fCache.end(); it++)
+      { 
+        std::cout << it->first << std::endl; 
+      }
+      assert(false && "could not find key in cache");
+    }
+    else return it->second.P(abs(flavBefore),abs(flavAfter));
   }
 
 } // namespace

@@ -11,11 +11,16 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "OscLib/IOscCalcSterile.h"
+#include "OscLib/Cache.h"
 #include <Eigen/Dense>
 #include <list>
 
 namespace osc
 {
+
+  using analytic::ProbCache;
+  using analytic::Probs;
+
   /// \brief Eigen-based 3+1 sterile oscillation calculator
   ///
   /// Adapt the \ref PMNS_Sterile calculator to Eigen, hardcoded to 3+1
@@ -24,6 +29,7 @@ namespace osc
   public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
     using IOscCalcAdjustable::P;
+
     OscCalcSterileEigen();
     OscCalcSterileEigen(const OscCalcSterileEigen& calc);
     virtual ~OscCalcSterileEigen();
@@ -84,9 +90,13 @@ namespace osc
               int anti);
     
     /// Return the probability of final state in flavour to
-    /// @param from - startging flavor (0,1,2) = (nue,numu,nutau)
+    /// @param from - starting flavor (0,1,2) = (nue,numu,nutau)
     /// @param to - final flavor (0,1,2) = (nue,numu,nutau)
     virtual double GetP(int from, int to) const;
+
+    /// Cache newly calculated probabilities to the cache
+    /// @param key - key calculated from ToKey * [-1,1] for [anu, nu]
+    virtual void CacheProbs(long key);
     
     int fNumNus;
 
@@ -102,6 +112,10 @@ namespace osc
     Eigen::Matrix4cd  fHms;     ///< matrix H*2E in eV^2
     Eigen::Matrix4cd  fHmsMat;  ///< matrix H*2E in eV^2, with matter
     Eigen::SelfAdjointEigenSolver<Eigen::Matrix4cd> fEig;  ///< eigen solver
+
+    analytic::ProbCache<long,double> fCache;
+    inline void ClearProbCaches() { fCache.clear(); };
+    inline long ToKey(double E){ return (long)(E*1e6); };
 
   };
 
