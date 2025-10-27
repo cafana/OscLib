@@ -1,6 +1,7 @@
 #include "OscLib/OscCalcSterileEigen.h"
 #include "OscLib/OscCalcPMNSOptEigen.h"
 #include "OscLib/Constants.h"
+#include "OscLib/Cache.h"
 
 #include <iostream>
 #include <cassert>
@@ -18,7 +19,6 @@ namespace osc
   OscCalcSterileEigen::OscCalcSterileEigen() : fNumNus(4)
   {
     this->SetStdPars();
-    this->ResetToFlavour(1);
     fCachedNe = 0.0;
     fCachedE =  1.0;
     fCachedAnti = 1;
@@ -339,6 +339,7 @@ namespace osc
     fNuState = fEig.eigenvectors()*(
   				  fEig.eigenvalues().unaryExpr([L] (double x) { double sinx(0), cosx(0); _sincos(-constants::kkmTom/constants::kInversemToeV*L*x,sinx,cosx); return complex(cosx, sinx);}
   				  ).asDiagonal())*fEig.eigenvectors().adjoint()*fNuState;
+
   }
 
   //---------------------------------------------------------------------------
@@ -357,19 +358,10 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  double OscCalcSterileEigen::GetP(int flv) const
+  double OscCalcSterileEigen::GetP(int from, int to) const
   {
-    assert(flv >= 0 && flv < fNumNus);
-    return norm(fNuState.coeff(flv));
-  }
-
-  //---------------------------------------------------------------------------
-  void OscCalcSterileEigen::ResetToFlavour(int flv) 
-  {
-    for (int i = 0; i < fNumNus; ++i) {
-      if (i==flv) fNuState(i) = one;
-      else        fNuState(i) = zero;
-    }
+    assert(to >= 0 && to < fNumNus);
+    return norm(fNuState.coeff(from,to));
   }
 
   //---------------------------------------------------------------------------
@@ -389,10 +381,19 @@ namespace osc
     if(abs(flavAfter) == 0)  j = 3;
     assert(i >= 0 && j >= 0);
 
-    ResetToFlavour(i);
-    PropMatter(fL, E, fRho*constants::kZPerA, anti);
-    if (j == 3) return GetP(0) + GetP(1) + GetP(2);
-    else return GetP(j);
+    // if anything has changed, we need to redo all the calcs
+    if(fRho*constants::kZPerA!=fCachedNe || E!=fCachedE || anti!=fCachedAnti || !fBuiltHms ){
+      // set numu, nue, nutau as start neutrinos to keep generic
+      fNuState.setZero();
+      fNuState(0,0) = 1;
+      fNuState(1,1) = 1;
+      fNuState(2,2) = 1;
+
+      PropMatter(fL, E, fRho*constants::kZPerA, anti);
+    }
+
+    if (j == 3) return GetP(i,0) + GetP(i,1) + GetP(i,2);
+    else return GetP(i,j);
   }
 
 } // namespace

@@ -83,14 +83,10 @@ namespace osc
               const std::list<double>& Ne,
               int anti);
     
-    /// Return the probability of final state in flavour flv
-    /// @param flv - final flavor (0,1,2) = (nue,numu,nutau)
-    virtual double GetP(int flv) const;
-    
-    /// Erase memory of neutrino propagate and reset neutrino
-    /// to pure flavour flv. Preserves values of mixing and mass-splittings
-    /// @param flv - final flavor (0,1,2) = (nue,numu,nutau)
-    virtual void ResetToFlavour(int flv=1);
+    /// Return the probability of final state in flavour to
+    /// @param from - startging flavor (0,1,2) = (nue,numu,nutau)
+    /// @param to - final flavor (0,1,2) = (nue,numu,nutau)
+    virtual double GetP(int from, int to) const;
     
     int fNumNus;
 
@@ -102,7 +98,7 @@ namespace osc
     Eigen::Vector4d  fDm;      ///< m^2_i - m^2_1 in vacuum
     Eigen::Matrix4d  fTheta;   ///< theta[i][j] mixing angle
     Eigen::Matrix4d  fDelta;   ///< delta[i][j] CP violating phase
-    Eigen::Vector4cd  fNuState; ///< The neutrino current state
+    Eigen::Matrix4cd  fNuState; ///< allowed initial neutrino states
     Eigen::Matrix4cd  fHms;     ///< matrix H*2E in eV^2
     Eigen::Matrix4cd  fHmsMat;  ///< matrix H*2E in eV^2, with matter
     Eigen::SelfAdjointEigenSolver<Eigen::Matrix4cd> fEig;  ///< eigen solver
