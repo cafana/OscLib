@@ -57,11 +57,9 @@ namespace analytic {
           T et, T mt, T tt)
       : Pee(ee), Pme(me), Pte(te), Pem(em), Pmm(mm), Ptm(tm), Pet(et), Pmt(mt), Ptt(tt)
     {
-      // exploit 4f unitarity
-      // we do not need to account for Pse, Psm, Pst, "from" is never allowed to be sterile
-      Pes = 1-Pee-Pem-Pet;
-      Pms = 1-Pme-Pmm-Pmt;
-      Pts = 1-Pte-Ptm-Pts;
+      Pes = Pee+Pem+Pet;
+      Pms = Pme+Pmm+Pmt;
+      Pts = Pte+Ptm+Ptt;
     }
 
     inline __attribute__((always_inline)) T P(int from, int to) const {
@@ -88,7 +86,7 @@ namespace analytic {
 
   protected:
     T Pee, Pme, Pte, Pem, Pmm, Ptm, Pet, Pmt, Ptt;
-    T Pes, Pms, Pts; //
+    T Pes, Pms, Pts; // osc probability to active states
 
   };
 
