@@ -65,6 +65,7 @@ namespace osc
   //---------------------------------------------------------------------------
   void OscCalcSterileEigen::SetStdPars()
   {
+
     this->InitializeVectors();
 
     if(fNumNus>2) {
@@ -78,11 +79,13 @@ namespace osc
       this->SetAngle(1,2,0.7);
       this->SetDm(2,2.4e-3);
     }
+
   }
 
   //--------------------------------------------------------------------------- 
   void OscCalcSterileEigen::SetAngle(int i, int j, double th) 
   {
+
     if (i > j) {
       cout << "First argument should be smaller than second argument" << endl;
       cout << "Setting reverse order (Theta" << j << i << "). " << endl;
@@ -105,6 +108,7 @@ namespace osc
   //---------------------------------------------------------------------------
   void OscCalcSterileEigen::SetDelta(int i, int j, double delta) 
   {
+
     if(i>j){
       cout << "First argument should be smaller than second argument" << endl;
       cout << "Setting reverse order (Delta" << j << i << "). " << endl;
@@ -298,6 +302,7 @@ namespace osc
   //---------------------------------------------------------------------------
   void OscCalcSterileEigen::SolveHam(double E, double Ne, int anti)
   {
+
     // Check if anything has changed before recalculating
     if(Ne!=fCachedNe || E!=fCachedE || anti!=fCachedAnti || !fBuiltHms ){
       fCachedNe = Ne;
@@ -342,7 +347,6 @@ namespace osc
     fNuState = fEig.eigenvectors()*(
   				  fEig.eigenvalues().unaryExpr([L] (double x) { double sinx(0), cosx(0); _sincos(-constants::kkmTom/constants::kInversemToeV*L*x,sinx,cosx); return complex(cosx, sinx);}
   				  ).asDiagonal())*fEig.eigenvectors().adjoint()*fNuState;
-
   }
 
   //---------------------------------------------------------------------------
@@ -358,7 +362,6 @@ namespace osc
     for (; Li!=Lend; ++Li, ++Ni) {
       this->PropMatter(*Li, E, *Ni, anti);
     }
-
   }
 
   //---------------------------------------------------------------------------

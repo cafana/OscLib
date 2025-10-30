@@ -88,8 +88,6 @@ namespace analytic {
   };
 
   template<class KT, class VT> class ProbCache : public std::unordered_map<KT, Probs<VT>> {};
-
-
 }
 }
 

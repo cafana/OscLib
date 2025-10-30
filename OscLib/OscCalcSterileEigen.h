@@ -29,7 +29,6 @@ namespace osc
   public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
     using IOscCalcAdjustable::P;
-
     OscCalcSterileEigen();
     OscCalcSterileEigen(const OscCalcSterileEigen& calc);
     virtual ~OscCalcSterileEigen();
