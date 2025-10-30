@@ -4,6 +4,7 @@
 
 #include <unordered_map>
 #include <Eigen/Eigen>
+#include <iostream> 
 
 // We want to put ArrayXd into an unordered_map, so define hash and equality
 namespace std
@@ -63,23 +64,19 @@ namespace analytic {
     }
 
     inline __attribute__((always_inline)) T P(int from, int to) const {
-      // convert flavours to indices into matrix
-      const int i0 = (from-12)/2;
-      const int i1 = to == 0 ? 4 : (to-12)/2;
-
-      switch(i0*3+i1){
-      case 0: return Pee;
-      case 1: return Pme;
-      case 2: return Pte;
-      case 3: return Pem;
-      case 4: return Pmm;
-      case 5: return Ptm;
-      case 6: return Pet;
-      case 7: return Pmt;
-      case 8: return Ptt;
-      case 9: return Pes;
-      case 10: return Pms;
-      case 11: return Pts;
+      switch(from*100+to){
+      case 1212: return Pee;
+      case 1412: return Pme;
+      case 1612: return Pte;
+      case 1214: return Pem;
+      case 1414: return Pmm;
+      case 1614: return Ptm;
+      case 1216: return Pet;
+      case 1416: return Pmt;
+      case 1616: return Ptt;
+      case 1200: return Pes;
+      case 1400: return Pms;
+      case 1600: return Pts;
       default: abort();
       }
     }
