@@ -365,7 +365,7 @@ namespace osc
   double OscCalcSterileEigen::GetP(int from, int to) const
   {
     assert(to >= 0 && to < fNumNus);
-    return norm(fNuState.coeff(from,to));
+    return norm(fNuState.coeff(to,from));
   }
 
   //---------------------------------------------------------------------------
