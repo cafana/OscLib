@@ -1,5 +1,6 @@
 #include "OscLib/IOscCalcSterile.h"
 
+#include <cassert>
 #include <iostream>
 
 namespace osc
