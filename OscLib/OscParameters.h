@@ -1,9 +1,9 @@
-#pragma once  
+#pragma once
 
 #include <vector>
 #include <iostream>
 
-#include <Eigen/Eigen>
+#include "Eigen/Eigen"
 using namespace Eigen;
 
 namespace osc {

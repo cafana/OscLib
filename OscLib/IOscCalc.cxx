@@ -17,7 +17,7 @@ namespace{
 #endif
 }
 
-#include <Eigen/Dense>
+#include "Eigen/Dense"
 
 #include "TMD5.h"
 
@@ -48,7 +48,7 @@ namespace osc
   {
     return new _NoOscillations<T>;
   }
-    
+
   //---------------------------------------------------------------------------
   template<class T> T _NoOscillations<T>::P(int from, int to, double /*E*/)
   {

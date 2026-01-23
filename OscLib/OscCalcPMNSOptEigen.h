@@ -7,8 +7,8 @@
 #include <vector>
 
 
-#include <Eigen/Dense>
-#include <Eigen/Eigenvalues> 
+#include "Eigen/Dense"
+#include "Eigen/Eigenvalues"
 
 #include <iostream>
 
@@ -42,14 +42,14 @@ namespace osc
 //  };
 //
 //  /// \brief Struct of the cache
-//  struct OscCache {    
+//  struct OscCache {
 //    bool operator==(const OscCache & rhs) const {
 //      if(!(parameters == rhs.parameters)) return false;
-//      for(unsigned int i = 0; i < energies.size(); i++) 
+//      for(unsigned int i = 0; i < energies.size(); i++)
 //	if(energies[i] != rhs.energies[i]) return false;
 //      return true;
-//    }    
-//        
+//    }
+//
 //    std::vector<double> energies;
 //    Eigen::ArrayXXd probabilities;
 //    OscParameters parameters;
@@ -77,13 +77,13 @@ namespace osc
     ~OscCalcPMNSOptEigen() = default;
 
     IOscCalcAdjustable * Copy() const override;
-    
+
     double P(int flavBefore, int flavAfter, double E) override;
     double P(int flavBefore, int flavAfter, double E, bool fast_and_loose);
     Eigen::ArrayXd P(int flavBefore, int flavAfter,
 		     const std::vector<double>& E) override;
     using _IOscCalcAdjustable::P;
-    
+
 
     void SetL     (double L            ) override {SaveLastParams(); fL      = L;}
     void SetRho   (double rho          ) override {SaveLastParams(); fRho    = rho;}
@@ -103,8 +103,8 @@ namespace osc
 
     std::string name =  "OscCalcPMNSOptEigen";
     int ChannelCacheIdx(int flavBefore, int flavAfter) const;
-    
-    // Fill the cache at the current parameter values 
+
+    // Fill the cache at the current parameter values
     void FillCache();
 
 
@@ -112,14 +112,14 @@ namespace osc
     void SaveLastParams();
 
     void SetCachedEnergies(std::vector<double> const & energies);
-    
+
     // Build a flavor basis hamiltonian at input parameters. No matter effects
     Eigen::Matrix3cd BuildHam(const OscParameters & params) const;
 
     // Add matter effects onto a flavor basis vacuum hamiltonian
     Eigen::Matrix3cd AddMatterEffects(const Eigen::Matrix3cd & ham,
 				      const double & E,
-				      const int & anti, 
+				      const int & anti,
 				      const OscParameters & params) const;
     Eigen::Matrix3cd AddMatterEffects(const Eigen::Matrix3cd & ham,
 				      const double & E,
@@ -129,10 +129,10 @@ namespace osc
 					  const OscParameters & params) const;
 
     // Build a flavor basis hamiltonian at input parameters. With matter effects
-    Eigen::Matrix3cd MatterHamiltonian(const double & E, 
+    Eigen::Matrix3cd MatterHamiltonian(const double & E,
 				       const int & anti,
 				       const OscParameters & params) const;
-    
+
     // Solve the eigenvalue problem for the input hamiltonian
     EigenSystem Solve(Eigen::Matrix3cd const & ham) const;
 
@@ -141,7 +141,7 @@ namespace osc
 				Eigen::Vector3d const & evals,
 				const OscParameters & params) const;
 
-    // Calculate a matrix of probabilities corresponding to all 
+    // Calculate a matrix of probabilities corresponding to all
     // permutations of to and from states.
     // Note you probably want "to" to be propagated
     //Eigen::Array33d Probabilities(const Eigen::Matrix3cd & to,
@@ -152,17 +152,17 @@ namespace osc
 
 
     void PrintArrayAddresses(const double * data, int size) const;
-    void PrintMatrixAddresses(const double * data, 
+    void PrintMatrixAddresses(const double * data,
 			      int nrows,
 			      int ncols) const;
     void PrintMatrixAddresses(const Eigen::ArrayXXd & mat) const;
     bool ParamsAreCached();
-    
+
     OscParameters fLastParams;
-    
+
   };
-  
-  
+
+
 
 }
 
