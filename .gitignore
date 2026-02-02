@@ -11,3 +11,4 @@ OscLib/test/testSterile
 OscLib/bin/
 OscLib/tmp/
 OscLib/lib/
+build/
