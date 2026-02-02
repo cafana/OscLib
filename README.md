@@ -7,6 +7,7 @@
 #### Required
 
 * `cetmodules`: FNAL CMake toolkit
+  + Already fetched: `export cetmodules_ROOT=/path/to/install/prefix`
   + To fetch
 ```bash
 git clone --depth 1 --branch 3.27.03 https://github.com/FNALssi/cetmodules.git
@@ -14,7 +15,6 @@ cd cetmodules; mkdir build; cd build;
 cmake .. -DCMAKE_INSTALL_PREFIX=$(readlink -f $(uname)); make install;
 export cetmodules_ROOT=$(readlink -f $(uname))
 ```
-  + Already fetched: `export cetmodules_ROOT=/path/to/install/prefix`
 
 * ROOT
 * Eigen3
@@ -23,7 +23,7 @@ export cetmodules_ROOT=$(readlink -f $(uname))
 
 #### Optional
 
-* STAN
+* [Stan](https://mc-stan.org)
 
 ### Build
 
@@ -34,7 +34,7 @@ cmake .. -DCMAKE_INSTALL_PREFIX=$(readlink -f $(uname)); make install;
 export OscLib_ROOT=$(readlink -f $(uname))
 ```
 
-* With STAN:
+* With Stan:
 
 ```bash
 cmake .. -DOscLib_USE_STAN=ON -DCMAKE_INSTALL_PREFIX=$(readlink -f $(uname)); make install;
