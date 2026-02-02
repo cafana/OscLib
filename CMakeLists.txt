@@ -14,6 +14,11 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
 
 cet_report_compiler_flags(REPORT_THRESHOLD VERBOSE)
 
+# default to 'release' build if not specified
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+
 option(OscLib_USE_STAN "Build with Stan dependency?" OFF)
 option(OscLib_USE_STAN_THREADS "Use threading with Stan?" OFF)
 
