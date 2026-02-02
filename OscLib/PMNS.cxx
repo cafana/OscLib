@@ -37,7 +37,7 @@
 // n.b. Stan sets up some type traits that need to be loaded before Eigen is.
 // Since Eigen gets dragged in via IOscCalc.h we have to get Stan set up before
 // that is included.
-#ifdef OSCLIB_STAN
+#ifdef OscLib_STAN
 #include "OscLib/Stan.h"
 #endif
 
@@ -87,7 +87,7 @@ _PMNS<T>::_PMNS(const T& th12, const T& th23, const T& th13, const T& deltacp,
 template <typename T>
 void _PMNS<T>::DumpMatrix(const complex M[][3]) const
 {
-  std::cout 
+  std::cout
     <<"| "<<M[0][0]<<"\t"<<M[0][1]<<"\t"<<M[0][2]<<" |\n"
     <<"| "<<M[1][0]<<"\t"<<M[1][1]<<"\t"<<M[1][2]<<" |\n"
     <<"| "<<M[2][0]<<"\t"<<M[2][1]<<"\t"<<M[2][2]<<" |\n"
@@ -107,7 +107,7 @@ void _PMNS<T>::SetMix(const T& th12, const T& th23, const T& th13, const T& delt
   int i, j;
   T  s12, s23, s13, c12, c23, c13;
   complex idelta(0.0,deltacp);
-  
+
   s12 = sin(th12);  s23 = sin(th23);  s13 = sin(th13);
   c12 = cos(th12);  c23 = cos(th23);  c13 = cos(th13);
 
@@ -116,15 +116,15 @@ void _PMNS<T>::SetMix(const T& th12, const T& th23, const T& th13, const T& delt
   fU[0][0] =  complex(c12*c13, 0);
   fU[0][1] =  complex(s12*c13, 0);
   fU[0][2] =  s13*exp(-idelta);
-  
+
   fU[1][0] = -s12*c23-c12*s23*s13*exp(idelta);
   fU[1][1] =  c12*c23-s12*s23*s13*exp(idelta);
   fU[1][2] =  complex(s23*c13, 0);
-  
+
   fU[2][0] =  s12*s23-c12*c23*s13*exp(idelta);
   fU[2][1] = -c12*s23-s12*c23*s13*exp(idelta);
   fU[2][2] =  complex(c23*c13, 0);
-  
+
   // Compute derived forms of the mixing matrix
   for (i=0; i<3; ++i) {
     for (j=0; j<3; ++j) {
@@ -151,7 +151,7 @@ void _PMNS<T>::SetMixBWCP(double th1, double th2, double th3, double d)
   std::complex<double> id(0.0,d);
   s1 = sin(th1);  s2 = sin(th2);  s3 = sin(th3);
   c1 = cos(th1);  c2 = cos(th2);  c3 = cos(th3);
-  
+
   fU[0][0] =  c1;
   fU[0][1] =  s1*c3;
   fU[0][2] =  s1*s3;
@@ -179,9 +179,9 @@ void _PMNS<T>::SetMixBWCP(double th1, double th2, double th3, double d)
 template <typename T>
 void _PMNS<T>::PrintDeltaMsqrs() const
 {
-  std::cout 
-    <<"|"<<fdmsqr[0][0]<<"\t"<<fdmsqr[0][1]<<"\t"<<fdmsqr[0][2]<<"|\n" 
-    <<"|"<<fdmsqr[1][0]<<"\t"<<fdmsqr[1][1]<<"\t"<<fdmsqr[1][2]<<"|\n" 
+  std::cout
+    <<"|"<<fdmsqr[0][0]<<"\t"<<fdmsqr[0][1]<<"\t"<<fdmsqr[0][2]<<"|\n"
+    <<"|"<<fdmsqr[1][0]<<"\t"<<fdmsqr[1][1]<<"\t"<<fdmsqr[1][2]<<"|\n"
     <<"|"<<fdmsqr[2][0]<<"\t"<<fdmsqr[2][1]<<"\t"<<fdmsqr[2][2]<<"|"
     << std::endl;
 }
@@ -196,11 +196,11 @@ void _PMNS<T>::SetDeltaMsqrs(const T& dm21, const T& dm32)
 {
   double eps = 5.0E-9;
   T msqr[3];
-  
+
   msqr[0] = 0.0;
   msqr[1] = dm21;
   msqr[2] = dm21+dm32;
-  
+
   // Degeneracies cause problems with diagonalization, so break them
   // ever so slightly
   if (dm21==0.0) {msqr[0] -= 0.5*eps; msqr[1] += 0.5*eps; }
@@ -251,7 +251,7 @@ void _PMNS<T>::EvalEqn2(complex       A[][3],
 		   const complex Udagg[][3],
 		   const T  dmsqr[][3],
 		   double L,
-		   double E) 
+		   double E)
 {
   int a, b, i;
   for (a=0; a<3; ++a) {
@@ -315,7 +315,7 @@ void _PMNS<T>::EvalEqn10(complex       A[][3],
 template <typename T>
 void _PMNS<T>::EvalEqn11(complex X[][3],
 		    double L,
-		    double E, 
+		    double E,
 		    const complex twoEH[][3],
 		    const T       Msqr[],
 		    const T       dMsqr[][3])
@@ -356,7 +356,7 @@ void _PMNS<T>::EvalEqn11(complex X[][3],
 	if (k==0) {
 	  X[a][b] += (EHM21[a][b]/(dMsqr[k][2]*dMsqr[k][1]))*phase;
 	}
-	else if (k==1) { 
+	else if (k==1) {
 	  X[a][b] += (EHM20[a][b]/(dMsqr[k][2]*dMsqr[k][0]))*phase;
 	}
 	else if (k==2) {
@@ -368,7 +368,7 @@ void _PMNS<T>::EvalEqn11(complex X[][3],
 }
 
 //......................................................................
-// 
+//
 // Find the matter eigenvalues Msqr given the variables found in
 // Eqn.22. This is Eqn.21 from Barger et. al.
 //
@@ -396,17 +396,17 @@ void _PMNS<T>::EvalEqn21(T Msqr[],
     if (arg<-1.0) arg = -1.00;
     if (arg>+1.0) arg = +1.00;
   }
-  
+
   // The three roots, find the first by computing the acos() the
   // others are nearby
   auto theta0 = acos(arg)/3.0;
   auto theta1 = theta0-k2PiOver3;
   auto theta2 = theta0+k2PiOver3;
-  
+
   // The multiplier and offset
   auto fac      = -2.0*sqrt(alpha2Minus3beta)/3.0;   // Factor in front of cos() terms
   auto constant = -alpha/3.0; // The constant offset m1^2 is irrelevant
-  
+
   // And the eigenvalues themselves
   Msqr[0] = fac*cos(theta0) + constant;
   Msqr[1] = fac*cos(theta1) + constant;
@@ -430,12 +430,12 @@ void _PMNS<T>::EvalEqn22(T& alpha,
 {
   // 2*sqrt(2)*Gf*Ne*E in units of eV^2
   auto k2r2EGNe = kK2*2.0*M_SQRT2*Gf*Ne*(constants::kGeVToeV*E);
-  
+
   alpha = k2r2EGNe + dmsqr[0][1] + dmsqr[0][2];
-  
+
   beta  =
-    dmsqr[0][1]*dmsqr[0][2] + 
-    k2r2EGNe*(dmsqr[0][1]*(1.0-norm(U[0][1])) + 
+    dmsqr[0][1]*dmsqr[0][2] +
+    k2r2EGNe*(dmsqr[0][1]*(1.0-norm(U[0][1])) +
 	      dmsqr[0][2]*(1.0-norm(U[0][2])));
 
   gamma = k2r2EGNe*dmsqr[0][1]*dmsqr[0][2]*norm(U[0][0]);
@@ -473,7 +473,7 @@ void _PMNS<T>::SortEigenvalues(T       dMsqr[][3],
   }
   // Check that each eigenvalue is used
   for (i=0; i<3; ++i) if (flg[i]!=1) abort();
-  
+
   for (i=0; i<3; ++i) {
     Msqr[i] = MsqrTmp[i];
     for (j=0; j<3; ++j) {
@@ -522,7 +522,7 @@ void _PMNS<T>::PropMatter(double L, double E, double Ne, int anti)
   T       alpha0, beta0, gamma0;
   complex A[3][3];
   complex Aout[3][3];
-  
+
   // Find the transition matrix. The series of steps are to:
   if (anti>0) {
     // [1] Find the matter Hamiltonian in the mass basis...
@@ -555,7 +555,7 @@ void _PMNS<T>::PropMatter(double L, double E, double Ne, int anti)
     this->EvalEqn10(A, fUstar, X, fUtran);
   }
   else abort();
-  
+
   // [4] Apply the transition matrix to the matrix we started with...
   this->Multi(Aout, A, fA);
   for (i=0; i<3; ++i) {
@@ -625,6 +625,6 @@ T _PMNS<T>::P(int i, int j) const
 
 template class osc::_PMNS<double>;
 
-#ifdef OSCLIB_STAN
+#ifdef OscLib_STAN
 template class osc::_PMNS<stan::math::var>;
 #endif

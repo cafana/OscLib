@@ -14,20 +14,20 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
 
 cet_report_compiler_flags(REPORT_THRESHOLD VERBOSE)
 
-option(osclib_USE_STAN "Build with Stan dependency?" OFF)
-option(osclib_USE_STAN_THREADS "Use threading with Stan?" OFF)
+option(OscLib_USE_STAN "Build with Stan dependency?" OFF)
+option(OscLib_USE_STAN_THREADS "Use threading with Stan?" OFF)
 
 find_package(ROOT REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(Boost REQUIRED)
 find_package(GSL REQUIRED)
 
-if(osclib_USE_STAN)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DOSCLIB_STAN -D_REENTRANT")
+if(OscLib_USE_STAN)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DOscLib_STAN -D_REENTRANT")
   if(TBB_ONEAPI)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTBB_INTERFACE_NEW")
   endif()
-  if(osclib_USE_STAN_THREADS)
+  if(OscLib_USE_STAN_THREADS)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DSTAN_THREADS")
   endif()
   list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
