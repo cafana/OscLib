@@ -19,6 +19,8 @@ option(OscLib_USE_STAN_THREADS "Use threading with Stan?" OFF)
 
 find_package(ROOT REQUIRED)
 find_package(Eigen3 REQUIRED)
+
+cmake_policy(SET CMP0167 NEW) #don't use builtin FindBoost.cmake
 find_package(Boost REQUIRED)
 find_package(GSL REQUIRED)
 
