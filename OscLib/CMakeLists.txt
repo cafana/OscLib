@@ -1,8 +1,3 @@
-# optional stan dependency
-if (osclib_USE_STAN)
-  set (STAN_TARGETS stan_math::stan_math SUNDIALS::kinsol_shared TBB::tbb)
-endif (osclib_USE_STAN)
-
 cet_make_library(LIBRARY_NAME OscLib
   SOURCE
     EarthModel.cxx
@@ -30,11 +25,7 @@ cet_make_library(LIBRARY_NAME OscLib
     PMNSOpt.cxx
 
   LIBRARIES
-    Eigen3::Eigen
-    GSL::gsl
-    ROOT::Core
-    ROOT::Hist
-    ${STAN_TARGETS}
+    OscLib_options
 )
 
 install_headers()

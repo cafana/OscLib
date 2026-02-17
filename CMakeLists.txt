@@ -19,29 +19,31 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/cmake/Modules")
+
 option(OscLib_USE_STAN "Build with Stan dependency?" OFF)
 option(OscLib_USE_STAN_THREADS "Use threading with Stan?" OFF)
 
 find_package(ROOT REQUIRED EXPORT)
+find_package(GSL REQUIRED EXPORT)
+
+cet_make_library(LIBRARY_NAME OscLib_options INTERFACE NO_SOURCE)
+
+if(OscLib_USE_STAN)
+  target_compile_definitions(OscLib_options INTERFACE OscLib_STAN _REENTRANT)
+  if(OscLib_USE_STAN_THREADS)
+    target_compile_definitions(OscLib_options INTERFACE STAN_THREADS)
+  endif()
+  find_package(stan_math REQUIRED MODULE EXPORT)
+  target_link_libraries(OscLib_options INTERFACE stan_math::stan_math)
+endif()
+
 find_package(Eigen3 REQUIRED EXPORT)
 
 cmake_policy(SET CMP0167 NEW) #don't use builtin FindBoost.cmake
 find_package(Boost REQUIRED EXPORT)
-find_package(GSL REQUIRED EXPORT)
 
-if(OscLib_USE_STAN)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DOscLib_STAN -D_REENTRANT")
-  if(TBB_ONEAPI)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTBB_INTERFACE_NEW")
-  endif()
-  if(OscLib_USE_STAN_THREADS)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DSTAN_THREADS")
-  endif()
-  list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-  find_package(stan_math REQUIRED EXPORT)
-  find_package(SUNDIALS REQUIRED EXPORT)
-  find_package(TBB REQUIRED EXPORT)
-endif()
+target_link_libraries(OscLib_options INTERFACE Eigen3::Eigen GSL::gsl ROOT::Core ROOT::Hist)
 
 add_subdirectory(OscLib)
 
