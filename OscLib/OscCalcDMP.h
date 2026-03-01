@@ -4,7 +4,7 @@
 #include <vector>
 #include <iostream>
 
-#include <Eigen/Eigen>
+#include "Eigen/Eigen"
 
 #include "OscLib/OscParameters.h"
 #include "OscLib/IOscCalc.h"
@@ -32,7 +32,7 @@ namespace osc
     ~_OscCalcDMP() = default;
 
     _IOscCalcAdjustable<T> * Copy() const override;
-    
+
     T P(int flavBefore, int flavAfter, double E) override;
     T P(int flavBefore, int flavAfter, double E, bool fast_and_loose);
 
@@ -60,9 +60,9 @@ namespace osc
     TMD5* GetParamsHash() const override;
 
     int ChannelCacheIdx(int flavBefore, int flavAfter) const;
-    
+
     std::string name =  "OscCalcDMP";
-    // Fill the cache at the current parameter values 
+    // Fill the cache at the current parameter values
     virtual void FillCache();
 
     // update fLastParams with the current parameters before changing them

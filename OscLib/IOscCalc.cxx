@@ -1,7 +1,7 @@
 // n.b. Stan sets up some type traits that need to be loaded before Eigen is.
 // Since Eigen gets dragged in via IOscCalc.h we have to get Stan set up before
 // that is included.
-#ifdef OSCLIB_STAN
+#ifdef OscLib_STAN
 #include "OscLib/Stan.h"
 #endif
 
@@ -11,13 +11,13 @@ namespace{
   // Most directions are implicitly defined
   template<class T, class U> T GetValAs(const U& x){return x;}
 
-#ifdef OSCLIB_STAN
+#ifdef OscLib_STAN
   // But not this one (since you don't want to do it by accident)
   template<> double GetValAs<double>(const stan::math::var& x){return x.val();}
 #endif
 }
 
-#include <Eigen/Dense>
+#include "Eigen/Dense"
 
 #include "TMD5.h"
 
@@ -48,7 +48,7 @@ namespace osc
   {
     return new _NoOscillations<T>;
   }
-    
+
   //---------------------------------------------------------------------------
   template<class T> T _NoOscillations<T>::P(int from, int to, double /*E*/)
   {
@@ -129,7 +129,7 @@ namespace osc
   template class _IOscCalc<double>;
   template class _NoOscillations<double>;
 
-#ifdef OSCLIB_STAN
+#ifdef OscLib_STAN
   template class _IOscCalcAdjustable<stan::math::var>;
   template class _IOscCalc<stan::math::var>;
   template class _NoOscillations<stan::math::var>;

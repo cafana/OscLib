@@ -12,7 +12,7 @@
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
-#include <Eigen/Eigen>
+#include "Eigen/Eigen"
 #pragma GCC diagnostic pop
 
 class TMD5;
@@ -39,7 +39,7 @@ namespace osc
     /// Default implementation forawrds to vector<double> version. Override if
     /// your calculator has a more efficient implementation.
     virtual Eigen::Array<T, Eigen::Dynamic, 1> P(int flavBefore, int flavAfter, const Eigen::ArrayXd& E);
-      
+
     /// \brief Use to check two calculators are in the same state
     ///
     /// \return Null means not implemented for this calculator
@@ -56,7 +56,7 @@ namespace osc
 
     virtual void Print(const std::string& prefix = "") const override;
 
-    using _IOscCalc<T>::P;    
+    using _IOscCalc<T>::P;
     virtual T P(int from, int to, double /*E*/) override;
 
     virtual TMD5* GetParamsHash() const override;

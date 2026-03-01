@@ -56,7 +56,7 @@ namespace osc
     fDm.setZero();
     fTheta.setZero();
     fDelta.setZero();
-    
+
     fNuState.setZero();
     fHms.setZero();
     fHmsMat.setZero();
@@ -82,8 +82,8 @@ namespace osc
 
   }
 
-  //--------------------------------------------------------------------------- 
-  void OscCalcSterileEigen::SetAngle(int i, int j, double th) 
+  //---------------------------------------------------------------------------
+  void OscCalcSterileEigen::SetAngle(int i, int j, double th)
   {
 
     if (i > j) {
@@ -106,7 +106,7 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  void OscCalcSterileEigen::SetDelta(int i, int j, double delta) 
+  void OscCalcSterileEigen::SetDelta(int i, int j, double delta)
   {
 
     if(i>j){
@@ -133,7 +133,7 @@ namespace osc
   }
 
   //---------------------------------------------------------------------------
-  void OscCalcSterileEigen::SetDm(int i, double dm) 
+  void OscCalcSterileEigen::SetDm(int i, double dm)
   {
     if (i < 2 || i > fNumNus) {
       cout << "Dm" << i << "1 not valid for " << fNumNus;
@@ -155,7 +155,7 @@ namespace osc
 
     double fSinBuffer(0), fCosBuffer(0);
     _sincos(fTheta(i,j), fSinBuffer, fCosBuffer);
-    
+
     double  fHmsBufferD;
     complex fHmsBufferC;
 
@@ -181,7 +181,7 @@ namespace osc
         // Middle row and column
         for(int k=i+1; k<j; k++){
           fHmsBufferC = fHms(k,j);
-      
+
           fHms(k,j) *= fCosBuffer;
           fHms(k,j) -= conj(fHms(i,k)) * fSinBuffer * fExpBuffer;
 
@@ -200,7 +200,7 @@ namespace osc
         fHms(j,j) *= fCosBuffer * fCosBuffer;
         fHms(j,j) += fSinBuffer * fHmsBufferC * fSinBuffer;
         fHms(j,j) -= 2 * fSinBuffer * fCosBuffer * real(fHms(i,j) * conj(fExpBuffer));
-    
+
         fHms(i,j) -= 2 * fSinBuffer * real(fHms(i,j) * conj(fExpBuffer)) * fSinBuffer * fExpBuffer;
         fHms(i,j) += fSinBuffer * fCosBuffer * (fHmsBufferD - fHmsBufferC) * fExpBuffer;
 
@@ -225,7 +225,7 @@ namespace osc
         fHms(j,j) *= fCosBuffer * fCosBuffer;
         fHms(j,j) += fSinBuffer * fHmsBufferD * fSinBuffer;
       }
-    
+
     }
     // Without Delta (No middle rows or columns: j = i+1)
     else{
@@ -253,7 +253,7 @@ namespace osc
         fHms(j,j) *= fCosBuffer * fCosBuffer;
         fHms(j,j) += fSinBuffer * fHmsBufferC * fSinBuffer;
         fHms(j,j) -= 2 * fSinBuffer * fCosBuffer * real(fHms(i,j));
-    
+
         fHms(i,j) -= 2 * fSinBuffer * real(fHms(i,j)) * fSinBuffer;
         fHms(i,j) += fSinBuffer * fCosBuffer * (fHmsBufferD - fHmsBufferC);
 
@@ -266,28 +266,28 @@ namespace osc
         fHms(i,i) = fSinBuffer * fHms(j,j) * fSinBuffer;
 
         fHms(j,j) *= fCosBuffer * fCosBuffer;
-    
+
       }
     }
 
   }
 
   //---------------------------------------------------------------------------
-  void OscCalcSterileEigen::BuildHms() 
+  void OscCalcSterileEigen::BuildHms()
   {
 
     // Check if anything changed
     if(fBuiltHms) return;
 
     //fHms.setZero(fNumNus, fNumNus);
-    
+
     for(int j=0; j<fNumNus; j++){
       // Set mass splitting
       fHms(j,j) = fDm(j);
       // Reset off-diagonal elements
       for(int i=0; i<j; i++){
         fHms(i,j) = 0;
-      }      
+      }
       // Rotate j neutrinos
       for(int i=0; i<j; i++){
         this->RotateH(i,j);
@@ -316,7 +316,7 @@ namespace osc
     double kr2GNe = constants::kMatterDensityToEffect * Ne;
 
     fHmsMat = fHms;
-    
+
     fHmsMat.triangularView<Eigen::Upper>() /= lv;
     if (anti > 0) {
       fHmsMat.adjointInPlace();
@@ -328,12 +328,12 @@ namespace osc
       fHmsMat(0,0) += -kr2GNe;
       fHmsMat(3,3) += -kr2GNe/2;
     }
-    
+
     fEig.compute(fHmsMat);
   }
 
   //---------------------------------------------------------------------------
-  void OscCalcSterileEigen::PropMatter(double L, double E, double Ne, int anti) 
+  void OscCalcSterileEigen::PropMatter(double L, double E, double Ne, int anti)
   {
     // reset neutrino states to pure nue, numu, nutau
     fNuState.setZero();
@@ -403,15 +403,15 @@ namespace osc
     // parameters, but double check to be sure
     it = fCache.find(ToKey(E*anti));
     if (it == fCache.end()){
-      std::cout << "could not find cache for key " << ToKey(E*anti) 
+      std::cout << "could not find cache for key " << ToKey(E*anti)
                 << "\n ... checking cache ..." << std::endl;
       for (it = fCache.begin(); it != fCache.end(); it++)
-      { 
-        std::cout << it->first << std::endl; 
+      {
+        std::cout << it->first << std::endl;
       }
       assert(false && "could not find key in cache");
     }
-    else return it->second.P(abs(flavBefore),abs(flavAfter));
+    return it->second.P(abs(flavBefore),abs(flavAfter));
   }
 
 } // namespace

@@ -1,7 +1,7 @@
 // n.b. Stan sets up some type traits that need to be loaded before Eigen is.
 // Since Eigen gets dragged in via IOscCalc.h we have to get Stan set up before
 // that is included.
-#ifdef OSCLIB_STAN
+#ifdef OscLib_STAN
 #include "OscLib/Stan.h"
 #endif
 
@@ -48,7 +48,7 @@ int main()
   osc::OscCalcAnalytic osc5b;
 
   std::vector<osc::IOscCalcAdjustable*> oscs {&osc1, &osc2, &osc3, &osc4, &osc5, &osc5b};
-#ifdef OSCLIB_STAN
+#ifdef OscLib_STAN
   osc::_OscCalcPMNS<stan::math::var> osc6;
   osc::_OscCalcPMNSOpt<stan::math::var> osc7;
   osc::_OscCalcDMP<stan::math::var> osc8;
@@ -88,7 +88,7 @@ int main()
           osc5.SetdCPBar(delta);
       }
     }
-#ifdef OSCLIB_STAN
+#ifdef OscLib_STAN
     for(auto osc : oscStan){
       osc->SetL(L);
       osc->SetRho(rho);
@@ -127,7 +127,7 @@ int main()
               Ps.push_back(oscs[n]->P(anti*from, anti*to, E));
               gs[n]->SetPoint(gs[n]->GetN(), E, Ps[n]);
             }
-#ifdef OSCLIB_STAN
+#ifdef OscLib_STAN
             for(auto osc : oscStan){
               Ps.push_back(osc->P(anti * from, anti * to, E).val());
               gs[n]->SetPoint(gs[n]->GetN(), E, Ps[n]);

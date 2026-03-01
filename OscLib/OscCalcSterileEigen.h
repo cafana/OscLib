@@ -12,7 +12,7 @@
 
 #include "OscLib/IOscCalcSterile.h"
 #include "OscLib/Cache.h"
-#include <Eigen/Dense>
+#include "Eigen/Dense"
 #include <list>
 
 namespace osc
@@ -25,7 +25,7 @@ namespace osc
   ///
   /// Adapt the \ref PMNS_Sterile calculator to Eigen, hardcoded to 3+1
   class OscCalcSterileEigen: public IOscCalcSterile
-  {  
+  {
   public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
     using IOscCalcAdjustable::P;
@@ -53,24 +53,24 @@ namespace osc
       PrintImpl(4, prefix);
     }
 
-    
+
     /// Set standard 3-flavor parameters
     virtual void SetStdPars();
 
   protected:
-    
+
     // A shorthand...
     typedef std::complex<double> complex;
-    
+
     virtual void InitializeVectors();
-    
+
     /// Rotate the Hamiltonian by theta_ij and delta_ij
     virtual void RotateH(int i,int j);
-    
-    /// Build Hms = H*2E, where H is the Hamiltonian in vacuum on flavour basis   
+
+    /// Build Hms = H*2E, where H is the Hamiltonian in vacuum on flavour basis
     /// and E is the neutrino energy. This is effectively the matrix of masses squared.
     virtual void BuildHms();
-    
+
     /// Solve the full Hamiltonian for eigenvectors and eigenvalues
     /// @param E - neutrino energy in GeV
     /// @param Ne - electron number density of matter in mole/cm^3
@@ -87,7 +87,7 @@ namespace osc
               double                   E,
               const std::list<double>& Ne,
               int anti);
-    
+
     /// Return the probability of final state in flavour to
     /// @param from - starting flavor (0,1,2) = (nue,numu,nutau)
     /// @param to - final flavor (0,1,2) = (nue,numu,nutau)
@@ -96,7 +96,7 @@ namespace osc
     /// Cache newly calculated probabilities to the cache
     /// @param key - key calculated from ToKey * [-1,1] for [anu, nu]
     virtual void CacheProbs(long key);
-    
+
     int fNumNus;
 
     double  fCachedNe;      ///< Cached electron density

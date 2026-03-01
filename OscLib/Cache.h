@@ -2,9 +2,10 @@
 #ifndef OSCLIBCACHE_H
 #define OSCLIBCACHE_H
 
+#include "Eigen/Eigen"
+
 #include <unordered_map>
-#include <Eigen/Eigen>
-#include <iostream> 
+#include <iostream>
 
 // We want to put ArrayXd into an unordered_map, so define hash and equality
 namespace std
@@ -35,7 +36,7 @@ namespace std
 
 namespace osc {
 namespace analytic {
-  
+
   template<class T> class Probs
   {
   public:

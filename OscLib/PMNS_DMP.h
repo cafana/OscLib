@@ -3,11 +3,11 @@
 
 #include "OscLib/Constants.h"
 #include "OscLib/OscParameters.h"
-#include <Eigen/Eigen>
+#include "Eigen/Eigen"
 using namespace Eigen;
 
 
-namespace osc 
+namespace osc
 {
     //struct OscParameters;
 

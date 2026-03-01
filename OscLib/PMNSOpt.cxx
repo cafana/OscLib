@@ -67,7 +67,7 @@
 // n.b. Stan sets up some type traits that need to be loaded before Eigen is.
 // Since Eigen gets dragged in via IOscCalc.h we have to get Stan set up before
 // that is included.
-#ifdef OSCLIB_STAN
+#ifdef OscLib_STAN
 #include "OscLib/Stan.h"
 #endif
 
@@ -399,6 +399,6 @@ T _PMNSOpt<T>::P(int flv) const
 
 template class osc::_PMNSOpt<double>;
 
-#ifdef OSCLIB_STAN
+#ifdef OscLib_STAN
 template class osc::_PMNSOpt<stan::math::var>;
 #endif

@@ -2,7 +2,7 @@
 // $Id: PMNS_Sterile.cxx,v 1.7 2014/04/17 21:34:38 jcoelho Exp $
 //
 // Implementation of oscillations of neutrinos in matter in a
-// n-neutrino framework. 
+// n-neutrino framework.
 //
 //......................................................................
 //
@@ -24,14 +24,14 @@
 
 #include "OscLib/Constants.h"
 
-#include <gsl/gsl_complex.h>
-#include <gsl/gsl_complex_math.h>
-#include <gsl/gsl_matrix.h>
-#include <gsl/gsl_eigen.h>
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_const_num.h>
-#include <gsl/gsl_const_mksa.h>
-#include <gsl/gsl_const_cgsm.h>
+#include "gsl/gsl_complex.h"
+#include "gsl/gsl_complex_math.h"
+#include "gsl/gsl_matrix.h"
+#include "gsl/gsl_eigen.h"
+#include "gsl/gsl_math.h"
+#include "gsl/gsl_const_num.h"
+#include "gsl/gsl_const_mksa.h"
+#include "gsl/gsl_const_cgsm.h"
 
 namespace osc
 {
@@ -87,7 +87,7 @@ using namespace osc;
 
 //......................................................................
 
-PMNS_Sterile::PMNS_Sterile(int NumNus) 
+PMNS_Sterile::PMNS_Sterile(int NumNus)
   : d(new PMNS_Sterile::Priv(NumNus))
 {
 
@@ -132,14 +132,14 @@ void PMNS_Sterile::SetStdPars()
     this->SetAngle(1,2,0.7);
     this->SetDm(2,2.4e-3);
   }
-  
+
 }
 
 //......................................................................
 ///
 /// Set mixing angles in radians. Requires i < j.
-/// 
-void PMNS_Sterile::SetAngle(int i, int j, double th) 
+///
+void PMNS_Sterile::SetAngle(int i, int j, double th)
 {
 
   if(i>j){
@@ -164,8 +164,8 @@ void PMNS_Sterile::SetAngle(int i, int j, double th)
 //......................................................................
 ///
 /// Set CP violating phases in radians. Requires i+1 < j.
-/// 
-void PMNS_Sterile::SetDelta(int i, int j, double delta) 
+///
+void PMNS_Sterile::SetDelta(int i, int j, double delta)
 {
 
   if(i>j){
@@ -195,7 +195,7 @@ void PMNS_Sterile::SetDelta(int i, int j, double delta)
 ///
 /// Set the mass-splittings. These are m_j^2-m_1^2
 ///
-void PMNS_Sterile::SetDm(int j, double dm) 
+void PMNS_Sterile::SetDm(int j, double dm)
 {
 
   if(j<2 || j>fNumNus){
@@ -248,7 +248,7 @@ void PMNS_Sterile::RotateH(int i,int j){
       // Middle row and column
       for(int k=i+1; k<j; k++){
         fHmsBufferC = fHms[k][j];
-    
+
         fHms[k][j] *= fCosBuffer;
         fHms[k][j] -= conj(fHms[i][k]) * fSinBuffer * fExpBuffer;
 
@@ -267,7 +267,7 @@ void PMNS_Sterile::RotateH(int i,int j){
       fHms[j][j] *= fCosBuffer * fCosBuffer;
       fHms[j][j] += fSinBuffer * fHmsBufferC * fSinBuffer;
       fHms[j][j] -= 2 * fSinBuffer * fCosBuffer * real(fHms[i][j] * conj(fExpBuffer));
-  
+
       fHms[i][j] -= 2 * fSinBuffer * real(fHms[i][j] * conj(fExpBuffer)) * fSinBuffer * fExpBuffer;
       fHms[i][j] += fSinBuffer * fCosBuffer * (fHmsBufferD - fHmsBufferC) * fExpBuffer;
 
@@ -292,7 +292,7 @@ void PMNS_Sterile::RotateH(int i,int j){
       fHms[j][j] *= fCosBuffer * fCosBuffer;
       fHms[j][j] += fSinBuffer * fHmsBufferD * fSinBuffer;
     }
-  
+
   }
   // Without Delta (No middle rows or columns: j = i+1)
   else{
@@ -320,7 +320,7 @@ void PMNS_Sterile::RotateH(int i,int j){
       fHms[j][j] *= fCosBuffer * fCosBuffer;
       fHms[j][j] += fSinBuffer * fHmsBufferC * fSinBuffer;
       fHms[j][j] -= 2 * fSinBuffer * fCosBuffer * real(fHms[i][j]);
-  
+
       fHms[i][j] -= 2 * fSinBuffer * real(fHms[i][j]) * fSinBuffer;
       fHms[i][j] += fSinBuffer * fCosBuffer * (fHmsBufferD - fHmsBufferC);
 
@@ -333,7 +333,7 @@ void PMNS_Sterile::RotateH(int i,int j){
       fHms[i][i] = fSinBuffer * fHms[j][j] * fSinBuffer;
 
       fHms[j][j] *= fCosBuffer * fCosBuffer;
-  
+
     }
   }
 
@@ -342,7 +342,7 @@ void PMNS_Sterile::RotateH(int i,int j){
 //......................................................................
 ///
 /// Build Hms = H*2E, where H is the Hamiltonian in vacuum on flavour basis
-/// and E is the neutrino energy in eV. Hms is effectively the matrix of 
+/// and E is the neutrino energy in eV. Hms is effectively the matrix of
 /// masses squared.
 ///
 /// This is a hermitian matrix, so only the
@@ -352,7 +352,7 @@ void PMNS_Sterile::RotateH(int i,int j){
 /// are simply zero. This has a big impact in the computation time.
 /// This construction is described in DocDB-XXXX (to be posted)
 ///
-void PMNS_Sterile::BuildHms() 
+void PMNS_Sterile::BuildHms()
 {
 
   // Check if anything changed
@@ -370,7 +370,7 @@ void PMNS_Sterile::BuildHms()
       this->RotateH(i,j);
     }
   }
-  
+
   // Tag as built
   fBuiltHms = true;
 
@@ -409,28 +409,28 @@ void PMNS_Sterile::SolveHam(double E, double Ne, int anti)
       else       *gsl_matrix_complex_ptr(d->H_GSL, j, i) = gsl_complex_rect(real(buf), imag(buf));
     }
     if(i>2){
-      // Subtract NC coherent forward scattering from sterile neutrinos. See arXiv:hep-ph/0606054v3, eq. 3.15, for example. 
+      // Subtract NC coherent forward scattering from sterile neutrinos. See arXiv:hep-ph/0606054v3, eq. 3.15, for example.
       if(anti>0) *gsl_matrix_complex_ptr(d->H_GSL, i, i) = gsl_complex_add_real(gsl_matrix_complex_get(d->H_GSL,i,i) ,  kr2GNe/2);
       else       *gsl_matrix_complex_ptr(d->H_GSL, i, i) = gsl_complex_add_real(gsl_matrix_complex_get(d->H_GSL,i,i) , -kr2GNe/2);;
     }
   }
-  // Add nue CC coherent forward scattering from sterile neutrinos. 
+  // Add nue CC coherent forward scattering from sterile neutrinos.
   if(anti>0) *gsl_matrix_complex_ptr(d->H_GSL, 0, 0) = gsl_complex_add_real(gsl_matrix_complex_get(d->H_GSL,0,0) ,  kr2GNe);
   else       *gsl_matrix_complex_ptr(d->H_GSL, 0, 0) = gsl_complex_add_real(gsl_matrix_complex_get(d->H_GSL,0,0) , -kr2GNe);
 
   // Solve Hamiltonian for eigensystem
   gsl_eigen_hermv(d->H_GSL, d->fEval, d->fEvec, d->W_GSL);
-  
+
 }
 
 ///.....................................................................
 ///
 /// Propagate the current neutrino state over a distance L in km
 /// with an energy E in GeV through constant matter of density
-/// Ne in mole/cm^3. 
+/// Ne in mole/cm^3.
 /// @param anti - +1 = neutrino case, -1 = anti-neutrino case
 ///
-void PMNS_Sterile::PropMatter(double L, double E, double Ne, int anti) 
+void PMNS_Sterile::PropMatter(double L, double E, double Ne, int anti)
 {
 
   // Solve Hamiltonian
@@ -485,7 +485,7 @@ void PMNS_Sterile::PropMatter(const std::list<double>& L,
 /// Reset the neutrino state back to a pure flavour where
 /// it starts
 ///
-void PMNS_Sterile::ResetToFlavour(int flv) 
+void PMNS_Sterile::ResetToFlavour(int flv)
 {
   int i;
   for (i=0; i<fNumNus; ++i){
