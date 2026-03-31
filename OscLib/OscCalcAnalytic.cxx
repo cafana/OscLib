@@ -371,8 +371,8 @@ namespace osc::analytic
     const cmplx<VT> Aem = M.et*M.mt.conj() - M.em*M.tt;
 
     const Probs<VT> ps((Aee       *es.sume - (M.mm+M.tt) *es.sumxe + es.sumxxe).norm(),
-                       (Aem.conj()*es.sume +  M.em.conj()*es.sumxe            ).norm(),
                        (Aem       *es.sume +  M.em       *es.sumxe            ).norm(),
+                       (Aem.conj()*es.sume +  M.em.conj()*es.sumxe            ).norm(),
                        (Amm       *es.sume - (M.ee+M.tt) *es.sumxe + es.sumxxe).norm());
 
     ProbCache<KVT, VT>::emplace(E, ps);
