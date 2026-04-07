@@ -247,7 +247,7 @@ namespace osc {
         + Ue3sq * Ue2sq * sinsqD32_2);
     
     // Store the probabilities in the cache.
-    const analytic::Probs<VT> ps(Pee,Pme_CPC - Pme_CPV,Pme_CPC + Pme_CPV,Pmm);
+    const analytic::Probs<VT> ps(Pee,Pme_CPC + Pme_CPV,Pme_CPC - Pme_CPV,Pmm);
     analytic::ProbCache<KVT, VT>::emplace(E,ps);
     // Return the probability.
     return ps.P(from,to);
