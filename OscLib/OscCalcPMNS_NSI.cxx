@@ -1,3 +1,10 @@
+// n.b. Stan sets up some type traits that need to be loaded before Eigen is.
+// Since Eigen gets dragged in via IOscCalc.h we have to get Stan set up before
+// that is included.
+#ifdef OSCLIB_STAN
+#include "OscLib/Stan.h"
+#endif
+
 #include "OscLib/OscCalcPMNS_NSI.h"
 
 #include "OscLib/Constants.h"
@@ -7,35 +14,46 @@
 #include <iostream>
 #include <iomanip>
 
+namespace
+{
+  template <typename U> double ValAsDouble(const U& x) { return x; }
+
+#ifdef OSCLIB_STAN
+  template <> double ValAsDouble<stan::math::var>(const stan::math::var& x) { return x.val(); }
+#endif
+}
+
 namespace osc
 {
-  OscCalcPMNS_NSI::OscCalcPMNS_NSI()
+  template <typename T>
+  _OscCalcPMNS_NSI<T>::_OscCalcPMNS_NSI()
     : fMixDirty(true), fDmDirty(true), fPropDirty(true), fEpsDirty(true), fPrevAnti(0)
   {
   }
   
   //---------------------------------------------------------------------------
   // 2016-10-24 - Getting all oscillation parameters (Standard and NSI)
-  std::vector<double> OscCalcPMNS_NSI::GetState() const
+  template <typename T>
+  std::vector<double> _OscCalcPMNS_NSI<T>::GetState() const
   {
     std::vector<double> state;
-    state.push_back(fL);
-    state.push_back(fRho);
-    state.push_back(fDmsq21);
-    state.push_back(fDmsq32);
-    state.push_back(fTh12);
-    state.push_back(fTh13);
-    state.push_back(fTh23);
-    state.push_back(fdCP);
-    state.push_back(fEps_ee);
-    state.push_back(fEps_emu);
-    state.push_back(fEps_etau);
-    state.push_back(fEps_mumu);
-    state.push_back(fEps_mutau);
-    state.push_back(fEps_tautau);
-    state.push_back(fDelta_emu);
-    state.push_back(fDelta_etau);
-    state.push_back(fDelta_mutau);
+    state.push_back(this->fL);
+    state.push_back(this->fRho);
+    state.push_back(ValAsDouble(this->fDmsq21));
+    state.push_back(ValAsDouble(this->fDmsq32));
+    state.push_back(ValAsDouble(this->fTh12));
+    state.push_back(ValAsDouble(this->fTh13));
+    state.push_back(ValAsDouble(this->fTh23));
+    state.push_back(ValAsDouble(this->fdCP));
+    state.push_back(ValAsDouble(fEps_ee));
+    state.push_back(ValAsDouble(fEps_emu));
+    state.push_back(ValAsDouble(fEps_etau));
+    state.push_back(ValAsDouble(fEps_mumu));
+    state.push_back(ValAsDouble(fEps_mutau));
+    state.push_back(ValAsDouble(fEps_tautau));
+    state.push_back(ValAsDouble(fDelta_emu));
+    state.push_back(ValAsDouble(fDelta_etau));
+    state.push_back(ValAsDouble(fDelta_mutau));
     
     return state;
   }
@@ -43,7 +61,8 @@ namespace osc
   
   //---------------------------------------------------------------------------
   // 2016-10-24 - Setting all oscillation parameters (Standard and NSI) - or the State
-  void OscCalcPMNS_NSI::SetState(std::vector<double> state)
+  template <typename T>
+  void _OscCalcPMNS_NSI<T>::SetState(std::vector<double> state)
   {
     int iState(0);
     fMixDirty = true ;
@@ -67,11 +86,13 @@ namespace osc
   }
   //---------------------------------------------------------------------------
 
-  OscCalcPMNS_NSI::~OscCalcPMNS_NSI()
+  template <typename T>
+  _OscCalcPMNS_NSI<T>::~_OscCalcPMNS_NSI()
   {
   }
 
-  double OscCalcPMNS_NSI::P(int flavBefore, int flavAfter, double E)
+  template <typename T>
+  T _OscCalcPMNS_NSI<T>::P(int flavBefore, int flavAfter, double E)
   {
     const int anti = (flavBefore > 0) ? +1 : -1;
     assert(flavAfter/anti > 0);
@@ -87,11 +108,11 @@ namespace osc
     assert(i >= 0 && j >= 0);
 
     if(fMixDirty){
-      fPMNS_NSI.SetMix(fTh12, fTh23, fTh13, fdCP);
+      fPMNS_NSI.SetMix(this->fTh12, this->fTh23, this->fTh13, this->fdCP);
       fMixDirty = false;
     }
     if(fDmDirty){
-      fPMNS_NSI.SetDeltaMsqrs(fDmsq21, fDmsq32);
+      fPMNS_NSI.SetDeltaMsqrs(this->fDmsq21, this->fDmsq32);
       fDmDirty = false;
     }
     if(fEpsDirty){
@@ -103,15 +124,16 @@ namespace osc
 
 
     fPMNS_NSI.ResetToFlavour(i);
-    const double Ne = fRho * constants::kZPerA;
-    fPMNS_NSI.PropMatter(fL, E, Ne, anti);
+    const double Ne = this->fRho * constants::kZPerA;
+    fPMNS_NSI.PropMatter(this->fL, E, Ne, anti);
     return fPMNS_NSI.P(j);
   }
 
   //---------------------------------------------------------------------------
-  IOscCalcAdjustable* OscCalcPMNS_NSI::Copy() const
+  template <typename T>
+  _IOscCalcAdjustable<T>* _OscCalcPMNS_NSI<T>::Copy() const
   {
-    return new OscCalcPMNS_NSI(*this);
+    return new _OscCalcPMNS_NSI<T>(*this);
   }
   
   //---------------------------------------------------------------------------
@@ -132,4 +154,10 @@ namespace osc
     return nullptr; // If the cast failed, calc_nsi should be nullptr anyway (?)                    
   }
   
+  template class _OscCalcPMNS_NSI<double>;
+
+#ifdef OSCLIB_STAN
+  template class _OscCalcPMNS_NSI<stan::math::var>;
+#endif
+
 } // namespace
