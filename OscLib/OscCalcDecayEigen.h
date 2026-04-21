@@ -1,9 +1,9 @@
 #ifndef OSC_OSCCALCDECAYEIGEN_H
 #define OSC_OSCCALCDECAYEIGEN_H
 
-///////////////////////////////////////////////////////////////////////////////	                                                                                  
+///////////////////////////////////////////////////////////////////////////////                                                                                  
 /// \class OscLib::OscCalcDecayEigen    
-//brief Implementation of neutrino decay in a three-neutrino framework.                                                                                  
+/// brief Implementation of neutrino decay in a three-neutrino framework.                                                                                  
 ///                                                                                                                                                               
 /// This class expands the PMNS_Fast class including the decay of the                                                                                               
 /// second and third mass state of the neutrino through a decay constant                                                                                             
@@ -19,21 +19,22 @@
 /// \author Victor Carretero - vcarretero\@km3net.de   
 /// \author Joao Coelho - jcoelho\@apc.in2p3.fr                                                                                                                       
 ///                                                                                                                                                                   
-/// Adapt the Joao's PMNS_Decay to Novasoft, using OscCalcsterileEigen.h                                                                                               
+/// Adapt the Joao's PMNS_Decay to Novasoft using OscCalcSterileEigen.h                                                                                               
 /// as a reference                                                                                                                                                   
 /// \author Andrea Barros - acbarros@mail.uniatlantico.edu.co                                                                                                        
 /// \author Mario Acero - marioacero@mail.uniatlantico.edu.co                                                                                                        
 ///                                                                                                                                                                  
 ///////////////////////////////////////////////////////////////////////////////   
-#include "TDirectory.h"
-#include <vector>
-#include <complex>
-#include <list>
-#include <Eigen/Core>
-#include <Eigen/Dense>
+
 #include "OscLib/IOscCalcDecay.h"
 #include "OscLib/OscCalcDecayEigen.h"
 #include "OscLib/OscCalcPMNSOptEigen.h"
+#include "TDirectory.h"
+#include <Eigen/Core>
+#include <Eigen/Dense>
+#include <vector>
+#include <complex>
+#include <list>
 
 namespace osc
 {
@@ -52,9 +53,9 @@ namespace osc
     virtual void SetAngle(int i, int j, double th) override;
     virtual void SetDelta(int i, int j, double delta) override;
     virtual void SetDm(int i, double dm) override;
-
     virtual void   SetAlpha3(double alpha3) override;
     virtual void   SetAlpha2(double alpha2) override;
+
     virtual double GetAlpha3() const override;
     virtual double GetAlpha2() const override;
     
@@ -76,7 +77,7 @@ namespace osc
     /// Set standard 3-flavor parameters                                            
     virtual void SetStdPars();
     virtual void SetIsNuBar(bool IsNuBar);
-
+    
   protected:
     
     // A shorthand...                                                               
@@ -103,6 +104,7 @@ namespace osc
     /// Solve the full Hamiltonian for eigenvectors and eigenvalues                 
     /// @param E - neutrino energy in GeV                                           
     /// @param Ne - electron number density of matter in mole/cm^3                  
+    /// @param anti - +1 = neutrino case, -1 = anti-neutrino case                   
     
     //virtual void SolveHam(double E, double Ne, int anti);
     virtual void SolveHam(double E, double Ne);
@@ -119,12 +121,13 @@ namespace osc
     /// @param flv - final flavor (0,1,2) = (nue,numu,nutau)                        
     virtual void ResetToFlavour(int flv=1);
     
+    //int anti;
     int fNumNus;
-    double  fCachedNe;      /// Cached electron density                            
-    double  fCachedE;       /// Cached neutrino energy                             
-    bool    fBuiltHms;      /// Tag to avoid rebuilding Hms                        
+    double  fCachedNe;      ///Cached electron density                            
+    double  fCachedE;       ///Cached neutrino energy                             
+    bool    fBuiltHms;      ///Tag to avoid rebuilding Hms                        
     bool fIsNuBar;          /// anti-neutrino flag                                           
-    bool fGotES;            /// Tag to avoid recalculating eigensystem
+    bool fGotES;            ///Tag to avoid recalculating eigensystem
 
     Eigen::Vector3cd fBuffer; ///Buffer for neutrino state tranformations         
     Eigen::Vector3d fEval;    ///Eigenvalues of the Hamiltonian                      
@@ -142,9 +145,3 @@ namespace osc
 } // namespace                                                                      
 
 #endif
-
-
-
-                                 
-                                                                            
- 

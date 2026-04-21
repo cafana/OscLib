@@ -46,6 +46,7 @@ namespace osc
     abort();
   }
   //---------------------------------------------------------------------------                                                                                        
+
   void IOscCalcDecay::PrintImpl(int nNus, const std::string& prefix) const
   {
     for(int i = 2; i <= nNus; ++i){
@@ -54,13 +55,13 @@ namespace osc
     
     for(int i = 1; i < nNus; ++i){
       for(int j = i+1; j <= nNus; ++j){
-        std::cout << prefix << "theta" << i << j << " = " << GetAngle(i, j) << "\n";
+	std::cout << prefix << "theta" << i << j << " = " << GetAngle(i, j) << "\n";
       }
     }
     
     for(int i = 1; i < nNus; ++i){
       for(int j = i+1; j <= nNus; ++j){
-        std::cout << prefix << "delta" << i << j << " = " << GetDelta(i, j) << "\n";
+	std::cout << prefix << "delta" << i << j << " = " << GetDelta(i, j) << "\n";
       }
     }
     
@@ -68,7 +69,6 @@ namespace osc
               << prefix << "rho = " << GetRho() << " g/cm^3" << std::endl;
   }
   
-  //--------------------------------------------------------------------------- 
   //---------------------------------------------------------------------------                                                                                        
   double OscCalcDecayTrivial::P(int, int, double)
   {
@@ -106,5 +106,3 @@ namespace osc
   }
   
 }
-
-

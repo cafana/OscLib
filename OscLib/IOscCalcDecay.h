@@ -3,19 +3,20 @@
 
 //////////////////////////////////////////////////////////////////////////                                                                                            
 //                                                                      //                                                                                             
-// \file IOscCalcDecay.h                                              //                                                                                             
+// \file IOscCalcDecay.h                                                //                                                                                             
 //                                                                      //                                                                                             
-// Base class for Neutrino Decay + oscillation calculator               //                                                                                             
+// Base class for Neutirno Decay + oscillation calculator               //                                                                                             
 // <acbarros@mail.uniatlantico.edu.co>                                  //                                                                                             
-// <marioacero@mail.uniatlantico.edu.co>                                  //                                                                                             
+// <marioacero@mail.uniatlantico.edu.co>                                //                                                                                             
 //                                                                      //                                                                                             
 //////////////////////////////////////////////////////////////////////////                                                                                             
+
 #include "OscLib/IOscCalc.h"
 
 namespace osc
 {
-  /// \brief base class for Decay oscillation calculators                                                                                                            
-  /// In the context of a Decay oscillation calculator, a PDG code                                                                                                  
+  /// \brief base class for decay oscillation calculators                                                                                                            
+  /// In the context of a sterile oscillation calculator, a PDG code                                                                                                  
   /// of zero corresponds to the survival probability for an active                                                                                                    
   /// neutrino, ie. the sum of the oscillation probabilities for the                                                                                                   
   /// three active neutrino states.                                                                                                                                    
@@ -105,4 +106,3 @@ namespace osc
   
 } // namespace                                                                                                                                                         
 #endif
-
