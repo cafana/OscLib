@@ -1,9 +1,9 @@
 #ifndef OSC_OSCCALCDECAYEIGEN_H
 #define OSC_OSCCALCDECAYEIGEN_H
 
-///////////////////////////////////////////////////////////////////////////////	                                                                                  
+///////////////////////////////////////////////////////////////////////////////                                                                                  
 /// \class OscLib::OscCalcDecayEigen    
-//brief Implementation of neutrino decay in a three-neutrino framework.                                                                                  
+/// brief Implementation of neutrino decay in a three-neutrino framework.                                                                                  
 ///                                                                                                                                                               
 /// This class expands the PMNS_Fast class including the decay of the                                                                                               
 /// second and third mass state of the neutrino through a decay constant                                                                                             
@@ -26,10 +26,6 @@
 ///                                                                                                                                                                  
 ///////////////////////////////////////////////////////////////////////////////   
 
-
-//#include "/exp/nova/app/users/acbarros/Nud_S240822/OscLib/OscLib/IOscCalcDecay.h"
-//#include "/exp/nova/app/users/acbarros/Nud_S240822/OscLib/OscLib/OscCalcDecayEigen.h"
-//#include "/exp/nova/app/users/acbarros/Nud_S240822/OscLib/OscLib/OscCalcPMNSOptEigen.h"
 #include "OscLib/IOscCalcDecay.h"
 #include "OscLib/OscCalcDecayEigen.h"
 #include "OscLib/OscCalcPMNSOptEigen.h"
@@ -39,7 +35,6 @@
 #include <vector>
 #include <complex>
 #include <list>
-
 
 namespace osc
 {
@@ -60,8 +55,7 @@ namespace osc
     virtual void SetDm(int i, double dm) override;
     virtual void   SetAlpha3(double alpha3) override;
     virtual void   SetAlpha2(double alpha2) override;
-    //virtual double GetAlpha3();
-    //virtual double GetAlpha2();
+
     virtual double GetAlpha3() const override;
     virtual double GetAlpha2() const override;
     
@@ -83,8 +77,6 @@ namespace osc
     /// Set standard 3-flavor parameters                                            
     virtual void SetStdPars();
     virtual void SetIsNuBar(bool IsNuBar);
-    //virtual void SetIsNuBar(int anti);
-    //virtual void GetIsNuBar();
     
   protected:
     
@@ -102,9 +94,6 @@ namespace osc
     ///Rotate the Hamiltonian by theta_ij and delta_ij                              
     virtual void RotateH(int i, int j, Eigen::Matrix3cd& Ham);
     
-    /// Rotate the Hamiltonian by theta_ij and delta_ij                             
-    //virtual void RotateH(int i,int j);                                            
-    
     /// Wrapper to solve non-hermitian matrix eigenvalues.                          
     void complexsolver(const Eigen::Matrix3cd& A, Eigen::Vector3d& w);
     
@@ -121,7 +110,6 @@ namespace osc
     virtual void SolveHam(double E, double Ne);
     
     /// Propagation with Decay                                                      
-    //virtual void PropagatePath(double L, double E, double Ne, int anti=1);        
     virtual void PropagatePath(double L, double E, double Ne);        
         
     /// Return the probability of final state in flavour flv                        
@@ -135,32 +123,25 @@ namespace osc
     
     //int anti;
     int fNumNus;
-    double  fCachedNe;      ///< Cached electron density                            
-    double  fCachedE;       ///< Cached neutrino energy                             
-    //int     fCachedAnti;    ///< Cached nu/nubar selector                           
-    bool    fBuiltHms;      ///< Tag to avoid rebuilding Hms                        
-    bool fIsNuBar; /// anti-neutrino flag                                           
-    bool fGotES;
-    double kr2GNe;
-    Eigen::Vector3cd fBuffer; ///< Buffer for neutrino state tranformations         
-    Eigen::Vector3d fEval; ///< Eigenvalues of the Hamiltonian                      
-    Eigen::Matrix3cd fHd;  ///< Decay hamiltonian                                   
-    Eigen::Vector3d fDm;    ///< m^2_i - m^2_1 in vacuum                            
-    Eigen::Matrix3d fTheta; ///< theta[i][j] mixing angle                           
-    Eigen::Matrix3d fDelta; ///< delta[i][j] CP violating phase                     
-    Eigen::Vector3cd fNuState; ///< The neutrino current state                      
-    Eigen::Matrix3cd fHms;     ///< matrix H*2E in eV^2                             
-    Eigen::Vector3d fAlpha; ///< alpha parameters                                   
-    Eigen::Matrix3cd fHam; ///< Final hamiltonian                                   
+    double  fCachedNe;      ///Cached electron density                            
+    double  fCachedE;       ///Cached neutrino energy                             
+    bool    fBuiltHms;      ///Tag to avoid rebuilding Hms                        
+    bool fIsNuBar;          /// anti-neutrino flag                                           
+    bool fGotES;            ///Tag to avoid recalculating eigensystem
+
+    Eigen::Vector3cd fBuffer; ///Buffer for neutrino state tranformations         
+    Eigen::Vector3d fEval;    ///Eigenvalues of the Hamiltonian                      
+    Eigen::Matrix3cd fHd;     ///Decay hamiltonian                                   
+    Eigen::Vector3d fDm;      ///m^2_i - m^2_1 in vacuum                            
+    Eigen::Matrix3d fTheta;   ///theta[i][j] mixing angle                           
+    Eigen::Matrix3d fDelta;   ///delta[i][j] CP violating phase                     
+    Eigen::Vector3cd fNuState; ///The neutrino current state                      
+    Eigen::Matrix3cd fHms;    ///matrix H*2E in eV^2                             
+    Eigen::Vector3d fAlpha;   ///alpha parameters                                   
+    Eigen::Matrix3cd fHam;    ///Final hamiltonian                                   
     
   };
   
 } // namespace                                                                      
 
 #endif
-
-
-
-                                 
-                                                                            
- 

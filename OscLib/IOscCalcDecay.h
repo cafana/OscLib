@@ -3,19 +3,19 @@
 
 //////////////////////////////////////////////////////////////////////////                                                                                            
 //                                                                      //                                                                                             
-// \file IOscCalcDecay.h                                              //                                                                                             
+// \file IOscCalcDecay.h                                                //                                                                                             
 //                                                                      //                                                                                             
 // Base class for Neutirno Decay + oscillation calculator               //                                                                                             
 // <acbarros@mail.uniatlantico.edu.co>                                  //                                                                                             
+// <marioacero@mail.uniatlantico.edu.co>                                //                                                                                             
 //                                                                      //                                                                                             
 //////////////////////////////////////////////////////////////////////////                                                                                             
 
-//#include "/exp/nova/app/users/acbarros/Nud_S240822/OscLib/OscLib/IOscCalc.h"
 #include "OscLib/IOscCalc.h"
 
 namespace osc
 {
-  /// \brief base class for sterile oscillation calculators                                                                                                            
+  /// \brief base class for decay oscillation calculators                                                                                                            
   /// In the context of a sterile oscillation calculator, a PDG code                                                                                                  
   /// of zero corresponds to the survival probability for an active                                                                                                    
   /// neutrino, ie. the sum of the oscillation probabilities for the                                                                                                   
@@ -54,7 +54,7 @@ namespace osc
     virtual double GetdCP   () const override { return GetDelta(1, 3); }
     
     // Delete the default Print() implementation from IOscCalcAdjustable,                                                                                              
-    // because it won't print any of the extra sterile parameters.                                                                                                     
+    // because it won't print any of the extra decay parameters.                                                                                                     
     virtual void Print(const std::string& prefix = "") const override = 0;
     
   protected:
@@ -106,4 +106,3 @@ namespace osc
   
 } // namespace                                                                                                                                                         
 #endif
-

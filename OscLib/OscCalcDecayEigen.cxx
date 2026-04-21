@@ -4,9 +4,9 @@
 /// three-neutrino framework with decay.                                                                                                                               
 ///                                                                                                                                                                    
 /// \author Andrea Barros - acbarros@mail.uniatlantico.edu.co                                                                                                                   
-/// \author Mario Acero -                                                                                                           
+/// \author Mario Acero - marioacero@mail.uniatlantico.edu.co                                                                                                          
 ///////////////////////////////////////////////////////////////////////////////                                                                                      
-
+#include "OscLib/Constants.h"
 #include "OscLib/OscCalcDecayEigen.h"
 #include "OscLib/OscCalcPMNSOptEigen.h"
 
@@ -38,7 +38,6 @@ namespace osc
     this->ResetToFlavour(1);
     fCachedNe = 0.0;
     fCachedE =  1.0;
-    //    fCachedAnti = 1;
   }
   
   //---------------------------------------------------------------------------                                                                                        
@@ -49,7 +48,6 @@ namespace osc
     fL          = calc.fL;
     fCachedNe   = calc.fCachedNe;
     fCachedE    = calc.fCachedE;
-    //   fCachedAnti = calc.fCachedAnti;
     fDm         = calc.fDm;
     fTheta      = calc.fTheta;
     fDelta      = calc.fDelta;
@@ -136,25 +134,15 @@ namespace osc
   /// Reimplement SetIsNuBar to also rebuild hamiltonian.                                                                                                              
   ///                                                                                                                                                                  
   /// @param isNuBar - true if antineutrinos                                                                                                                           
-  ///
-  /*void OscCalcDecayEigen::SetIsNuBar(int anti)
-  {
-    // Check if value is actually changing                                                                                                                                              
-    fGotES *= (fCachedAnti == anti);
-    fBuiltHms *= (fCachedAnti == anti);
-    fCachedAnti = anti;
-    }*/
-                                                                                                                                                                   
+
   void OscCalcDecayEigen::SetIsNuBar(bool isNuBar)
   {
-    // Check if value is actually changing                                                                                                                             
-    fGotES *= (fIsNuBar == isNuBar);
-    fBuiltHms *= (fIsNuBar == isNuBar);
+    fGotES = fGotES && (fIsNuBar == isNuBar);
+    fBuiltHms = fBuiltHms && (fIsNuBar == isNuBar);
     fIsNuBar = isNuBar;
-    }
-  //.............................................................................
+ }
 
-  ////////////////////////////////////////////////////////////////////////////                                                                                                                                                                   
+  ////////////////////////////////////////////////////////////////////////////                                                                                          
   void OscCalcDecayEigen::SetStdPars()
   {
     this->InitializeVectors();
@@ -169,7 +157,7 @@ namespace osc
       this->SetRho(2.74);
     }
     else if(fNumNus==2){
-      this->SetAngle(1,2,0.7);
+      this->SetAngle(1,2,0.587252);
       this->SetDm(2,2.4e-3);
     }
     
@@ -181,23 +169,22 @@ namespace osc
   {
     
     if (i > j) {
+      cout << "Fatal Error Occurred" << endl;
+      cout << "Aborting" << endl;
       cout << "First argument should be smaller than second argument" << endl;
-      cout << "Setting reverse order (Theta" << j << i << "). " << endl;
-      int temp = i;
-      i = j;
-      j = temp;
+      cout << "You must set reverse order (Theta" << j << i << "). " << endl;
+      abort();
     }
     if (i < 1 || i > fNumNus - 1 || j < 2 || j > fNumNus) {
+      cout << "Fatal Error Occurred" << endl;
       cout << "Theta" << i << j << " not valid for " << fNumNus;
-      cout << " neutrinos. Doing nothing." << endl;
-      return;
+      cout << " neutrinos. Abortig." << endl;
+      abort();
     }
     // Check if value is actually changing                                                                                                                             
     fBuiltHms *= (fTheta(i - 1,j - 1) == th);
     
     fTheta(i-1,j-1) = th;
-
-    //fBuiltHms = false;                                                                                                                                               
   }
 
   //---------------------------------------------------------------------------                                                                                        
@@ -205,27 +192,26 @@ namespace osc
   {
 
     if(i>j){
+      cout << "Fatal Error Occurred" << endl;
+      cout << "Aborting" << endl;
       cout << "First argument should be smaller than second argument" << endl;
-      cout << "Setting reverse order (Delta" << j << i << "). " << endl;
-      int temp = i;
-      i = j;
-      j = temp;
+      cout << "You must set reverse order (Delta" << j << i << "). " << endl;
+      abort();
     }
     if(i<1 || i>fNumNus-1 || j<2 || j>fNumNus){
+      cout << "Fatal Error Occurred" << endl;
       cout << "Delta" << i << j << " not valid for " << fNumNus;
-      cout << " neutrinos. Doing nothing." << endl;
-      return;
+      cout << " neutrinos. Aborting." << endl;
+      abort();
     }
     if(i+1==j){
-      cout << "Rotation " << i << j << " is real. Doing nothing." << endl;
-      return;
+      cout << "Rotation " << i << j << " is real. Aborting." << endl;
+      abort();
     }
     // Check if value is actually changing                                                                                                                             
     fBuiltHms *= (fDelta(i - 1,j - 1) == delta);
     
     fDelta(i-1,j-1) = delta;
-    
-    //fBuiltHms = false;                                                                                                                                               
   }
   
   //--------------------------------------------------------------------------- 
@@ -241,29 +227,22 @@ namespace osc
     fBuiltHms *= (fDm(i - 1) == dm);
 
     fDm(i-1) = dm;
-    
-    //fBuiltHms = false;                                                                                                                                               
   }
   
-  //---------------------------------------------------------------------------                                                                                        
-
   //.............................................................................                                                                                      
   ///                                                                                                                                                                  
   /// Get alpha3 parameter                                                                                                                                             
   ///                                                                                                                                                                 
   /// @return alpha3                                                                                                                                                  
-  ///                                                                                                                                                                  
-  //double OscCalcDecayEigen::GetAlpha3() { return fAlpha(2); }
+
   double OscCalcDecayEigen::GetAlpha3() const { return fAlpha(2); }
-  ///                                                                                                                                                                  
+
   /// Get alpha2 parameter                                                                                                                                             
   ///                                                                                                                                                                  
   /// @return alpha2                                                                                                                                                   
   ///                                                                                                                                                                  
-
-  //double OscCalcDecayEigen::GetAlpha2() { return fAlpha(1); }
   double OscCalcDecayEigen::GetAlpha2() const { return fAlpha(1); } 
- //                                                                                                                                                                   
+  //                                                                                                                                                                   
   /////////////////////////////////////////////////////////////////////                                                                                                
   //                                                                                                                                                                   
   void OscCalcDecayEigen::RotateH(int i, int j, Eigen::Matrix3cd& Ham)
@@ -273,16 +252,12 @@ namespace osc
 
     double fSinBuffer = sin(fTheta(i,j));
     double fCosBuffer = cos(fTheta(i,j));
-    //_sincos(fTheta(i,j), fSinBuffer, fCosBuffer);
 
     double   fHmsBufferD;
     complex  fHmsBufferC;
     
     // With Delta                                                                                                                                                      
     if (i + 1 < j) {
-      //double fSinDelta(0), fCosDelta(0);
-      //_sincos(fDelta(i,j),fSinDelta, fCosDelta);
-      //complex fExpBuffer = complex(fCosDelta, -fSinDelta);
       complex fExpBuffer = complex(cos(fDelta(i,j)), -sin(fDelta(i,j)));
 
       // General case                                                                                                                                                  
@@ -293,7 +268,7 @@ namespace osc
 
           Ham(k,i) *= fCosBuffer;
           Ham(k,i) += Ham(k,j) * fSinBuffer * conj(fExpBuffer);
-	  
+	    
           Ham(k,j) *= fCosBuffer;
           Ham(k,j) -= fHmsBufferC * fSinBuffer * fExpBuffer;
         }
@@ -301,7 +276,7 @@ namespace osc
 	// Middle row and column                                                                                                                                       
         for (int k = i + 1; k < j; k++) {
           fHmsBufferC = Ham(k,j);
-	  
+	    
           Ham(k,j) *= fCosBuffer;
           Ham(k,j) -= conj(Ham(i,k)) * fSinBuffer * fExpBuffer;
 
@@ -356,10 +331,10 @@ namespace osc
         // Top columns                                                                                                                                                 
         for (int k = 0; k < i; k++) {
           fHmsBufferC = Ham(k,i);
-	  
+	    
           Ham(k,i) *= fCosBuffer;
           Ham(k,i) += Ham(k,j) * fSinBuffer;
-	  
+	    
           Ham(k,j) *= fCosBuffer;
           Ham(k,j) -= fHmsBufferC * fSinBuffer;
         }
@@ -396,8 +371,6 @@ namespace osc
     
     // Check if anything changed                                                                                                                                       
     if(fBuiltHms) return;
-
-    //fHms.setZero(fNumNus, fNumNus);
                                                                                                                                   
     // Tag to recompute eigensystem                                                                                                                                    
     fGotES = false;
@@ -413,29 +386,13 @@ namespace osc
       // Rotate j neutrinos                                                                                                                                            
       for(int i=0; i<j; i++){
         RotateH(i,j, fHms);
-	//this->RotateH(i,j, fHms);
         RotateH(i,j, fHd);
-	//this->RotateH(i,j, fHd);
       }
     }
 
     // Taking care of antineutrinos delta-> -delta and filling the upper triangle                                                                                      
     // because final hamiltonian will be non-hermitian.    
       
-    /*const int anti = fCachedAnti;
-    //const int anti = 1;                                                                                                                                                               
-
-    for (int i = 0; i < fNumNus; i++) {
-      for (int j = i + 1; j < fNumNus; j++) {
-        if (anti < 0) {
-          fHms(i,j) = conj(fHms(i,j));
-          fHd(i,j)  = conj(fHd(i,j));
-        }
-        fHms(j,i) = conj(fHms(i,j));
-        fHd(j,i)  = conj(fHd(i,j));
-      }
-      }
-    */
     for (int i = 0; i < fNumNus; i++) {
       for (int j = i + 1; j < fNumNus; j++) {
         if (fIsNuBar) {
@@ -449,13 +406,10 @@ namespace osc
     
     const complex numi(0.0, 1.0);
     /// Construct the total Hms+Hd
-    //std::cout << "In function BuiltHms " << std::endl;
     
     for (int j = 0; j < fNumNus; j++) {
       for (int i = 0; i < fNumNus; i++) {
         fHms(i,j) = fHms(i,j) - numi * fHd(i,j);
-	// debugging 11/18/2024
-	//std::cout << "fHms(" << j << "," << i << ") = " << fHms(i,j) << std::endl;
       }
     }
     
@@ -483,32 +437,24 @@ namespace osc
   //  void OscCalcDecayEigen::SolveHam(double E, double Ne, int anti)
   void OscCalcDecayEigen::SolveHam(double E, double Ne)
   {
-    // Check if anything has changed before recalculating
-    //if(Ne!=fCachedNe || E!=fCachedE || anti!=fCachedAnti || !fBuiltHms ){
     if(Ne!=fCachedNe || E!=fCachedE || !fBuiltHms ){
       fCachedNe = Ne;
       fCachedE = E;
-      //fCachedAnti = anti;
       this->BuildHms();
     }
     else return;
-    
-    double lv = (2 * kGeV2eV * E); // 2E in eV	
-    double kr2GNe = kK2*M_SQRT2*kGf*fRho/2; // Matter potential in eV	
-    
-    // Finish building Hamiltonian in matter with dimension of eV	
+    double lv = (2 * constants::kGeVToeV * E); // 2E in eV     
+    double kr2GNe = constants::kMatterDensityToEffect*fRho/2; // Matter potential in eV    
+
+    // Finish building Hamiltonian in matter with dimension of eV
     for (int i = 0; i < fNumNus; i++) {
       for (int j = 0; j < fNumNus; j++) { fHam(i, j) = fHms(i,j) / lv; }
     }
     
     if (!fIsNuBar){
-      //if (anti > 0){
       fHam(0, 0) += kr2GNe;}
     else{
       fHam(0, 0) -= kr2GNe;}
-    
-    //std::cout << "\n in function SolveHam : kr2GNe= " << kr2GNe << std::endl;
-    //std::cout << "In function updateham = " << fHam << std::endl;
     
     // Solve Hamiltonian for eigenvalues using the Eigen library method                                                                                                                 
     complexsolver(fHam, fEval);
@@ -526,20 +472,15 @@ namespace osc
   ///                                                                                                                                                                  
   /////////////////////////////////////////////////////////////////////////////                                                                                     
 
-  // void OscCalcDecayEigen::PropagatePath(double L, double E, double Ne, int anti)
   void OscCalcDecayEigen::PropagatePath(double L, double E, double Ne)
   {                                                                                                                                                 
     // Build Hamiltonian                                                                  
     BuildHms();
     SolveHam(E, Ne);
-    //SolveHam(E, Ne, anti);
-
-    double LengthIneV = kKm2eV * L;
+    double LengthIneV = constants::kkmTom/constants::kInversemToeV * L;
 
     // Compute evolution operator exp(-I*H*L)                                                                                                                          
     Eigen::Matrix3cd H = fHam;
-    //std::cout << "In function PropagatePath: \n fHam = " << H << std::endl;
-        //std::cout << "In function PropagatePath: H = " << H << std::endl;
     H *= complex(0, -LengthIneV);                                                                                                                                   
     H = H.exp();
     
@@ -565,7 +506,6 @@ namespace osc
   double OscCalcDecayEigen::GetP(int flv) const
   {
     assert(flv >= 0 && flv < fNumNus);
-    //return norm(fNuState.coeff(flv));                                                                                                                                    
     return norm(fNuState(flv));
   } 
   //--------------------------------------------------------------------------- 
@@ -574,10 +514,6 @@ namespace osc
   double OscCalcDecayEigen::P(int flavBefore, int flavAfter, double E)
 
   {
-    //const int anti = (flavBefore > 0) ? +1 : -1;
-    //anti must be +/- 1 but flavAfter can be zero                                                                                                                     
-    //assert(flavAfter/anti >= 0);
-    
     int i = -1, j = -1;
     if(abs(flavBefore) == 12) i = 0;
     if(abs(flavBefore) == 14) i = 1;
@@ -588,26 +524,9 @@ namespace osc
     if(abs(flavAfter) == 0)  j = 3;
     assert(i >= 0 && j >= 0);
     ResetToFlavour(i);
-    //std::cout<< "\n in function P : E = " << E << std::endl;
-    //11-18-2024                                                                                                                                                     
-    //std::cout << "in function P: E = " << E  << "\n fHam = " << fHam << std::endl;
-    //PropagatePath(fL, E, fRho, anti);
     PropagatePath(fL, E, fRho);
     if (j == 3) return GetP(0) + GetP(1) + GetP(2);
     return GetP(j);
   }
   
-} // namespace                                                                                                                                                         
-///////////////////////////////////////////////////////////////////////////////                                                                                        
-
-
-
-
-
-
-
-
- 
-
-
-    
+} // namespace                                                               

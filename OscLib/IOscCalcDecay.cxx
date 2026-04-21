@@ -1,4 +1,3 @@
-//#include "/exp/nova/app/users/acbarros/Nud_S240822/OscLib/OscLib/IOscCalcDecay.h"
 #include "OscLib/IOscCalcDecay.h"
 
 #include <iostream>
@@ -9,58 +8,45 @@ namespace osc
   void IOscCalcDecay::SetDmsq21(const double&)
   {
     std::cerr << "Must use SetDm!" << std::endl;
-    assert(false);
+    abort();
   }
 
   //---------------------------------------------------------------------------                                                                                        
   void IOscCalcDecay::SetDmsq32(const double&)
   {
     std::cerr << "Must use SetDm!" << std::endl;
-    assert(false);
+    abort();
   }
   
   //---------------------------------------------------------------------------                                                                                        
   void IOscCalcDecay::SetTh12(const double&)
   {
     std::cerr << "Must use SetAngle!" << std::endl;
-    assert(false);
+    abort();
   }
   
   //---------------------------------------------------------------------------                                                                                        
   void IOscCalcDecay::SetTh13(const double&)
   {
     std::cerr << "Must use SetAngle!" << std::endl;
-    assert(false);
+    abort();
   }
   
   //---------------------------------------------------------------------------           
   void IOscCalcDecay::SetTh23(const double&)
   {
     std::cerr << "Must use SetAngle!" << std::endl;
-    assert(false);
+    abort();
   }
   
   //---------------------------------------------------------------------------                                                                                        
   void IOscCalcDecay::SetdCP(const double&)
   {
     std::cerr << "Must use SetDelta!" << std::endl;
-    assert(false);
+    abort();
   }
   //---------------------------------------------------------------------------                                                                                        
-  /*  void IOscCalcDecay::SetAlpha3(double&)
-  {
-    std::cerr << "Must use SetAlpha3!" << std::endl;
-    assert(false);
-  }
-  //---------------------------------------------------------------------------                                                                                        
-  void IOscCalcDecay::SetAlpha2(double&)
-  {
-    std::cerr << "Must use SetAlpha2!" << std::endl;
-    assert(false);
-  }
-  */
-  //---------------------------------------------------------------------------                                                                                        
-  //---------------------------------------------------------------------------                                                                                        
+
   void IOscCalcDecay::PrintImpl(int nNus, const std::string& prefix) const
   {
     for(int i = 2; i <= nNus; ++i){
@@ -69,13 +55,13 @@ namespace osc
     
     for(int i = 1; i < nNus; ++i){
       for(int j = i+1; j <= nNus; ++j){
-        std::cout << prefix << "theta" << i << j << " = " << GetAngle(i, j) << "\n";
+	std::cout << prefix << "theta" << i << j << " = " << GetAngle(i, j) << "\n";
       }
     }
     
     for(int i = 1; i < nNus; ++i){
       for(int j = i+1; j <= nNus; ++j){
-        std::cout << prefix << "delta" << i << j << " = " << GetDelta(i, j) << "\n";
+	std::cout << prefix << "delta" << i << j << " = " << GetDelta(i, j) << "\n";
       }
     }
     
@@ -83,7 +69,6 @@ namespace osc
               << prefix << "rho = " << GetRho() << " g/cm^3" << std::endl;
   }
   
-  //--------------------------------------------------------------------------- 
   //---------------------------------------------------------------------------                                                                                        
   double OscCalcDecayTrivial::P(int, int, double)
   {
@@ -108,7 +93,7 @@ namespace osc
     if(calc_Decay) return calc_Decay;
     if (!quiet)
       std::cout << "Input calculator was not of type IOscCalcDecay." << std::endl;
-    return nullptr; // If the cast failed, calc_sterile should be nullptr anyway
+    return nullptr; // If the cast failed, calc_decay should be nullptr anyway
   }
 
   IOscCalcDecay* DowncastToDecay(IOscCalc* calc, bool quiet)
@@ -117,9 +102,7 @@ namespace osc
     if (calc_Decay) return calc_Decay;
     if (!quiet)
       std::cout << "Input calculator was not of type OscCalcDecay." << std::endl;
-    return nullptr; // If the cast failed, calc_sterile should be nullptr anyway                                                                                      
+    return nullptr; // If the cast failed, calc_decay should be nullptr anyway                                                                                      
   }
   
 }
-
-
