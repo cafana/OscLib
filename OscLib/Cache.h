@@ -36,6 +36,10 @@ namespace std
 namespace osc {
 namespace analytic {
   
+  /// Structure for holding together oscillation probabilities for the purpose of caching them.
+  /// This structure assumes unitarity for the 3F sector.
+  /// This structure is capable of holding probabilities of oscillation to sterile states.
+  /// Throughout this structure, "Pme" means "probability of a muon neutrino oscillating to an electron neutrino."  
   template<class T> class Probs
   {
   public:
