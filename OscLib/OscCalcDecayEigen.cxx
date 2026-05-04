@@ -1,10 +1,10 @@
 //////////////////////////////////////////////////////////////////////////////                                                                                         
 ///                                                                                                                                                                    
 /// Implementation of oscillations of neutrinos in matter in a                                                                                                         
-/// three-neutrino framework with decay.                                                                                                                               
+/// three-neutrino framework with neutrino decay.                                                                                                                               
 ///                                                                                                                                                                    
 /// \author Andrea Barros - acbarros@mail.uniatlantico.edu.co                                                                                                                   
-/// \author Mario Acero - marioacero@mail.uniatlantico.edu.co                                                                                                          
+/// \author Mario A. Acero - marioacero@mail.uniatlantico.edu.co                                                                                                          
 ///////////////////////////////////////////////////////////////////////////////                                                                                      
 #include "OscLib/Constants.h"
 #include "OscLib/OscCalcDecayEigen.h"
