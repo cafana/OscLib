@@ -6,6 +6,7 @@
 #endif
 
 #include "OscLib/OscCalcPMNS_NSI.h"
+#include "OscLib/IOscCalc.txx"
 
 #include "OscLib/Constants.h"
 
@@ -13,15 +14,6 @@
 #include <cstdlib>
 #include <iostream>
 #include <iomanip>
-
-namespace
-{
-  template <typename U> double ValAsDouble(const U& x) { return x; }
-
-#ifdef OSCLIB_STAN
-  template <> double ValAsDouble<stan::math::var>(const stan::math::var& x) { return x.val(); }
-#endif
-}
 
 namespace osc
 {
@@ -39,21 +31,21 @@ namespace osc
     std::vector<double> state;
     state.push_back(this->fL);
     state.push_back(this->fRho);
-    state.push_back(ValAsDouble(this->fDmsq21));
-    state.push_back(ValAsDouble(this->fDmsq32));
-    state.push_back(ValAsDouble(this->fTh12));
-    state.push_back(ValAsDouble(this->fTh13));
-    state.push_back(ValAsDouble(this->fTh23));
-    state.push_back(ValAsDouble(this->fdCP));
-    state.push_back(ValAsDouble(fEps_ee));
-    state.push_back(ValAsDouble(fEps_emu));
-    state.push_back(ValAsDouble(fEps_etau));
-    state.push_back(ValAsDouble(fEps_mumu));
-    state.push_back(ValAsDouble(fEps_mutau));
-    state.push_back(ValAsDouble(fEps_tautau));
-    state.push_back(ValAsDouble(fDelta_emu));
-    state.push_back(ValAsDouble(fDelta_etau));
-    state.push_back(ValAsDouble(fDelta_mutau));
+    state.push_back(GetValAs<double>(this->fDmsq21));
+    state.push_back(GetValAs<double>(this->fDmsq32));
+    state.push_back(GetValAs<double>(this->fTh12));
+    state.push_back(GetValAs<double>(this->fTh13));
+    state.push_back(GetValAs<double>(this->fTh23));
+    state.push_back(GetValAs<double>(this->fdCP));
+    state.push_back(GetValAs<double>(fEps_ee));
+    state.push_back(GetValAs<double>(fEps_emu));
+    state.push_back(GetValAs<double>(fEps_etau));
+    state.push_back(GetValAs<double>(fEps_mumu));
+    state.push_back(GetValAs<double>(fEps_mutau));
+    state.push_back(GetValAs<double>(fEps_tautau));
+    state.push_back(GetValAs<double>(fDelta_emu));
+    state.push_back(GetValAs<double>(fDelta_etau));
+    state.push_back(GetValAs<double>(fDelta_mutau));
     
     return state;
   }
