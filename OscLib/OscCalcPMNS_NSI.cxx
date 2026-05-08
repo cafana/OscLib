@@ -10,6 +10,8 @@
 
 #include "OscLib/Constants.h"
 
+#include "TMD5.h"
+
 #include <cassert>
 #include <cstdlib>
 #include <iostream>
@@ -21,6 +23,19 @@ namespace osc
   _OscCalcPMNS_NSI<T>::_OscCalcPMNS_NSI()
     : fMixDirty(true), fDmDirty(true), fPropDirty(true), fEpsDirty(true), fPrevAnti(0)
   {
+  }
+
+  //---------------------------------------------------------------------------
+  template <typename T>
+  TMD5* _OscCalcPMNS_NSI<T>::GetParamsHash() const
+  {
+    TMD5* ret = new TMD5;
+    const std::string txt = "PMNS_NSI";
+    ret->Update((unsigned char*)txt.c_str(), txt.size());
+    std::vector<double> state = GetState();
+    ret->Update((unsigned char*)&state[0], sizeof(double)*state.size());
+    ret->Final();
+    return ret;
   }
   
   //---------------------------------------------------------------------------

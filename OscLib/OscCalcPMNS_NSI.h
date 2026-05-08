@@ -28,6 +28,8 @@ namespace osc
 
     _IOscCalcAdjustable<T>* Copy() const override;
 
+    virtual TMD5* GetParamsHash() const override;
+
     virtual T P(int flavBefore, int flavAfter, double E) override;
 
     // Standard oscillation parameters
