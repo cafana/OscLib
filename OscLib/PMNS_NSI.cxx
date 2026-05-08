@@ -19,6 +19,11 @@
 // joao.coelho@tufts.edu
 ////////////////////////////////////////////////////////////////////////
 
+// n.b. Stan sets up some type traits that need to be loaded before Eigen is.
+#ifdef OSCLIB_STAN
+#include "OscLib/Stan.h"
+#endif
+
 #include "OscLib/PMNS_NSI.h"
 
 // Just pull in all the cxx files from MatrixDecomp. This way we don't have
@@ -35,25 +40,28 @@ using namespace osc;
 
 //......................................................................
 
-PMNS_NSI::PMNS_NSI() 
+template <typename T>
+_PMNS_NSI<T>::_PMNS_NSI()
 {
   this->SetMix(0.,0.,0.,0.);
   this->SetDeltaMsqrs(0.,0.);
   this->SetNSI(0.,0.,0.,0.,0.,0.,0.,0.,0.);
   this->ResetToFlavour(1);
-  fCachedNe = 0.0;
-  fCachedE =  1.0;
-  fCachedAnti = 1;
+  this->fCachedNe = 0.0;
+  this->fCachedE =  1.0;
+  this->fCachedAnti = 1;
 }
 
-PMNS_NSI::~PMNS_NSI(){
+template <typename T>
+_PMNS_NSI<T>::~_PMNS_NSI(){
 }
 
 //......................................................................
 
-void PMNS_NSI::SetNSI(double eps_ee,    double eps_emu,    double eps_etau,
-                       double eps_mumu,  double eps_mutau,  double eps_tautau,
-                       double delta_emu, double delta_etau, double delta_mutau) 
+template <typename T>
+void _PMNS_NSI<T>::SetNSI(const T& eps_ee,    const T& eps_emu,    const T& eps_etau,
+                          const T& eps_mumu,  const T& eps_mutau,  const T& eps_tautau,
+                          const T& delta_emu, const T& delta_etau, const T& delta_mutau)
 {
 
   fEps_ee     = eps_ee;
@@ -72,29 +80,30 @@ void PMNS_NSI::SetNSI(double eps_ee,    double eps_emu,    double eps_etau,
 /// Solve the full Hamiltonian with Non-Standard Interactions for 
 /// eigenvectors and eigenvalues.
 ///
-void PMNS_NSI::SolveHam(double E, double Ne, int anti)
+template <typename T>
+void _PMNS_NSI<T>::SolveHam(double E, double Ne, int anti)
 {
 
   // Check if anything has changed before recalculating
-  if(Ne!=fCachedNe || E!=fCachedE || anti!=fCachedAnti || !fBuiltHlv || fResetNSI){
-    fCachedNe = Ne;
-    fCachedE = E;
-    fCachedAnti = anti;
+  if(Ne!=this->fCachedNe || E!=this->fCachedE || anti!=this->fCachedAnti || !this->fBuiltHlv || fResetNSI){
+    this->fCachedNe = Ne;
+    this->fCachedE = E;
+    this->fCachedAnti = anti;
     fResetNSI = false;
     this->BuildHlv();
   }
   else return;
 
-  double lv = 2 * constants::kGeVToeV * E / fDm31;  // Osc. length in eV^-1 
+  T lv = 2 * constants::kGeVToeV * E / this->fDm31;  // Osc. length in eV^-1
   double kr2GNe = constants::kMatterDensityToEffect * Ne; // Matter potential in eV
 
   // Finish build Hamiltonian in matter with dimension of eV
   complex A[3][3];
   for(int i=0;i<3;i++){
-    A[i][i] = fHlv[i][i]/lv;
+    A[i][i] = this->fHlv[i][i]/lv;
     for(int j=i+1;j<3;j++){
-      if(anti>0) A[i][j] = fHlv[i][j]/lv;
-      else       A[i][j] = conj(fHlv[i][j])/lv;
+      if(anti>0) A[i][j] = this->fHlv[i][j]/lv;
+      else       A[i][j] = conj(this->fHlv[i][j])/lv;
     }
   }
   if(anti>0){
@@ -115,8 +124,14 @@ void PMNS_NSI::SolveHam(double E, double Ne, int anti)
   }
 
   // Solve Hamiltonian for eigensystem using the GLoBES method
-  zheevh3(A,fEvec,fEval);
+  zheevh3(A,this->fEvec,this->fEval);
 
 }
 
 ////////////////////////////////////////////////////////////////////////
+
+template class osc::_PMNS_NSI<double>;
+
+#ifdef OSCLIB_STAN
+template class osc::_PMNS_NSI<stan::math::var>;
+#endif

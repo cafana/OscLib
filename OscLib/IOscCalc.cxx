@@ -6,16 +6,7 @@
 #endif
 
 #include "OscLib/IOscCalc.h"
-
-namespace{
-  // Most directions are implicitly defined
-  template<class T, class U> T GetValAs(const U& x){return x;}
-
-#ifdef OSCLIB_STAN
-  // But not this one (since you don't want to do it by accident)
-  template<> double GetValAs<double>(const stan::math::var& x){return x.val();}
-#endif
-}
+#include "OscLib/IOscCalc.txx"
 
 #include <Eigen/Dense>
 
