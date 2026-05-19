@@ -433,8 +433,6 @@ namespace osc
   }
   //                                                                                                                                                                   
   //.............................................................................                                                                                        
-
-  //  void OscCalcDecayEigen::SolveHam(double E, double Ne, int anti)
   void OscCalcDecayEigen::SolveHam(double E, double Ne)
   {
     if(Ne!=fCachedNe || E!=fCachedE || !fBuiltHms ){
@@ -508,9 +506,7 @@ namespace osc
     assert(flv >= 0 && flv < fNumNus);
     return norm(fNuState(flv));
   } 
-  //--------------------------------------------------------------------------- 
-  
-  ///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
   double OscCalcDecayEigen::P(int flavBefore, int flavAfter, double E)
 
   {
