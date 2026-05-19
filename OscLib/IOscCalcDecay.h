@@ -5,7 +5,7 @@
 //                                                                      //                                                                                             
 // \file IOscCalcDecay.h                                                //                                                                                             
 //                                                                      //                                                                                             
-// Base class for Neutirno Decay + oscillation calculator               //                                                                                             
+// Base class for Neutrino Decay + oscillation calculator               //                                                                                             
 // <acbarros@mail.uniatlantico.edu.co>                                  //                                                                                             
 // <marioacero@mail.uniatlantico.edu.co>                                //                                                                                             
 //                                                                      //                                                                                             
