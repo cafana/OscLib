@@ -356,12 +356,18 @@ namespace osc::analytic
     // Convert L/E in km/GeV to 1/eV^2 and sneak in a factor of 2.
     const KVT k = (constants::kkmTom / (constants::kInversemToeV * constants::kGeVToeV * 2) * -this->fL) / E;
     Hermitian<VT> M;
-    M.ee = Hee * k  - this->fL * constants::kkmTom / constants::kInversemToeV * Hmat();
-    M.em = Hem * k;
-    M.mm = Hmm * k;
-    M.et = Het * k;
-    M.mt = Hmt * k;
-    M.tt = Htt * k;
+    // NSI matter potential: H_mat += A_CC * epsilon
+    // Diagonal NSI includes standard (1+eps_ee) term; mu-mu and tau-tau are eps only.
+    // Off-diagonal NSI: complex eps adds to off-diagonal matter Hamiltonian.
+    // TODO: for antineutrinos (E < 0, via recursive P(-from,-to,-E) call), 
+    // imaginary eps components should be conjugated. Currently only real eps supported.
+    const double A_nsi = this->fL * constants::kkmTom / constants::kInversemToeV * Hmat();
+    M.ee = Hee * k  - A_nsi * (1.0 + fEps_ee);
+    M.em = Hem * k  - A_nsi * cmplx<double>(fEps_emu_re,   fEps_emu_im);
+    M.mm = Hmm * k  - A_nsi * fEps_mumu;
+    M.et = Het * k  - A_nsi * cmplx<double>(fEps_etau_re,  fEps_etau_im);
+    M.mt = Hmt * k  - A_nsi * cmplx<double>(fEps_mutau_re, fEps_mutau_im);
+    M.tt = Htt * k  - A_nsi * fEps_tautau;
 
     // Matrix exponent is based on https://www.wolframalpha.com/input/?i=matrixExp+%5B%5Br%2Cs%2Ct%5D%2C%5Bu%2Cv%2Cw%5D%2C%5Bx%2Cy%2Cz%5D%5D
 
