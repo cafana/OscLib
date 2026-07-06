@@ -359,8 +359,12 @@ namespace osc::analytic
     // NSI matter potential: H_mat += A_CC * epsilon
     // Diagonal NSI includes standard (1+eps_ee) term; mu-mu and tau-tau are eps only.
     // Off-diagonal NSI: complex eps adds to off-diagonal matter Hamiltonian.
-    // TODO: for antineutrinos (E < 0, via recursive P(-from,-to,-E) call), 
-    // imaginary eps components should be conjugated. Currently only real eps supported.
+    // Antineutrino correctness (complex eps): M is Hermitian, so its eigenvalues are
+    // identical to those of M* and P = |exp(M)_ba|^2 = |exp(M*)_ba|^2.  The antineutrino
+    // physical Hamiltonian is M* = M^T (Hermitian => M^T = M*), and
+    // |exp(M^T)_ba|^2 = |exp(M)_ab|^2 = |exp(M)_ba|^2 by the Hermitian property.
+    // Hence the -E trick correctly handles complex off-diagonal epsilon for antineutrinos
+    // without any explicit conjugation.
     const double A_nsi = this->fL * constants::kkmTom / constants::kInversemToeV * Hmat();
     M.ee = Hee * k  - A_nsi * (1.0 + fEps_ee);
     M.em = Hem * k  - A_nsi * cmplx<double>(fEps_emu_re,   fEps_emu_im);
