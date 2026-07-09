@@ -36,6 +36,9 @@ namespace osc::analytic
 
   template<class T> struct Eigenvalues
   {
+    //      std::array<double, 3> xs; ///< eigenvalues
+    //      std::array<cmplx,  3> expixs; ///< exp(i*x)/(3*x^2+b*x+c) for each x
+    // Turns out we only need these summary expressions of the eigenvalues
     cmplx<T> sume, sumxe, sumxxe;
   };
 
@@ -62,10 +65,15 @@ namespace osc::analytic
 
     virtual _IOscCalcAdjustable<T>* Copy() const override;
 
+    // Baseline in km
     virtual void SetL(double L) override;
+    // Density in g/cm^3
     virtual void SetRho(double rho) override;
+    // in eV^2
     virtual void SetDmsq21(const T& dmsq21) override;
+    // This is a signed quantity, use a negative value for inverted hierarchy
     virtual void SetDmsq32(const T& dmsq32) override;
+    // In radians
     virtual void SetTh12(const T& th12) override;
     virtual void SetTh13(const T& th13) override;
     virtual void SetTh23(const T& th23) override;
@@ -77,17 +85,6 @@ namespace osc::analytic
 
     virtual TMD5* GetParamsHash() const override;
 
-    // NSI parameters (dimensionless, relative to A_CC matter potential).
-    // Default = 0 so existing 3F code is unaffected.
-    // Off-diagonal are complex: set real and imaginary parts separately.
-    // For antineutrinos, conjugation of off-diagonals is handled internally.
-    void SetEps_ee    (double v)            { fEps_ee     = v;  ClearProbCaches(); }
-    void SetEps_mumu  (double v)            { fEps_mumu   = v;  ClearProbCaches(); }
-    void SetEps_tautau(double v)            { fEps_tautau = v;  ClearProbCaches(); }
-    void SetEps_emu   (double re, double im){ fEps_emu_re   = re; fEps_emu_im   = im; ClearProbCaches(); }
-    void SetEps_etau  (double re, double im){ fEps_etau_re  = re; fEps_etau_im  = im; ClearProbCaches(); }
-    void SetEps_mutau (double re, double im){ fEps_mutau_re = re; fEps_mutau_im = im; ClearProbCaches(); }
-
   protected:
     void ClearProbCaches()
     {
@@ -95,6 +92,9 @@ namespace osc::analytic
       ProbCache<Eigen::ArrayXd, Eigen::ArrayX<T>>::clear();
     }
 
+    /// Actual implementation of P(). VT is potentially a vector type, if a
+    /// vector of energies is passed in. KVT != VT in the case T is a stan
+    /// type.
     template<class VT, class KVT> VT _P(int from, int to, const KVT& E);
 
     bool fDirty12, fDirty13, fDirty23, fDirtyCP, fDirtyMasses;
@@ -107,18 +107,14 @@ namespace osc::analytic
 
     inline __attribute__((always_inline)) void UpdatePMNS();
 
+    // This is Hvac without the division by E
     T Hee;            cmplx<T>  Hem; cmplx<T>  Het;
     /*cmplx<T> Hme;*/ T         Hmm; cmplx<T>  Hmt;
     /*cmplx<T> Hte; cmplx<T>  Htm;*/ T         Htt;
 
     inline __attribute__((always_inline)) void UpdateHamiltonian();
-    inline __attribute__((always_inline)) double Hmat();
 
-    // NSI epsilon parameters (all double; zero by default)
-    double fEps_ee = 0, fEps_mumu = 0, fEps_tautau = 0;
-    double fEps_emu_re = 0,   fEps_emu_im = 0;
-    double fEps_etau_re = 0,  fEps_etau_im = 0;
-    double fEps_mutau_re = 0, fEps_mutau_im = 0;
+    inline __attribute__((always_inline)) double Hmat();
 
   private:
     _OscCalc(const _OscCalc&) = default;
@@ -126,6 +122,7 @@ namespace osc::analytic
   };
 } // end namespaces
 
+// Public names
 namespace osc
 {
   template<class T> using _OscCalcAnalytic = osc::analytic::_OscCalc<T>;
