@@ -18,12 +18,7 @@
 #include <Eigen/Dense>
 #include <unsupported/Eigen/MatrixFunctions>
 #include "TMath.h"
-using std::complex;
-using std::cout;
-using std::endl;
-using std::list;
 
-using namespace std;
 namespace osc
 {
   // Some usefule complex numbers                                                                                                                                      
@@ -32,7 +27,7 @@ namespace osc
 
   //---------------------------------------------------------------------------                                                                                        
 
-  OscCalcDecayEigen::OscCalcDecayEigen() : fNumNus(3)
+  OscCalcDecayEigen::OscCalcDecayEigen() : fNumNus(3), fIsNuBar(false)
   {
     this->SetStdPars();
     this->ResetToFlavour(1);
@@ -99,7 +94,7 @@ namespace osc
   void OscCalcDecayEigen::SetAlpha3(double alpha3)
   {
     if (alpha3 < 0) {
-      cerr << "WARNING: Alpha3 must be positive. Doing nothing." << endl;
+      std::cerr << "WARNING: Alpha3 must be positive. Doing nothing." << std::endl;
       return;
     }
     
@@ -120,7 +115,7 @@ namespace osc
   void OscCalcDecayEigen::SetAlpha2(double alpha2)
   {
     if (alpha2 < 0) {
-      cerr << "WARNING: Alpha2 must be positive. Doing nothing." << endl;
+      std::cerr << "WARNING: Alpha2 must be positive. Doing nothing." << std::endl;
       return;
     }
     
@@ -169,16 +164,16 @@ namespace osc
   {
     
     if (i > j) {
-      cout << "Fatal Error Occurred" << endl;
-      cout << "Aborting" << endl;
-      cout << "First argument should be smaller than second argument" << endl;
-      cout << "You must set reverse order (Theta" << j << i << "). " << endl;
+      std::cout << "Fatal Error Occurred" << std::endl;
+      std::cout << "Aborting" << std::endl;
+      std::cout << "First argument should be smaller than second argument" << std::endl;
+      std::cout << "You must set reverse order (Theta" << j << i << "). " << std::endl;
       abort();
     }
     if (i < 1 || i > fNumNus - 1 || j < 2 || j > fNumNus) {
-      cout << "Fatal Error Occurred" << endl;
-      cout << "Theta" << i << j << " not valid for " << fNumNus;
-      cout << " neutrinos. Abortig." << endl;
+      std::cout << "Fatal Error Occurred" << std::endl;
+      std::cout << "Theta" << i << j << " not valid for " << fNumNus;
+      std::cout << " neutrinos. Abortig." << std::endl;
       abort();
     }
     // Check if value is actually changing                                                                                                                             
@@ -192,20 +187,20 @@ namespace osc
   {
 
     if(i>j){
-      cout << "Fatal Error Occurred" << endl;
-      cout << "Aborting" << endl;
-      cout << "First argument should be smaller than second argument" << endl;
-      cout << "You must set reverse order (Delta" << j << i << "). " << endl;
+      std::cout << "Fatal Error Occurred" << std::endl;
+      std::cout << "Aborting" << std::endl;
+      std::cout << "First argument should be smaller than second argument" << std::endl;
+      std::cout << "You must set reverse order (Delta" << j << i << "). " << std::endl;
       abort();
     }
     if(i<1 || i>fNumNus-1 || j<2 || j>fNumNus){
-      cout << "Fatal Error Occurred" << endl;
-      cout << "Delta" << i << j << " not valid for " << fNumNus;
-      cout << " neutrinos. Aborting." << endl;
+      std::cout << "Fatal Error Occurred" << std::endl;
+      std::cout << "Delta" << i << j << " not valid for " << fNumNus;
+      std::cout << " neutrinos. Aborting." << std::endl;
       abort();
     }
     if(i+1==j){
-      cout << "Rotation " << i << j << " is real. Aborting." << endl;
+      std::cout << "Rotation " << i << j << " is real. Aborting." << std::endl;
       abort();
     }
     // Check if value is actually changing                                                                                                                             
@@ -219,8 +214,8 @@ namespace osc
   void OscCalcDecayEigen::SetDm(int i, double dm)
   {
     if (i < 2 || i > fNumNus) {
-      cout << "Dm" << i << "1 not valid for " << fNumNus;
-      cout << " neutrinos. Doing nothing." << endl;
+      std::cout << "Dm" << i << "1 not valid for " << fNumNus;
+      std::cout << " neutrinos. Doing nothing." << std::endl;
       return;
     }
     // Check if value is actually changing                                                                                                                             
@@ -433,6 +428,8 @@ namespace osc
   }
   //                                                                                                                                                                   
   //.............................................................................                                                                                        
+
+  //  void OscCalcDecayEigen::SolveHam(double E, double Ne, int anti)
   void OscCalcDecayEigen::SolveHam(double E, double Ne)
   {
     if(Ne!=fCachedNe || E!=fCachedE || !fBuiltHms ){
@@ -506,10 +503,15 @@ namespace osc
     assert(flv >= 0 && flv < fNumNus);
     return norm(fNuState(flv));
   } 
-///////////////////////////////////////////////////////////////////////////
+  //--------------------------------------------------------------------------- 
+  
+  ///////////////////////////////////////////////////////////////////////////
   double OscCalcDecayEigen::P(int flavBefore, int flavAfter, double E)
 
   {
+    bool isNuBar = (flavBefore < 0);
+    if (isNuBar != fIsNuBar) SetIsNuBar(isNuBar);
+
     int i = -1, j = -1;
     if(abs(flavBefore) == 12) i = 0;
     if(abs(flavBefore) == 14) i = 1;

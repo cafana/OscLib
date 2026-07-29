@@ -96,7 +96,8 @@ namespace osc
     
     /// Wrapper to solve non-hermitian matrix eigenvalues.                          
     void complexsolver(const Eigen::Matrix3cd& A, Eigen::Vector3d& w);
-        
+    
+    /// Build Hms = H*2E, where H is the Hamiltonian in vacuum on flavour basis     
     /// and E is the neutrino energy. This is effectively the matrix of masses squared.                                                                                
     virtual void BuildHms();
     
@@ -104,7 +105,8 @@ namespace osc
     /// @param E - neutrino energy in GeV                                           
     /// @param Ne - electron number density of matter in mole/cm^3                  
     /// @param anti - +1 = neutrino case, -1 = anti-neutrino case                   
-  
+    
+    //virtual void SolveHam(double E, double Ne, int anti);
     virtual void SolveHam(double E, double Ne);
     
     /// Propagation with Decay                                                      
@@ -119,6 +121,7 @@ namespace osc
     /// @param flv - final flavor (0,1,2) = (nue,numu,nutau)                        
     virtual void ResetToFlavour(int flv=1);
     
+    //int anti;
     int fNumNus;
     double  fCachedNe;      ///Cached electron density                            
     double  fCachedE;       ///Cached neutrino energy                             
