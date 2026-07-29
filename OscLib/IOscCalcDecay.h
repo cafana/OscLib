@@ -15,11 +15,11 @@
 
 namespace osc
 {
-  /// \brief base class for decay oscillation calculators                                                                                                            
-  /// In the context of a sterile oscillation calculator, a PDG code                                                                                                  
-  /// of zero corresponds to the survival probability for an active                                                                                                    
-  /// neutrino, ie. the sum of the oscillation probabilities for the                                                                                                   
-  /// three active neutrino states.                                                                                                                                    
+  /// \brief base class for decay oscillation calculators
+  /// In the context of a decay oscillation calculator, a PDG code
+  /// of zero corresponds to the survival probability for an active
+  /// neutrino, ie. the sum of the oscillation probabilities for the
+  /// three active neutrino states.
   class IOscCalcDecay: public IOscCalcAdjustable
   {
   public:
