@@ -426,10 +426,9 @@ namespace osc
       w(t) = eigensolver.eigenvalues()(t).real();
     }
   }
-  //                                                                                                                                                                   
-  //.............................................................................                                                                                        
+  //
+  //.............................................................................
 
-  //  void OscCalcDecayEigen::SolveHam(double E, double Ne, int anti)
   void OscCalcDecayEigen::SolveHam(double E, double Ne)
   {
     if(Ne!=fCachedNe || E!=fCachedE || !fBuiltHms ){

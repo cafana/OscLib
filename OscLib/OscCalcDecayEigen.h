@@ -101,12 +101,9 @@ namespace osc
     /// and E is the neutrino energy. This is effectively the matrix of masses squared.                                                                                
     virtual void BuildHms();
     
-    /// Solve the full Hamiltonian for eigenvectors and eigenvalues                 
-    /// @param E - neutrino energy in GeV                                           
-    /// @param Ne - electron number density of matter in mole/cm^3                  
-    /// @param anti - +1 = neutrino case, -1 = anti-neutrino case                   
-    
-    //virtual void SolveHam(double E, double Ne, int anti);
+    /// Solve the full Hamiltonian for eigenvectors and eigenvalues
+    /// @param E - neutrino energy in GeV
+    /// @param Ne - electron number density of matter in mole/cm^3
     virtual void SolveHam(double E, double Ne);
     
     /// Propagation with Decay                                                      
@@ -120,8 +117,7 @@ namespace osc
     /// to pure flavour flv. Preserves values of mixing and mass-splittings         
     /// @param flv - final flavor (0,1,2) = (nue,numu,nutau)                        
     virtual void ResetToFlavour(int flv=1);
-    
-    //int anti;
+
     int fNumNus;
     double  fCachedNe;      ///Cached electron density                            
     double  fCachedE;       ///Cached neutrino energy                             
