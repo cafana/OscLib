@@ -32,10 +32,8 @@ namespace osc
     virtual void SetDelta(int i, int j, double delta) = 0;
     virtual void SetDm(int i, double dm)              = 0;
     virtual void SetAlpha3(double alpha3)             = 0;                                                                                                          
-    virtual void SetAlpha2(double alpha2)             = 0;            
-    
-    double GetL()                 const override { return fL; }
-    double GetRho()               const override { return fRho; }
+    virtual void SetAlpha2(double alpha2)             = 0;
+
     virtual double GetDm(int i)           const = 0;
     virtual double GetAngle(int i, int j) const = 0;
     virtual double GetDelta(int i, int j) const = 0;
@@ -70,8 +68,7 @@ namespace osc
     virtual void SetTh13  (const double& th13  ) override;
     virtual void SetTh23  (const double& th23  ) override;
     virtual void SetdCP   (const double& dCP   ) override;
-    
-    double fRho;
+
     bool   fDirty;
 
   };
