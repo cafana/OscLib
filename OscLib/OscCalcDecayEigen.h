@@ -48,7 +48,6 @@ namespace osc
     
     virtual IOscCalcAdjustable* Copy() const override;
     
-    void SetNFlavors(int nflavors);
     virtual void SetAngle(int i, int j, double th) override;
     virtual void SetDelta(int i, int j, double delta) override;
     virtual void SetDm(int i, double dm) override;
