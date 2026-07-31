@@ -465,7 +465,6 @@ namespace osc
   void OscCalcDecayEigen::PropagatePath(double L, double E, double Ne)
   {                                                                                                                                                 
     // Build Hamiltonian                                                                  
-    BuildHms();
     SolveHam(E, Ne);
     double LengthIneV = constants::kkmTom/constants::kInversemToeV * L;
 
