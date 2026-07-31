@@ -5,7 +5,7 @@
 /// \class OscLib::OscCalcDecayEigen    
 /// brief Implementation of neutrino decay in a three-neutrino framework.                                                                                  
 ///                                                                                                                                                               
-/// This class expands the PMNS_Fast class including the decay of the                                                                                               
+/// This class implements neutrino decay in a three-neutrino framework, including the decay of the
 /// second and third mass state of the neutrino through a decay constant                                                                                             
 /// \f$\alpha_i=m_i/\tau_i\ (eV^2)\f$, where \f$m_i\f$ is the mass in the                                                                                           
 /// restframe and \f$tau_i\f$ is the lifetime in the restframe.                                                                                                      
