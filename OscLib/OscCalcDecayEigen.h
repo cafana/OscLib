@@ -92,10 +92,7 @@ namespace osc
     ///Rotate the Hamiltonian by theta_ij and delta_ij                              
     virtual void RotateH(int i, int j, Eigen::Matrix3cd& Ham);
     
-    /// Wrapper to solve non-hermitian matrix eigenvalues.                          
-    void complexsolver(const Eigen::Matrix3cd& A, Eigen::Vector3d& w);
-    
-    /// Build Hms = H*2E, where H is the Hamiltonian in vacuum on flavour basis     
+    /// Build Hms = H*2E, where H is the Hamiltonian in vacuum on flavour basis
     /// and E is the neutrino energy. This is effectively the matrix of masses squared.                                                                                
     virtual void BuildHms();
     
@@ -120,12 +117,10 @@ namespace osc
     double  fCachedNe;      ///Cached electron density                            
     double  fCachedE;       ///Cached neutrino energy                             
     bool    fBuiltHms;      ///Tag to avoid rebuilding Hms                        
-    bool fIsNuBar;          /// anti-neutrino flag                                           
-    bool fGotES;            ///Tag to avoid recalculating eigensystem
+    bool fIsNuBar;          /// anti-neutrino flag
 
-    Eigen::Vector3cd fBuffer; ///Buffer for neutrino state tranformations         
-    Eigen::Vector3d fEval;    ///Eigenvalues of the Hamiltonian                      
-    Eigen::Matrix3cd fHd;     ///Decay hamiltonian                                   
+    Eigen::Vector3cd fBuffer; ///Buffer for neutrino state tranformations
+    Eigen::Matrix3cd fHd;     ///Decay hamiltonian
     Eigen::Vector3d fDm;      ///m^2_i - m^2_1 in vacuum                            
     Eigen::Matrix3d fTheta;   ///theta[i][j] mixing angle                           
     Eigen::Matrix3d fDelta;   ///delta[i][j] CP violating phase                     
