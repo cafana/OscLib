@@ -116,7 +116,6 @@ namespace osc
       return;
     }
     
-    std::cout << "OscCalcDecay Alpha2 " << alpha2 << std::endl;
     fBuiltHms = fBuiltHms && (fAlpha(1) == alpha2);
     fAlpha(1) = alpha2;
   }
