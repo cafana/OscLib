@@ -27,7 +27,7 @@ namespace osc
 
   //---------------------------------------------------------------------------                                                                                        
 
-  OscCalcDecayEigen::OscCalcDecayEigen() : fNumNus(3), fIsNuBar(false)
+  OscCalcDecayEigen::OscCalcDecayEigen() : fNumNus(3), fBuiltHms(false), fIsNuBar(false), fGotES(false)
   {
     this->SetStdPars();
     this->ResetToFlavour(1);
