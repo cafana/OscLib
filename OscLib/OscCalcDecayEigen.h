@@ -27,7 +27,6 @@
 ///////////////////////////////////////////////////////////////////////////////   
 
 #include "OscLib/IOscCalcDecay.h"
-#include "OscLib/OscCalcDecayEigen.h"
 #include "OscLib/OscCalcPMNSOptEigen.h"
 #include "TDirectory.h"
 #include <Eigen/Core>
