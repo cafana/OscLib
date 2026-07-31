@@ -25,8 +25,8 @@ namespace osc
   public:
     virtual ~IOscCalcDecay() {}
 
-    virtual void SetL  (double L  ) override {fDirty = true; fL   = L;}
-    virtual void SetRho(double rho) override {fDirty = true; fRho = rho;}
+    virtual void SetL  (double L  ) override {fL   = L;}
+    virtual void SetRho(double rho) override {fRho = rho;}
     
     virtual void SetAngle(int i, int j, double th)    = 0;
     virtual void SetDelta(int i, int j, double delta) = 0;
