@@ -36,7 +36,7 @@ namespace osc
   }
   
   //---------------------------------------------------------------------------                                                                                        
-  OscCalcDecayEigen::OscCalcDecayEigen(const OscCalcDecayEigen& calc) : fNumNus(3)
+  OscCalcDecayEigen::OscCalcDecayEigen(const OscCalcDecayEigen& calc) : fNumNus(3), fBuiltHms(false), fGotES(false)
  
   {
     fRho        = calc.fRho;
