@@ -69,7 +69,6 @@ namespace osc
     virtual void SetTh23  (const double& th23  ) override;
     virtual void SetdCP   (const double& dCP   ) override;
 
-    bool   fDirty;
 
   };
   /// \brief version of OscCalcDecay that always returns probability of 1                                                                                              
