@@ -14,6 +14,8 @@
 #include <cassert>
 #include <stdlib.h>
 #include <complex>
+#include <cmath>
+#include <limits>
 #include "TObjString.h"
 #include <Eigen/Dense>
 #include <unsupported/Eigen/MatrixFunctions>
@@ -138,20 +140,14 @@ namespace osc
   {
     this->InitializeVectors();
     
-    if(fNumNus>2) {
-      this->SetAngle(1,2,0.587252);
-      this->SetAngle(1,3,0.147969);
-      this->SetAngle(2,3,0.83105);
-      this->SetDm(2,7.53e-5);
-      this->SetDm(3,2.4333e-3);
-      this->SetL(810);
-      this->SetRho(2.74);
-    }
-    else if(fNumNus==2){
-      this->SetAngle(1,2,0.587252);
-      this->SetDm(2,2.4e-3);
-    }
-    
+    this->SetAngle(1,2,0.587252);
+    this->SetAngle(1,3,0.147969);
+    this->SetAngle(2,3,0.83105);
+    this->SetDm(2,7.53e-5);
+    this->SetDm(3,2.4333e-3);
+    this->SetL(810);
+    this->SetRho(2.74);
+
   }
   
   //---------------------------------------------------------------------------                                                                                        
@@ -169,11 +165,11 @@ namespace osc
     if (i < 1 || i > fNumNus - 1 || j < 2 || j > fNumNus) {
       std::cout << "Fatal Error Occurred" << std::endl;
       std::cout << "Theta" << i << j << " not valid for " << fNumNus;
-      std::cout << " neutrinos. Abortig." << std::endl;
+      std::cout << " neutrinos. Aborting." << std::endl;
       abort();
     }
     // Check if value is actually changing                                                                                                                             
-    fBuiltHms = fBuiltHms && (fTheta(i - 1,j - 1) == th);
+    fBuiltHms = fBuiltHms && (std::abs(fTheta(i - 1,j - 1) - th) <= std::numeric_limits<double>::epsilon());
     
     fTheta(i-1,j-1) = th;
   }
@@ -200,7 +196,7 @@ namespace osc
       abort();
     }
     // Check if value is actually changing                                                                                                                             
-    fBuiltHms = fBuiltHms && (fDelta(i - 1,j - 1) == delta);
+    fBuiltHms = fBuiltHms && (std::abs(fDelta(i - 1,j - 1) - delta) <= std::numeric_limits<double>::epsilon());
     
     fDelta(i-1,j-1) = delta;
   }
@@ -215,7 +211,7 @@ namespace osc
       return;
     }
     // Check if value is actually changing                                                                                                                             
-    fBuiltHms = fBuiltHms && (fDm(i - 1) == dm);
+    fBuiltHms = fBuiltHms && (std::abs(fDm(i - 1) - dm) <= std::numeric_limits<double>::epsilon());
 
     fDm(i-1) = dm;
   }
@@ -239,7 +235,7 @@ namespace osc
   void OscCalcDecayEigen::RotateH(int i, int j, Eigen::Matrix3cd& Ham)
   {
     // Do nothing if angle is zero                                                                                                                                     
-    if (fTheta(i,j) == 0) return;
+    if (std::abs(fTheta(i,j)) <= std::numeric_limits<double>::epsilon()) return;
 
     double fSinBuffer = sin(fTheta(i,j));
     double fCosBuffer = cos(fTheta(i,j));
@@ -427,7 +423,7 @@ namespace osc
 
   void OscCalcDecayEigen::SolveHam(double E, double Ne)
   {
-    if(Ne!=fCachedNe || E!=fCachedE || !fBuiltHms ){
+    if(std::abs(Ne-fCachedNe) > std::numeric_limits<double>::epsilon() || std::abs(E-fCachedE) > std::numeric_limits<double>::epsilon() || !fBuiltHms ){
       fCachedNe = Ne;
       fCachedE = E;
       this->BuildHms();
