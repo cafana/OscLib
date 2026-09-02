@@ -29,7 +29,7 @@ namespace osc
 
   //---------------------------------------------------------------------------                                                                                        
 
-  OscCalcDecayEigen::OscCalcDecayEigen() : fNumNus(3), fBuiltHms(false), fIsNuBar(false), fGotES(false)
+  OscCalcDecayEigen::OscCalcDecayEigen() : fNumNus(3), fBuiltHms(false), fIsNuBar(false)
   {
     this->SetStdPars();
     this->ResetToFlavour(1);
@@ -38,7 +38,7 @@ namespace osc
   }
   
   //---------------------------------------------------------------------------                                                                                        
-  OscCalcDecayEigen::OscCalcDecayEigen(const OscCalcDecayEigen& calc) : fNumNus(3), fBuiltHms(false), fGotES(false)
+  OscCalcDecayEigen::OscCalcDecayEigen(const OscCalcDecayEigen& calc) : fNumNus(3), fBuiltHms(false)
  
   {
     fRho        = calc.fRho;
@@ -79,8 +79,7 @@ namespace osc
     fHd.setZero();
     fBuffer.setZero();
     fAlpha.setZero();
-    fEval.setZero();                                                                                                                                                
-    
+
   }
 
   void OscCalcDecayEigen::SaveTo(TDirectory* dir, const std::string& name) const
@@ -130,7 +129,6 @@ namespace osc
 
   void OscCalcDecayEigen::SetIsNuBar(bool isNuBar)
   {
-    fGotES = fGotES && (fIsNuBar == isNuBar);
     fBuiltHms = fBuiltHms && (fIsNuBar == isNuBar);
     fIsNuBar = isNuBar;
  }
@@ -356,11 +354,9 @@ namespace osc
   void OscCalcDecayEigen::BuildHms()
   {
     
-    // Check if anything changed                                                                                                                                       
+    // Check if anything changed
     if(fBuiltHms) return;
-                                                                                                                                  
-    // Tag to recompute eigensystem                                                                                                                                    
-    fGotES = false;
+
     for(int j=0; j<fNumNus; j++){
       // Set mass splitting                                                                                                                                            
       fHms(j,j) = fDm(j);
@@ -404,21 +400,7 @@ namespace osc
     fBuiltHms = true;
     
   }
-  //---------------------------------------------------------------------------                                                                                        
-  ////// Wrapper to solve non-hermitian matrix eigenvalues.                                                                                                           
-  ///                                                                                                                                                                 
-  /// @param A    - Input matrix                                                                                                                                       
-  /// @param w    - Output eigenvalues                                                                                                                                
-  ///                                                                                                                                                                  
-  void OscCalcDecayEigen::complexsolver(const Eigen::Matrix3cd& A, Eigen::Vector3d& w)
-  {
-    Eigen::ComplexEigenSolver<Eigen::Matrix3cd> eigensolver;
-    eigensolver.compute(A);
-    for (int t = 0; t < w.size(); t++) {
-      w(t) = eigensolver.eigenvalues()(t).real();
-    }
-  }
-  //
+  //---------------------------------------------------------------------------
   //.............................................................................
 
   void OscCalcDecayEigen::SolveHam(double E, double Ne)
@@ -441,11 +423,6 @@ namespace osc
       fHam(0, 0) += kr2GNe;}
     else{
       fHam(0, 0) -= kr2GNe;}
-    
-    // Solve Hamiltonian for eigenvalues using the Eigen library method                                                                                                                 
-    complexsolver(fHam, fEval);
-
-    fGotES = true;
   }
 
 
