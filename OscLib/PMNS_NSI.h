@@ -19,30 +19,36 @@
 #include "OscLib/PMNSOpt.h"
 
 namespace osc {
-  class PMNS_NSI : public PMNSOpt {
+  template <typename T>
+  class _PMNS_NSI : public _PMNSOpt<T> {
   public:
-    PMNS_NSI();
-    virtual ~PMNS_NSI();
+    _PMNS_NSI();
+    virtual ~_PMNS_NSI();
     
-    void SetNSI(double eps_ee,      double eps_emu,      double eps_etau,
-                double eps_mumu,    double eps_mutau,    double eps_tautau,
-                double delta_emu=0, double delta_etau=0, double delta_mutau=0);
+    void SetNSI(const T& eps_ee,     const T& eps_emu,     const T& eps_etau,
+                const T& eps_mumu,   const T& eps_mutau,   const T& eps_tautau,
+                const T& delta_emu=0, const T& delta_etau=0, const T& delta_mutau=0);
 
   protected:
+    using complex = typename _PMNSOpt<T>::complex;
+
     /// Solve the full Hamiltonian for eigenvectors and eigenvalues
     /// @param E - neutrino energy in GeV
     /// @param Ne - electron number density of matter in mole/cm^3
     /// @param anti - +1 = neutrino case, -1 = anti-neutrino case
     virtual void SolveHam(double E, double Ne, int anti);
     
-    double  fEps_ee;        ///< NSI parameter ee
-    double  fEps_mumu;      ///< NSI parameter mumu
-    double  fEps_tautau;    ///< NSI parameter tautau
+    T       fEps_ee;        ///< NSI parameter ee
+    T       fEps_mumu;      ///< NSI parameter mumu
+    T       fEps_tautau;    ///< NSI parameter tautau
     complex fEps_emu;       ///< NSI parameter emu
     complex fEps_etau;      ///< NSI parameter etau
     complex fEps_mutau;     ///< NSI parameter mutau
     bool    fResetNSI;      ///< True when NSI parameters are changed
   };
+
+  // preserve older behavior
+  typedef _PMNS_NSI<double> PMNS_NSI;
 }
 #endif
 ////////////////////////////////////////////////////////////////////////
